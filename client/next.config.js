@@ -8,7 +8,7 @@ const nextConfig = {
       issuer: /\.[jt]sx?$/,
       use: [
         {
-          loader: "@svgr/webpack",
+          loader: '@svgr/webpack',
           options: {
             svgoConfig: {
               plugins: [
@@ -26,6 +26,8 @@ const nextConfig = {
         },
       ],
     });
+
+    config.resolve.modules.push(__dirname); // 절대 경로 설정
     return config;
   },
 };
