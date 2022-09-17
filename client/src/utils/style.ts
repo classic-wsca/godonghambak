@@ -1,5 +1,5 @@
 export const pixelToRem = (pixel: number): string => {
-  if (typeof window === "undefined") {
+  if (typeof window === 'undefined') {
     return `${pixel * 0.0625}rem`;
   }
 

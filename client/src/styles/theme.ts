@@ -1,24 +1,24 @@
-import { DefaultTheme } from "styled-components";
-import { pixelToRem, createBreakPoint } from "~utils/style";
+import { DefaultTheme } from 'styled-components';
+import { pixelToRem, createBreakPoint } from '~utils/style';
 
 export const colors = {
-  primary: "#447A55",
-  secondary: "#B9584E",
-  success: "#198754",
-  success_background: "#dfffdc",
-  warning: "#ff1f00",
-  warning_background: "#fff5f1",
-  background: "#fefefe",
-  orange: "fa743b",
-  yellow: "#fdc47c",
-  blue: "#0d6efd",
-  pink: "#faddcd",
-  gray_100: "#f8f8f8",
-  gray_300: "#dbdbdb",
-  gray_500: "#9c9c9c",
-  gray_700: "#707070",
-  white: "#fff",
-  black: "#444",
+  primary: '#447A55',
+  secondary: '#B9584E',
+  success: '#198754',
+  success_background: '#dfffdc',
+  warning: '#ff1f00',
+  warning_background: '#fff5f1',
+  background: '#fefefe',
+  orange: 'fa743b',
+  yellow: '#fdc47c',
+  blue: '#0d6efd',
+  pink: '#faddcd',
+  gray_100: '#f8f8f8',
+  gray_300: '#dbdbdb',
+  gray_500: '#9c9c9c',
+  gray_700: '#707070',
+  white: '#fff',
+  black: '#444',
 };
 
 export const fontSizes = {

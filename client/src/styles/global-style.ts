@@ -1,7 +1,7 @@
-import { createGlobalStyle } from "styled-components";
-import { normalize } from "styled-normalize";
+import { createGlobalStyle } from 'styled-components';
+import { normalize } from 'styled-normalize';
 
-export const GlobalStyle = createGlobalStyle`
+const GlobalStyle = createGlobalStyle`
   ${normalize}
 
   *, *::before, *::after {
@@ -50,3 +50,5 @@ export const GlobalStyle = createGlobalStyle`
     clip-path: inset(50%);
   }
 `;
+
+export default GlobalStyle;
