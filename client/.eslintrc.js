@@ -61,8 +61,7 @@ module.exports = {
     'import/no-extraneous-dependencies': [
       'error',
       {
-        devDependencies: ['./src/utils/test-utils.tsx'],
-        peerDependencies: true,
+        devDependencies: true,
       },
     ],
   },
