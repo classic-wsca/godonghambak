@@ -58,20 +58,27 @@ module.exports = {
         groups: ['type', 'builtin', 'external', 'sibling', 'parent', 'index'],
       },
     ],
+    'import/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: ['./src/utils/test-utils.tsx'],
+        peerDependencies: true,
+      },
+    ],
   },
   overrides: [
-    // {
-    //   files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
-    //   env: {
-    //     'jest/globals': true,
-    //   },
-    //   plugins: ['jest', 'jest-dom', 'testing-library'],
-    //   extends: [
-    //     'plugin:jest/recommended',
-    //     'plugin:jest-dom/recommended',
-    //     'plugin:testing-library/react',
-    //   ],
-    // },
+    {
+      files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
+      env: {
+        'jest/globals': true,
+      },
+      plugins: ['jest', 'jest-dom', 'testing-library'],
+      extends: [
+        'plugin:jest/recommended',
+        'plugin:jest-dom/recommended',
+        'plugin:testing-library/react',
+      ],
+    },
     {
       files: ['*.stories.tsx'],
       extends: ['plugin:storybook/recommended'],
@@ -86,5 +93,5 @@ module.exports = {
       },
     },
   ],
-  ignorePatterns: ['*.config.js', '.eslintrc.js'],
+  ignorePatterns: ['*.config.js', '.eslintrc.js', 'jest.setup.js'],
 };
