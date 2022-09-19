@@ -14,6 +14,7 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:@next/next/recommended',
     'plugin:prettier/recommended',
+    'plugin:storybook/recommended',
   ],
   plugins: ['react', 'react-hooks', '@typescript-eslint', 'prettier'],
   parser: '@typescript-eslint/parser',
@@ -46,7 +47,9 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     'react/function-component-definition': [
       'error',
-      { namedComponents: 'arrow-function' },
+      {
+        namedComponents: 'arrow-function',
+      },
     ],
     'import/extensions': 'off',
     'import/order': [
@@ -57,21 +60,30 @@ module.exports = {
     ],
   },
   overrides: [
-    {
-      files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
-      env: {
-        'jest/globals': true,
-      },
-      plugins: ['jest', 'jest-dom', 'testing-library'],
-      extends: [
-        'plugin:jest/recommended',
-        'plugin:jest-dom/recommended',
-        'plugin:testing-library/react',
-      ],
-    },
+    // {
+    //   files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
+    //   env: {
+    //     'jest/globals': true,
+    //   },
+    //   plugins: ['jest', 'jest-dom', 'testing-library'],
+    //   extends: [
+    //     'plugin:jest/recommended',
+    //     'plugin:jest-dom/recommended',
+    //     'plugin:testing-library/react',
+    //   ],
+    // },
     {
       files: ['*.stories.tsx'],
       extends: ['plugin:storybook/recommended'],
+      rules: {
+        'import/no-extraneous-dependencies': [
+          'error',
+          {
+            devDependencies: ['**/*.stories.*', '**/.storybook/**/*.*'],
+            peerDependencies: true,
+          },
+        ],
+      },
     },
   ],
   ignorePatterns: ['*.config.js', '.eslintrc.js'],
