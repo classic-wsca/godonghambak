@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+cd ./client
+
+echo '🏗️👷 푸시 전에 프로젝트의 코드를 테스트합니다.👷‍♂️🏗️'
+echo '잠시만 기다려주세요...'
+
+yarn test:ci
+
+echo '✅✅✅✅ 모듬 테스트에 통과하셨습니다! 푸시를 진행합니다. ✅✅✅✅'

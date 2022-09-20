@@ -1,0 +1,11 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+cd ./client 
+
+
+echo '🏗️👷 커밋 전에 프로젝트의 코드 스타일을 검사합니다.👷‍♂️🏗️'
+echo '잠시만 기다려주세요...'
+
+yarn lint-staged
+
+echo '✅✅✅✅ 깔끔한 코드네요! 커밋을 진행합니다. ✅✅✅✅'
