@@ -77,6 +77,9 @@ module.exports = {
         'plugin:jest-dom/recommended',
         'plugin:testing-library/react',
       ],
+      rules: {
+        'no-underscore-dangle': 'off',
+      },
     },
     {
       files: ['*.stories.tsx'],
