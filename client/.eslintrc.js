@@ -51,11 +51,13 @@ module.exports = {
         namedComponents: 'arrow-function',
       },
     ],
+    'react/require-default-props': 'off',
+    'import/prefer-default-export': 'off',
     'import/extensions': 'off',
     'import/order': [
       'error',
       {
-        groups: ['type', 'builtin', 'external', 'sibling', 'parent', 'index'],
+        groups: ['type', 'builtin', 'external', 'parent', 'sibling', 'index'],
       },
     ],
     'import/no-extraneous-dependencies': [
@@ -85,6 +87,7 @@ module.exports = {
       files: ['*.stories.tsx'],
       extends: ['plugin:storybook/recommended'],
       rules: {
+        'react/prop-types': 'off',
         'import/no-extraneous-dependencies': [
           'error',
           {
