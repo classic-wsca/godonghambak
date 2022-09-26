@@ -12,10 +12,7 @@ import IconButton from './button-icon';
 
 import { useRipple } from '~hooks/index';
 
-type CustomButtonAttirbutes = Omit<
-  ComponentPropsWithoutRef<'button'>,
-  'color' | 'type'
->;
+type CustomButtonAttirbutes = Omit<ComponentPropsWithoutRef<'button'>, 'color'>;
 type CustomButtonType = 'button' | 'submit'; // 사용자 경험을 위해 'reset' 타입은 사용하지 않습니다!
 
 interface ButtonProps extends CustomButtonAttirbutes, ButtonStyle {
