@@ -1,4 +1,5 @@
-/* eslint-disable testing-library/no-node-access */
+/* eslint-disable testing-library/no-container */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { render, renderHook, act, fireEvent } from '../test-utils';
 import { useRipple } from '~hooks/index';
 
@@ -48,7 +49,7 @@ describe('useRipple hook', () => {
     expect(result.current[1].length).toBe(1);
 
     const { container } = render(result.current[1][0]);
-    const ripple = container.firstChild as Element;
+    const ripple = container.querySelector('span')!;
     fireEvent.animationEnd(ripple);
 
     expect(result.current[1].length).toBe(0);
