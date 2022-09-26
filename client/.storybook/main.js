@@ -11,7 +11,15 @@ module.exports = {
   core: {
     builder: '@storybook/builder-webpack5',
   },
+  staticDirs: ['../public'],
+  typescript: {
+    reactDocgen: false,
+  },
   webpackFinal: async (config) => {
+    const rules = config.module.rules;
+    const fileLoaderRule = rules.find((rule) => rule.test.test('.svg'));
+    fileLoaderRule.exclude = /\.svg$/;
+    rules.push({ test: /\.svg$/, use: ['@svgr/webpack'] });
     config.resolve.alias = {
       ...config.resolve.alias,
       '~components': path.resolve(__dirname, '../src/components'),
@@ -22,6 +30,7 @@ module.exports = {
       '~types': path.resolve(__dirname, '../src/types'),
       '~utils': path.resolve(__dirname, '../src/utils'),
     };
+
     return config;
   },
 };

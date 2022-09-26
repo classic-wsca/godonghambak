@@ -26,8 +26,8 @@ describe('Style util tests', () => {
     });
 
     it('should throw an error if pixel is negative number', () => {
-      expect(() => pixelToRem(-16)).toThrow('음수는 변환할 수 없습니다.');
-      expect(() => pixelToRem(-1.6)).toThrow('음수는 변환할 수 없습니다.');
+      expect(pixelToRem(-16)).toBe('-1rem');
+      expect(pixelToRem(-1.6)).toBe('-0.1rem');
     });
 
     it('should be change value if browser fontSize is changed', () => {

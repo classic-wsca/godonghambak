@@ -1,8 +1,4 @@
 export const pixelToRem = (pixel: number): string => {
-  if (pixel < 0) {
-    throw new Error('음수는 변환할 수 없습니다.');
-  }
-
   if (typeof window === 'undefined') {
     return `${pixel * 0.0625}rem`;
   }
