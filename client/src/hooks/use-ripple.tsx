@@ -4,7 +4,7 @@ import { CSSProperties } from 'styled-components';
 const MINIMUM_RIPPLE_SIZE = 100;
 
 interface Ripple {
-  index: number;
+  key: number;
   style: CSSProperties;
 }
 
@@ -26,18 +26,21 @@ const useRipple = (
     ...style,
   };
 
-  const addRiple = (e: React.MouseEvent<HTMLButtonElement>): void => {
+  const getRippleSize = (e: React.MouseEvent<HTMLButtonElement>): number => {
+    const elementWidth = e.currentTarget.clientHeight;
+    const elementHeight = e.currentTarget.clientWidth;
+
+    return Math.min(elementWidth, elementHeight, MINIMUM_RIPPLE_SIZE);
+  };
+
+  const createNewRipple = (e: React.MouseEvent<HTMLButtonElement>) => {
     const { left, top } = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - left;
     const y = e.clientY - top;
-    const rippleSize = Math.min(
-      e.currentTarget.clientHeight,
-      e.currentTarget.clientWidth,
-      MINIMUM_RIPPLE_SIZE,
-    );
+    const rippleSize = getRippleSize(e);
 
-    const newRipple = {
-      index: e.timeStamp,
+    return {
+      key: e.timeStamp,
       style: {
         width: rippleSize,
         height: rippleSize,
@@ -46,25 +49,22 @@ const useRipple = (
         ...baseStyle,
       },
     };
+  };
 
+  const addRiple = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    const newRipple = createNewRipple(e);
     setRipples((prevRipples) => [...prevRipples, newRipple]);
   };
 
-  const handleAnimationEnd = (current: number) => {
+  const handleAnimationEnd = (currentKey: number) => {
     setRipples((prevRipples) =>
-      prevRipples.filter((prevRipple) => prevRipple.index !== current),
+      prevRipples.filter((prevRipple) => prevRipple.key !== currentKey),
     );
   };
 
-  const ripplesArray: JSX.Element[] = ripples.map((currentRipple) => {
-    return (
-      <span
-        key={currentRipple.index}
-        {...currentRipple}
-        onAnimationEnd={() => handleAnimationEnd(currentRipple.index)}
-      />
-    );
-  });
+  const ripplesArray: JSX.Element[] = ripples.map(({ key, ...props }) => (
+    <span key={key} {...props} onAnimationEnd={() => handleAnimationEnd(key)} />
+  ));
 
   return [addRiple, ripplesArray];
 };
