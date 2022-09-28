@@ -13,6 +13,7 @@
       "~components/*": ["components/*"],
       "~constants/*": ["constants/*"],
       "~hooks/*": ["hooks/*"],
+      "~hocs/*": ["hocs/*"],
       "~pages/*": ["pages/*"],
       "~styles/*": ["styles/*"],
       "~types/*": ["types/*"],
