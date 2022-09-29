@@ -5,3 +5,4 @@ export {
   InputWithStatus,
   InputWithLabelAndStatus,
 } from './input/input';
+export { Radio, RadioGroup } from './radio';
