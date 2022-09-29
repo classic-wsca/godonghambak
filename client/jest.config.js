@@ -15,6 +15,7 @@ const customJestConfig = {
   coveragePathIgnorePatterns: ['<rootDir>/src/__tests__/test-utils.tsx'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   moduleNameMapper: {
+    '^~public/(.*)$': '<rootDir>/public/$1',
     '^~components/(.*)$': '<rootDir>/src/components/$1',
     '^~constants/(.*)$': '<rootDir>/src/constants/$1',
     '^~pages/(.*)$': '<rootDir>/src/pages/$1',
