@@ -1,4 +1,4 @@
-import type { WithStatusType } from 'hocs/with-status';
+import type { WithStatusType } from '~hocs/with-status';
 
 import React, { HTMLInputTypeAttribute, useState } from 'react';
 
