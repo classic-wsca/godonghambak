@@ -1,8 +1,9 @@
-export { default as Button } from './button/button';
-export { default as Input } from './input/input';
+export { Button } from './button';
+export { Input } from './input';
 export {
   InputWithLabel,
   InputWithStatus,
   InputWithLabelAndStatus,
 } from './input/input';
 export { Radio, RadioGroup } from './radio';
+export { Checkbox } from './checkbox';
