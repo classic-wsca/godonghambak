@@ -3,9 +3,10 @@ import type { GlobalColors } from '~types/common';
 import Image from 'next/image';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import CloseSVG from '../../../../public/svgs/close.svg';
-import ChevronLeftSVG from '../../../../public/svgs/chevron-left.svg';
 import Button from './button';
+
+import CloseSVG from '~public/svgs/close.svg';
+import ChevronLeftSVG from '~public/svgs/chevron-left.svg';
 
 export default {
   title: 'common/button',

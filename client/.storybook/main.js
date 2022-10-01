@@ -22,9 +22,11 @@ module.exports = {
     rules.push({ test: /\.svg$/, use: ['@svgr/webpack'] });
     config.resolve.alias = {
       ...config.resolve.alias,
+      '~public': path.resolve(__dirname, '../public'),
       '~components': path.resolve(__dirname, '../src/components'),
       '~constants': path.resolve(__dirname, '../src/constants'),
       '~hooks': path.resolve(__dirname, '../src/hooks'),
+      '~hocs': path.resolve(__dirname, '../src/hocs'),
       '~pages': path.resolve(__dirname, '../src/pages'),
       '~styles': path.resolve(__dirname, '../src/styles'),
       '~types': path.resolve(__dirname, '../src/types'),
