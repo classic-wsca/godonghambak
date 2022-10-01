@@ -14,7 +14,7 @@ import {
 import { useInput } from '~hooks/index';
 
 interface TestProps {
-  type?: HTMLInputTypeAttribute;
+  type?: Extract<HTMLInputTypeAttribute, 'text' | 'email' | 'password' | 'tel'>;
   message?: string;
 }
 
