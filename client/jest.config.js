@@ -9,6 +9,8 @@ const customJestConfig = {
   collectCoverage: true,
   collectCoverageFrom: [
     '<rootDir>/src/**/*.{js,jsx,ts,tsx}',
+    '!<rootDir>/src/__tests__/*',
+    '!<rootDir>/src/pages/_*.tsx',
     '!**/*.d.ts',
     '!**/*.stories.tsx',
     '!**/node_modules/**',
@@ -30,11 +32,12 @@ const customJestConfig = {
     '^~types/(.*)$': '<rootDir>/src/types/$1',
     '^~utils/(.*)$': '<rootDir>/src/utils/$1',
   },
-  testEnvironment: 'jest-environment-jsdom',
+  testPathIgnorePatterns: ['<rootDir>/src/__tests__/test-utils.tsx'],
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
     '^.+\\.(svg)$': 'jest-transformer-svg',
   },
+  testEnvironment: 'jest-environment-jsdom',
 };
 
 module.exports = async (...args) => {
@@ -45,5 +48,3 @@ module.exports = async (...args) => {
 
   return customConfig;
 };
-
-// module.exports = createJestConfig(customJestConfig);
