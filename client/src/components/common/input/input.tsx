@@ -9,7 +9,7 @@ import { pixelToRem } from '~utils/style-utils';
 
 interface InputProps extends ComponentPropsWithoutRef<'input'> {
   id?: string;
-  type?: HTMLInputTypeAttribute;
+  type?: Extract<HTMLInputTypeAttribute, 'text' | 'email' | 'password' | 'tel'>;
   value: string;
   status?: WithStatusType;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
