@@ -7,3 +7,4 @@ export {
 } from './input/input';
 export { Radio, RadioGroup } from './radio';
 export { Checkbox } from './checkbox';
+export { Section } from './section';
