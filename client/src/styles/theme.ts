@@ -17,8 +17,8 @@ export const colors = {
   gray: '#dbdbdb',
   gray_500: '#9c9c9c',
   gray_700: '#707070',
-  white: '#fff',
-  dark: '#444',
+  white: '#ffffff',
+  dark: '#444444',
 };
 
 export const fontSizes = {
