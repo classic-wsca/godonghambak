@@ -9,6 +9,8 @@ import { pixelToRem } from '~utils/style-utils';
 const ICON_BUTTON_STYLES: Partial<Record<GlobalSizes, ReturnType<typeof css>>> =
   {
     small: css`
+      width: fit-content;
+      height: fit-content;
       padding: ${pixelToRem(8)};
       border-radius: 50%;
       background-color: ${({ theme }) => theme.colors.dark};
@@ -19,6 +21,8 @@ const ICON_BUTTON_STYLES: Partial<Record<GlobalSizes, ReturnType<typeof css>>> =
       }
     `,
     medium: css`
+      width: fit-content;
+      height: fit-content;
       padding: ${pixelToRem(12)};
       border-radius: 50%;
       background-color: ${({ theme }) => theme.colors.green};
@@ -29,6 +33,8 @@ const ICON_BUTTON_STYLES: Partial<Record<GlobalSizes, ReturnType<typeof css>>> =
       }
     `,
     large: css`
+      width: fit-content;
+      height: fit-content;
       padding: ${pixelToRem(18)};
       border: 2px solid ${({ theme }) => theme.colors.gray_100};
       background-color: ${({ theme }) => theme.colors.gray_100};
