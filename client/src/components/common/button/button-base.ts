@@ -24,8 +24,8 @@ const ButtonBase = styled.button<ButtonStyle>`
   user-select: none;
   transition: color 0.1s ease-in-out, background-color 0.1s ease-in-out;
 
-  &:focus {
-    outline: none;
+  &:focus-visible {
+    outline: 2px solid ${({ theme }) => theme.colors.blue};
   }
 
   &:disabled {
