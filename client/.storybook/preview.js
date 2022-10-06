@@ -1,7 +1,8 @@
 import React from 'react';
 import * as NextImage from 'next/image';
-
+import { RouterContext } from 'next/dist/shared/lib/router-context';
 import { ThemeProvider } from 'styled-components';
+
 import GlobalStyle from '~styles/global-style';
 import { theme } from '~styles/theme';
 
@@ -22,6 +23,9 @@ export const parameters = {
       color: /(background|color)$/i,
       date: /Date$/,
     },
+  },
+  nextRouter: {
+    Provider: RouterContext.Provider,
   },
 };
 
