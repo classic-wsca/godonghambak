@@ -1,57 +1,16 @@
-/* eslint-disable react/no-array-index-key */
-import type { UnderlineAnimation } from '~styles/animations';
-
 import Link from 'next/link';
 import Image from 'next/image';
 import styled from 'styled-components';
 
-import { FOOTER_PAGE_INFOS, FOOTER_COMPANY_INFOS } from '~constants/footer';
-import { underlineAnimation } from '~styles/animations';
+import PageList from './page-list';
+
+import { FOOTER_PAGE_INFOS } from '~constants/footer';
 import { pixelToRem } from '~utils/style-utils';
 
 const Footer = () => {
   return (
     <FooterContainer>
       <PageInfo>
-        {FOOTER_PAGE_INFOS.map(({ title, items }) => (
-          <PageDetailList key={title}>
-            <PageDetailTitle>{title}</PageDetailTitle>
-            {items.map(({ content, href, highlight }) => (
-              <li key={content}>
-                <Link href={href} passHref>
-                  <PageDetailItem
-                    href="replace"
-                    color="#707070"
-                    highlight={highlight ? '#fdc47c' : ''}
-                    aria-label={content}
-                  >
-                    {content}
-                  </PageDetailItem>
-                </Link>
-              </li>
-            ))}
-          </PageDetailList>
-        ))}
-      </PageInfo>
-      <DivisionLine />
-      <CompanyInfo>
-        <CompanyDetailList>
-          {FOOTER_COMPANY_INFOS.map((item, index) =>
-            index === 0 ? (
-              <CompanyDetailItem key={index} highlight>
-                <Link
-                  href="https://www.instagram.com/godonghambak/"
-                  passHref
-                  aria-label="company link"
-                >
-                  <a href="replace">{item}</a>
-                </Link>
-              </CompanyDetailItem>
-            ) : (
-              <CompanyDetailItem key={index}>{item}</CompanyDetailItem>
-            ),
-          )}
-        </CompanyDetailList>
         <Logo>
           <Link href="/" passHref>
             <a href="replace" aria-label="site logo">
@@ -64,6 +23,28 @@ const Footer = () => {
             </a>
           </Link>
         </Logo>
+        {FOOTER_PAGE_INFOS.map(({ title, items }) => (
+          <PageList key={title} title={title} items={items} />
+        ))}
+      </PageInfo>
+      <DivisionLine />
+      <CompanyInfo>
+        <ul>
+          <li>
+            <Link href="https://www.instagram.com/godonghambak/" passHref>
+              <a href="replace" aria-label="company link">
+                고동컴퍼니
+              </a>
+            </Link>
+          </li>
+          <li>
+            주소지: 서울특별시 구로구 경인로 661, 신도림 푸르지오 오피스 104동
+            601호
+          </li>
+          <li>대표이사: 노경봉</li>
+          <li>사업자 등록번호: 000-00-00000</li>
+          <li>Copyright ⓒ 2022 고동함박 All Rights Reserved</li>
+        </ul>
       </CompanyInfo>
     </FooterContainer>
   );
@@ -81,69 +62,50 @@ const FooterContainer = styled.footer`
   }
 
   @media ${({ theme }) => theme.breakPoints.medium} {
-    padding: ${pixelToRem(140)} ${pixelToRem(16)};
+    padding: ${pixelToRem(60)} ${pixelToRem(16)};
   }
 `;
 
 const PageInfo = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  gap: 50px;
 
   @media ${({ theme }) => theme.breakPoints.extraLarge} {
-    /* grid-template-columns: repeat(3, 1fr); */
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media ${({ theme }) => theme.breakPoints.medium} {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
 `;
 
 const Logo = styled.div`
-  @media ${({ theme }) => theme.breakPoints.extraLarge} {
-    display: none;
-  }
+  position: relative;
 
   img {
     user-select: none;
     pointer-events: none;
   }
-`;
 
-const PageDetailList = styled.ul`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: ${pixelToRem(20)};
-  margin: 0;
-`;
-
-const PageDetailTitle = styled.h4`
-  margin-top: 0;
-  margin-bottom: ${pixelToRem(20)};
-`;
-
-const PageDetailItem = styled.a<UnderlineAnimation>`
-  display: inline-block;
-  font-size: ${({ theme }) => theme.fontSizes.small};
-  transition: font-weight 250ms ease-in, color 250ms ease-in;
-
-  &:hover {
-    color: ${({ theme, highlight }) => !highlight && theme.colors.dark};
-    font-weight: 500;
+  @media ${({ theme }) => theme.breakPoints.extraLarge} {
+    display: none;
   }
-
-  ${underlineAnimation}
 `;
 
 const CompanyInfo = styled.div`
   color: ${({ theme }) => theme.colors.gray_600};
-`;
 
-const CompanyDetailList = styled.ul`
-  display: flex;
-  flex-direction: column;
-  gap: ${pixelToRem(8)};
-`;
+  li {
+    padding: ${pixelToRem(4)} 0;
+    font-size: ${({ theme }) => theme.fontSizes.small};
+  }
 
-const CompanyDetailItem = styled.li<{ highlight?: boolean }>`
-  font-size: ${({ theme }) => theme.fontSizes.small};
-  color: ${({ theme, highlight }) => highlight && theme.colors.dark};
+  li:first-child {
+    color: ${({ theme }) => theme.colors.dark};
+  }
 `;
 
 const DivisionLine = styled.hr`
