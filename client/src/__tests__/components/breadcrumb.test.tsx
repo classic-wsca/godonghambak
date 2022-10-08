@@ -2,7 +2,7 @@ import type { NextRouter } from 'next/router';
 
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 import userEvent from '@testing-library/user-event';
-import { render, screen, mockNextRouter } from '../test-utils';
+import { render, screen, createMockRouter } from '../test-utils';
 
 import { Breadcrumb } from '~components/breadcrumb';
 import RightBracketSVG from '~public/svgs/chevron-right-thick.svg';
@@ -25,7 +25,7 @@ const setup = (
 
 describe('Breadcrumb component', () => {
   it('shoule be rendered correctly', () => {
-    const mockRouter = mockNextRouter({
+    const mockRouter = createMockRouter({
       pathname: '/',
       asPath: '/',
       query: {},
@@ -38,7 +38,7 @@ describe('Breadcrumb component', () => {
   });
 
   it('should be rendered according to the pathname', () => {
-    const mockRouter = mockNextRouter({
+    const mockRouter = createMockRouter({
       pathname: '/메뉴/[id]',
       asPath: '/메뉴/전체 메뉴',
       query: {
@@ -55,7 +55,7 @@ describe('Breadcrumb component', () => {
   });
 
   it('should navigate accordingly', async () => {
-    const mockRouter = mockNextRouter({
+    const mockRouter = createMockRouter({
       pathname: '/menu/[id]',
       asPath: '/menu/all',
       query: {

@@ -32,7 +32,7 @@ const customJestConfig = {
     '^~types/(.*)$': '<rootDir>/src/types/$1',
     '^~utils/(.*)$': '<rootDir>/src/utils/$1',
   },
-  testPathIgnorePatterns: ['<rootDir>/src/__tests__/test-utils.tsx'],
+  testPathIgnorePatterns: ['<rootDir>/src/__tests__/test-utils'],
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
     '^.+\\.(svg)$': 'jest-transformer-svg',
