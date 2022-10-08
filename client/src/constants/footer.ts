@@ -45,11 +45,3 @@ export const FOOTER_PAGE_INFOS = [
     ],
   },
 ];
-
-export const FOOTER_COMPANY_INFOS = [
-  '고동컴퍼니',
-  '주소지: 서울특별시 구로구 경인로 661, 신도림 푸르지오 오피스 104동 601호',
-  '대표이사: 노경봉',
-  '사업자 등록번호: 000-00-00000',
-  'Copyright ⓒ 2022 고동함박 All Rights Reserved',
-];
