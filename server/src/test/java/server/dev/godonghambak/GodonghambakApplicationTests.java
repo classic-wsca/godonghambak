@@ -1,10 +1,10 @@
-package dev.godonghambak.server;
+package server.dev.godonghambak;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ServerApplicationTests {
+class GodonghambakApplicationTests {
 
 	@Test
 	void contextLoads() {
