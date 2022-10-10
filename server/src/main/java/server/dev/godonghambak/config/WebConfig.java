@@ -9,7 +9,9 @@ import server.dev.godonghambak.interceptor.LoginCheckInterceptor;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    String[] excludePathPatterns = {"/api/v1/user/sign/signup", "/api/v1/user/sign/signin", "/api/v1/user/sign/signout"};
+    String[] excludePathPatterns = {"/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs",
+            "/api/v1/user/sign/signup", "/api/v1/user/sign/signin", "/api/v1/user/sign/signout",
+            "/api/v1/Authentication/send-code"};
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

@@ -1,6 +1,6 @@
 #MySQL
 spring:
-  #swagger 버전 문제 해결
+  #spring boot 2.4 부터 지원하는 PathPattern 을 사용하면 Springfox 가 호환되지 않는 이슈가 있다.
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -10,18 +10,18 @@ spring:
     username: root
     password: root
 
-#gmail smtp
-mail:
-  host: smtp.gmail.com
-  port: 587
-  username: bizfm123@gmail.com
-  password: tgxgxbgwchqtphkv
-  properties:
-    mail:
-      smtp:
-        auth: true
-        starttls:
-          enable: true
+  #gmail smtp
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: bizfm123@gmail.com
+    password: tgxgxbgwchqtphkv
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 #Log Level
 logging:
