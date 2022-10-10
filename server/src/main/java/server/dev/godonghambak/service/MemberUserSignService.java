@@ -44,4 +44,16 @@ public class MemberUserSignService {
         }
         return null;
     }
+
+    public FindEmailResult findEmail(String name, String phone, String birth) {
+
+        FindEmail findEmail = FindEmail.builder()
+                                        .member_user_name(name)
+                                        .member_user_phone(phone)
+                                        .member_user_birth(birth)
+                                        .build();
+
+        FindEmailResult findEmailResult = memberUserRepository.findEmail(findEmail);
+        return findEmailResult;
+    }
 }

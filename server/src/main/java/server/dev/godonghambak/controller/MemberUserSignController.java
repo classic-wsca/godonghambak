@@ -68,4 +68,15 @@ public class MemberUserSignController {
         }
         return ResponseEntity.ok(true);
     }
+
+    @GetMapping("/find-email")
+    @ApiOperation(value = "이메일 찾기", notes = "이름, 전화번호, 생년월일을 통해서 조회한다.")
+    public ResponseEntity<?> checkCode(
+            @ApiParam(value = "이름", required = true) @RequestParam String name,
+            @ApiParam(value = "전화번호", required = true) @RequestParam String phone,
+            @ApiParam(value = "생년월일", required = true) @RequestParam String birth ){
+
+        FindEmailResult findEmailResult = memberUserSignService.findEmail(name, phone, birth);
+        return ResponseEntity.ok(findEmailResult);
+    }
 }

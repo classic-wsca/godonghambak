@@ -29,4 +29,26 @@ public class MemberUserDto {
         private String member_user_password;
     }
 
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @ToString
+    @Builder
+    public static class FindEmail{
+        private String member_user_name;
+        private String member_user_phone;
+        private String member_user_birth;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @ToString
+    @Builder
+    public static class FindEmailResult{
+        private String member_user_email;
+    }
+
 }
