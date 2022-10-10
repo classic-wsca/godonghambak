@@ -3,6 +3,8 @@ package server.dev.godonghambak.repository;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+import server.dev.godonghambak.domain.entity.Authentication;
 import server.dev.godonghambak.domain.entity.MemberUser;
 
 import static server.dev.godonghambak.domain.dto.MemberUserDto.*;
@@ -21,5 +23,9 @@ public interface MemberUserRepository {
     @Select("SELECT member_user_email FROM member_user WHERE member_user_name = #{member_user_name} AND member_user_phone = #{member_user_phone}" +
             "AND member_user_birth = #{member_user_birth}")
     public FindEmailResult findEmail(FindEmail findEmail);
+
+    @Update("UPDATE member_user SET member_user_password = #{member_user_password}" +
+            "WHERE member_user_email = #{member_user_email}")
+    public int updatePassword(ChangePassword changePassword);
 
 }

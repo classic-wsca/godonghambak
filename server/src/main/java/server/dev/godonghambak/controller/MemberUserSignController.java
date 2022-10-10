@@ -79,4 +79,13 @@ public class MemberUserSignController {
         FindEmailResult findEmailResult = memberUserSignService.findEmail(name, phone, birth);
         return ResponseEntity.ok(findEmailResult);
     }
+
+    @PutMapping("/password")
+    @ApiOperation(value = "비밀번호 변경", notes = "이메일 인증 후 비밀번호를 변경한다.")
+    public ResponseEntity<?> updatePassword(
+            @ApiParam(value = "변경할 비밀번호", required = true) @RequestBody ChangePassword changePassword){
+
+        boolean changeResult = memberUserSignService.changePassword(changePassword);
+        return ResponseEntity.ok(changeResult);
+    }
 }

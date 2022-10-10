@@ -51,4 +51,15 @@ public class MemberUserDto {
         private String member_user_email;
     }
 
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @ToString
+    @Builder
+    public static class ChangePassword{
+        private String member_user_email;
+        private String member_user_password;
+    }
+
 }

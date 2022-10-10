@@ -56,4 +56,10 @@ public class MemberUserSignService {
         FindEmailResult findEmailResult = memberUserRepository.findEmail(findEmail);
         return findEmailResult;
     }
+
+    public boolean changePassword(ChangePassword changePassword) {
+        int updateResult = memberUserRepository.updatePassword(changePassword);
+        if(updateResult > 0) return true;
+        return false;
+    }
 }
