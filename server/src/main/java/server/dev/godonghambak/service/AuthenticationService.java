@@ -9,6 +9,7 @@ import server.dev.godonghambak.repository.AuthenticationRepository;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -60,6 +61,31 @@ public class AuthenticationService {
         }
         //예외처리
         return false;
+    }
+
+    // 인증번호 조회
+    public boolean checkCode(String email, String code) {
+        Authentication ingredient = Authentication.builder()
+                                                    .authentication_email(email)
+                                                    .authentication_code(code)
+                                                    .build();
+
+        Authentication findResult = authenticationRepository.findByEmailAndCode(ingredient);
+        boolean expirationCheckResult = expirationCheck(findResult.getAuthentication_expiration());
+
+        if(expirationCheckResult) return true;
+        return false;
+    }
+
+    public boolean expirationCheck(Timestamp expirationTime) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS");
+        Date currentTime = new Date();
+        currentTime.setTime(System.currentTimeMillis());
+        String simpleDateFormatCurrentTime = simpleDateFormat.format(currentTime);
+        Timestamp timeStampCurrentTime = Timestamp.valueOf(simpleDateFormatCurrentTime);
+
+        boolean result = timeStampCurrentTime.before(expirationTime);
+        return result;
     }
 
     public static String createCode() {
@@ -272,4 +298,6 @@ public class AuthenticationService {
         javaMailSender.send(message);
 
     }
+
+
 }

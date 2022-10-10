@@ -14,6 +14,9 @@ public interface AuthenticationRepository {
     @Select("SELECT * FROM authentication WHERE authentication_email = #{authentication_email}")
     public Authentication findByEmail(SendEmail sendEmail);
 
+    @Select("SELECT * FROM authentication WHERE authentication_email = #{authentication_email} AND authentication_code = #{authentication_code}")
+    public Authentication findByEmailAndCode(Authentication checkInfo);
+
     @Insert("INSERT INTO authentication VALUES (#{authentication_email}, #{authentication_code}, now()+300)")
     public int insert(Authentication authentication);
 
