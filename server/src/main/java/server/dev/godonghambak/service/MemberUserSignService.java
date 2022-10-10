@@ -2,11 +2,9 @@ package server.dev.godonghambak.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import server.dev.godonghambak.domain.dto.MemberUserDto;
 import server.dev.godonghambak.domain.entity.MemberUser;
 import server.dev.godonghambak.repository.MemberUserRepository;
 
-import java.text.ParseException;
 import java.util.UUID;
 
 import static server.dev.godonghambak.domain.dto.MemberUserDto.*;
@@ -17,7 +15,7 @@ public class MemberUserSignService {
 
     private final MemberUserRepository memberUserRepository;
 
-    public MemberUser signUp(signUp signUpinfo){
+    public MemberUser signUp(SignUp signUpinfo){
 
         MemberUser newMember = MemberUser
                                 .builder()
@@ -35,6 +33,15 @@ public class MemberUserSignService {
             return newMember;
         }
 
+        return null;
+    }
+
+    public MemberUser signIn(SignIn signInInfo) {
+
+        MemberUser result = memberUserRepository.findByEmailAndPassword(signInInfo);
+        if(result != null) {
+            return result;
+        }
         return null;
     }
 }

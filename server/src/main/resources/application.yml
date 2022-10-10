@@ -1,18 +1,16 @@
 #MySQL
 spring:
-  #SpringFox(swagger ?? ?????) ??? ????? ???? ?? SpringBoot 2.6.0 ?? ??? ???? ??? ?????.
-  #?? mvc ??? ????!
+  #swagger 버전 문제 해결
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    # mysql Timezone ?? ? encoding ??.
     url : jdbc:mysql://192.168.219.100:3306/godonghambak?serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false&characterEncoding=UTF-8
     username: root
     password: root
 
-#??? ??? ?? gmail smtp ??
+#gmail smtp
 mail:
   host: smtp.gmail.com
   port: 587
@@ -28,6 +26,8 @@ mail:
 #Log Level
 logging:
   level:
-    '[com.biz.fm.repository]': debug
+    server:
+      dev:
+        godonghambak: debug
 
 
