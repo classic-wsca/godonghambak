@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import server.dev.godonghambak.domain.entity.Authentication;
-import server.dev.godonghambak.repository.AuthenticationRepository;
+import server.dev.godonghambak.dao.AuthenticationDao;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
@@ -21,7 +21,7 @@ import static server.dev.godonghambak.domain.dto.AuthenticationDto.*;
 public class AuthenticationService {
 
     private final JavaMailSender javaMailSender;
-    private final AuthenticationRepository authenticationRepository;
+    private final AuthenticationDao authenticationRepository;
 
     //인증 이메일 전송
     public boolean sendToEmail(SendEmail sendEmail) throws MessagingException {

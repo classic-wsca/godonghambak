@@ -1,4 +1,4 @@
-package server.dev.godonghambak.repository;
+package server.dev.godonghambak.dao;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -9,7 +9,7 @@ import server.dev.godonghambak.domain.entity.Authentication;
 import static server.dev.godonghambak.domain.dto.AuthenticationDto.*;
 
 @Mapper
-public interface AuthenticationRepository {
+public interface AuthenticationDao {
 
     @Select("SELECT * FROM authentication WHERE authentication_email = #{authentication_email}")
     public Authentication findByEmail(SendEmail sendEmail);

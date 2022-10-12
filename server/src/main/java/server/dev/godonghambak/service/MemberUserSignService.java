@@ -3,7 +3,7 @@ package server.dev.godonghambak.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import server.dev.godonghambak.domain.entity.MemberUser;
-import server.dev.godonghambak.repository.MemberUserRepository;
+import server.dev.godonghambak.dao.MemberUserDao;
 
 import java.util.UUID;
 
@@ -13,7 +13,7 @@ import static server.dev.godonghambak.domain.dto.MemberUserDto.*;
 @RequiredArgsConstructor
 public class MemberUserSignService {
 
-    private final MemberUserRepository memberUserRepository;
+    private final MemberUserDao memberUserRepository;
 
     public MemberUser signUp(SignUp signUpinfo){
 

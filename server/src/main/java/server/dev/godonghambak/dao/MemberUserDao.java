@@ -1,16 +1,15 @@
-package server.dev.godonghambak.repository;
+package server.dev.godonghambak.dao;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-import server.dev.godonghambak.domain.entity.Authentication;
 import server.dev.godonghambak.domain.entity.MemberUser;
 
 import static server.dev.godonghambak.domain.dto.MemberUserDto.*;
 
 @Mapper
-public interface MemberUserRepository {
+public interface MemberUserDao {
 
     @Insert("INSERT INTO member_user VALUES "
             + "(#{member_user_id}, #{member_user_email}, #{member_user_password}, #{member_user_name}, #{member_user_phone}, "
