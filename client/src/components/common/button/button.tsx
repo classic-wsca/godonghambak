@@ -18,7 +18,8 @@ type CustomButtonType = 'button' | 'submit'; // 사용자 경험을 위해 'rese
 interface ButtonProps extends CustomButtonAttirbutes, ButtonStyle {
   type: CustomButtonType;
   children: ReactNode;
-  onClick: MouseEventHandler<HTMLButtonElement>;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  as?: keyof Pick<JSX.IntrinsicElements, 'button' | 'a'>;
 }
 
 const BUTTON_VARIANTS = {

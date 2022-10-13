@@ -1,9 +1,6 @@
-import { css } from 'styled-components';
+import type { UnderlineAnimation } from '~types/animation';
 
-export interface UnderlineAnimation {
-  color: string;
-  highlight?: string;
-}
+import { css } from 'styled-components';
 
 export const rippleAnimation = css`
   position: relative;
@@ -20,15 +17,14 @@ export const rippleAnimation = css`
 export const underlineAnimation = css<UnderlineAnimation>`
   position: relative;
   display: inline-block;
-  color: ${({ color, highlight }) => highlight || color};
 
   &:after {
     content: '';
     position: absolute;
     left: 0;
-    bottom: -4px;
+    bottom: ${({ bottom }) => (bottom ? `${bottom}px` : '-4px')};
     width: 100%;
-    height: 2px;
+    height: ${({ height }) => (height ? `${height}px` : '2px')};
     background-color: ${({ color, highlight }) => highlight || color};
     transform: scaleX(0);
     transform-origin: bottom right;
