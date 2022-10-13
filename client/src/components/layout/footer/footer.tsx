@@ -55,6 +55,7 @@ const FooterContainer = styled.footer`
   max-width: ${pixelToRem(1440)};
   margin: 0 auto;
   padding: ${pixelToRem(140)} ${pixelToRem(120)};
+  background-color: ${({ theme }) => theme.colors.light};
   color: ${({ theme }) => theme.colors.dark};
 
   @media ${({ theme }) => theme.breakPoints.extraLarge} {
