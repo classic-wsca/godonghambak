@@ -1,4 +1,4 @@
-import type { UnderlineAnimation } from '~styles/animations';
+import type { UnderlineAnimation } from '~types/animation';
 
 import Link from 'next/link';
 import styled, { css } from 'styled-components';
@@ -7,7 +7,7 @@ import DownArrowSVG from '~public/svgs/down-arrow.svg';
 
 import { useToggle } from '~hooks/index';
 import { pixelToRem } from '~utils/style-utils';
-import { underlineAnimation } from '~styles/animations';
+import { underlineAnimation } from '~styles/animation';
 
 interface PageListItem {
   content: string;
