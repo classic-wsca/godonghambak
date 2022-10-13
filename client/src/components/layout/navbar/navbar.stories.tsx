@@ -30,6 +30,6 @@ LargeMobile.parameters = {
 export const SmallMobile = Template.bind({});
 SmallMobile.parameters = {
   viewport: {
-    defaultViewport: 'mobile2',
+    defaultViewport: 'mobile1',
   },
 };
