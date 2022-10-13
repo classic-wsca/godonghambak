@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import PageList from './page-list';
 
-import { FOOTER_PAGE_INFOS } from '~constants/footer';
+import { FOOTER_NAVIGATION_ROUTES } from '~constants/navigation';
 import { pixelToRem } from '~utils/style-utils';
 
 const Footer = () => {
@@ -23,8 +23,8 @@ const Footer = () => {
             </a>
           </Link>
         </Logo>
-        {FOOTER_PAGE_INFOS.map(({ title, items }) => (
-          <PageList key={title} title={title} items={items} />
+        {FOOTER_NAVIGATION_ROUTES.map(({ text, subRoutes }) => (
+          <PageList key={text} text={text} subRoutes={subRoutes} />
         ))}
       </PageInfo>
       <DivisionLine />
@@ -55,6 +55,7 @@ const FooterContainer = styled.footer`
   max-width: ${pixelToRem(1440)};
   margin: 0 auto;
   padding: ${pixelToRem(140)} ${pixelToRem(120)};
+  background-color: ${({ theme }) => theme.colors.light};
   color: ${({ theme }) => theme.colors.dark};
 
   @media ${({ theme }) => theme.breakPoints.extraLarge} {

@@ -1,3 +1,4 @@
+import type { NavigationSubRoutes } from '~types/navigation';
 import type { UnderlineAnimation } from '~types/animation';
 
 import Link from 'next/link';
@@ -6,40 +7,34 @@ import styled, { css } from 'styled-components';
 import DownArrowSVG from '~public/svgs/down-arrow.svg';
 
 import { useToggle } from '~hooks/index';
-import { pixelToRem } from '~utils/style-utils';
 import { underlineAnimation } from '~styles/animation';
-
-interface PageListItem {
-  content: string;
-  href: string;
-  highlight?: boolean;
-}
+import { pixelToRem } from '~utils/style-utils';
 
 interface PageListProps {
-  title: string;
-  items: PageListItem[];
+  text: string;
+  subRoutes: NavigationSubRoutes[];
 }
 
-const PageList = ({ title, items }: PageListProps) => {
+const PageList = ({ text, subRoutes }: PageListProps) => {
   const [isOpen, toggle] = useToggle();
 
   return (
     <div>
       <Trigger isOpen={isOpen} onClick={toggle}>
-        <h4>{title}</h4>
+        <h4>{text}</h4>
         <DownArrowSVG />
       </Trigger>
       <List isOpen={isOpen}>
-        {items.map(({ content, href, highlight }) => (
-          <li key={content}>
+        {subRoutes.map(({ text: subText, href, highlight }) => (
+          <li key={subText}>
             <Link href={href} passHref>
               <Item
                 href="replace"
                 color="#707070"
                 highlight={highlight ? '#fdc47c' : ''}
-                aria-label={content}
+                aria-label={subText}
               >
-                {content}
+                {subText}
               </Item>
             </Link>
           </li>
@@ -110,9 +105,10 @@ const List = styled.ul<{ isOpen: boolean }>`
 
 const Item = styled.a<UnderlineAnimation>`
   transition: all 400ms ease-in;
+  color: ${({ theme, highlight }) => highlight || theme.colors.dark};
 
   &:hover {
-    color: ${({ theme, highlight }) => !highlight && theme.colors.dark};
+    color: ${({ theme, highlight }) => highlight || theme.colors.dark};
     font-weight: 500;
   }
 

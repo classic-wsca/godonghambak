@@ -11,4 +11,25 @@ const Template: ComponentStory<typeof Footer> = () => {
   return <Footer />;
 };
 
-export const Default = Template.bind({});
+export const Desktop = Template.bind({});
+
+export const Tablet = Template.bind({});
+Tablet.parameters = {
+  viewport: {
+    defaultViewport: 'tablet',
+  },
+};
+
+export const LargeMobile = Template.bind({});
+LargeMobile.parameters = {
+  viewport: {
+    defaultViewport: 'mobile2',
+  },
+};
+
+export const SmallMobile = Template.bind({});
+SmallMobile.parameters = {
+  viewport: {
+    defaultViewport: 'mobile1',
+  },
+};
