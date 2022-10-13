@@ -110,9 +110,10 @@ const List = styled.ul<{ isOpen: boolean }>`
 
 const Item = styled.a<UnderlineAnimation>`
   transition: all 400ms ease-in;
+  color: ${({ theme, highlight }) => highlight || theme.colors.dark};
 
   &:hover {
-    color: ${({ theme, highlight }) => !highlight && theme.colors.dark};
+    color: ${({ theme, highlight }) => highlight || theme.colors.dark};
     font-weight: 500;
   }
 
