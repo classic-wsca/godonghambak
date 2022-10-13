@@ -1,5 +1,10 @@
 export interface NavigationRoutes {
   text: string;
   href: string;
-  subRoutes: Omit<NavigationRoutes, 'subRoutes'>[];
+  subRoutes: NavigationSubRoutes[];
+}
+
+export interface NavigationSubRoutes
+  extends Omit<NavigationRoutes, 'subRoutes'> {
+  highlight?: boolean;
 }
