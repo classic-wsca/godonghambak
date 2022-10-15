@@ -1,180 +1,118 @@
-import type { MutableRefObject, PropsWithChildren, ReactElement } from 'react';
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+/* eslint-disable react/no-array-index-key */
+import type { PropsWithChildren, ReactElement } from 'react';
+import type { CarouselItemProps } from './carousel-item';
+
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from 'react';
+
 import styled, { css } from 'styled-components';
+
 import { Button } from '~components/common';
 import LeftArrowSVG from '~public/svgs/chevron-left.svg';
 import RightArrowSVG from '~public/svgs/chevron-right.svg';
 
-interface CarouselItemProps extends PropsWithChildren {
-  width?: number;
-  margin?: number;
-}
-
-export const CarouselItem = ({
-  width,
-  margin,
-  children,
-}: CarouselItemProps) => {
-  return (
-    <CarouselItemWrapper width={width} margin={margin}>
-      {children}
-    </CarouselItemWrapper>
-  );
-};
-
-const CarouselItemWrapper = styled.div<CarouselItemProps>`
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: ${({ width }) => `${width}px`};
-  height: 200px;
-  margin: ${({ margin }) => `${margin}px`};
-  background-color: ${({ theme }) => theme.colors.green};
-  color: white;
-`;
-
 interface CarouselProps extends PropsWithChildren {
-  width: number;
   margin: number;
+  duration: number;
 }
 
-const Carousel = ({ width, margin, children }: CarouselProps) => {
+const Carousel = ({ margin, duration, children }: CarouselProps) => {
+  const originalSlideCount = useMemo(() => React.Children.count(children), [children]); // prettier-ignore
+  const [currentIndex, setCurrentIndex] = useState(originalSlideCount);
+  const [slideWidth, setSlideWidth] = useState(window.innerWidth - margin * 2);
+
   const carouselRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const originSlideCount = useRef(React.Children.count(children));
+  const trackAnimation = useRef(true);
+  const slideCount = originalSlideCount * 3;
+  const slideWidthWithMargin = slideWidth + margin * 2;
+  const trackWidth = slideWidthWithMargin * slideCount;
 
-  const [currentIndex, setCurrentIndex] = useState(originSlideCount.current);
-  const [slideWidth, setSlideWidth] = useState(width - margin * 2);
-  const [paused, setPaused] = useState(false);
+  const makeSlideClone = useCallback(() => {
+    const arrayChildren = React.Children.toArray(children);
+    const slides = [...arrayChildren, ...arrayChildren, ...arrayChildren];
 
-  const slideCount = useRef(originSlideCount.current);
-  const translateDistance = useRef(slideWidth + margin * 2);
-  const stopTimerRef: MutableRefObject<NodeJS.Timer | null> = useRef(null);
-  const playTimerRef: MutableRefObject<NodeJS.Timer | null> = useRef(null);
+    return slides;
+  }, [children]);
 
-  const switchSlideIndexWithoutAnimation = (slideIndex: number) => {
-    stopTimerRef.current = setTimeout(() => {
-      if (!trackRef.current) {
-        return;
-      }
-
-      trackRef.current.style.transition = 'none';
-      setCurrentIndex(slideIndex);
-    }, 300);
-  };
-
-  const resetOriginAnimation = () => {
-    playTimerRef.current = setTimeout(() => {
-      if (!trackRef.current) {
-        return;
-      }
-
-      trackRef.current.style.transition = 'transform 300ms';
-    }, 400);
-  };
+  const moveSlideWithoutAnimation = useCallback(
+    (targetSlideIndex: number) => {
+      setTimeout(() => {
+        trackAnimation.current = false;
+        setCurrentIndex(targetSlideIndex);
+      }, duration);
+      setTimeout(() => {
+        trackAnimation.current = true;
+      }, duration + 100);
+    },
+    [duration],
+  );
 
   const movePrev = useCallback(() => {
     setCurrentIndex((prev) => prev - 1);
 
-    if (currentIndex === originSlideCount.current - 1) {
-      switchSlideIndexWithoutAnimation(slideCount.current - 2);
-      resetOriginAnimation();
+    if (currentIndex === originalSlideCount - 1) {
+      moveSlideWithoutAnimation(slideCount - 2);
     }
-  }, [currentIndex]);
+  }, [currentIndex, originalSlideCount, slideCount, moveSlideWithoutAnimation]);
 
   const moveNext = useCallback(() => {
     setCurrentIndex((prev) => prev + 1);
 
-    if (currentIndex === slideCount.current - 2) {
-      switchSlideIndexWithoutAnimation(originSlideCount.current - 1);
-      resetOriginAnimation();
+    if (currentIndex === slideCount - 2) {
+      moveSlideWithoutAnimation(originalSlideCount - 1);
     }
-  }, [currentIndex]);
+  }, [currentIndex, originalSlideCount, slideCount, moveSlideWithoutAnimation]);
 
-  const updateIndex = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const target = e.currentTarget;
-    setCurrentIndex(Number(target.value));
+  const moveClickedSlide = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const targetSlideIndex = Number(e.currentTarget.value);
+    setCurrentIndex(targetSlideIndex);
   };
 
-  const handleMouseEnter = () => {
-    setPaused(true);
-  };
-
-  const handleMouseLeave = () => {
-    setPaused(false);
-  };
-
-  // const updateSlideWidth = () => {
-  //   if (!carouselRef.current) {
-  //     return;
-  //   }
-
-  //   setSlideWidth(carouselRef.current.offsetWidth - margin);
-  // };
-
-  // const setTrackInitialPosition = useCallback(() => {
-  //   if (!trackRef.current || !carouselRef.current) {
-  //     return;
-  //   }
-
-  //   console.dir(trackRef.current);
-  //   const leftValue = trackRef.current.style.width - carouselRef.current.offsetWidth;
-  //   console.log(translatedValue);
-  //   trackRef.current.style.left = `-${leftValue}px`;
-  //   trackRef.current.style.left = '50%';
-  // }, [width]);
-
-  const makeSlideClones = () => {
-    if (!trackRef.current) {
+  const updateWidth = useCallback(() => {
+    if (!carouselRef.current) {
       return;
     }
 
-    const slides = [...trackRef.current.children];
-    slides.forEach((slide) => {
-      const cloneSlide = slide.cloneNode(true);
-      trackRef.current?.appendChild(cloneSlide);
-    });
-    slides.reverse().forEach((slide) => {
-      const cloneSlide = slide.cloneNode(true);
-      trackRef.current?.prepend(cloneSlide);
-    });
-    slideCount.current = trackRef.current.children.length;
-  };
+    const newSlideWidth = carouselRef.current.offsetWidth - margin * 2;
+    setSlideWidth(newSlideWidth);
+
+    trackAnimation.current = false;
+    setTimeout(() => {
+      trackAnimation.current = true;
+    }, 100);
+  }, [margin]);
 
   useEffect(() => {
-    makeSlideClones();
-  }, []);
+    window.addEventListener('resize', updateWidth);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (!paused) {
-        moveNext();
-      }
-    }, 1000);
-
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
-  }, [paused, moveNext]);
+    return () => window.removeEventListener('resize', updateWidth);
+  }, [updateWidth]);
 
   return (
-    <Container
-      ref={carouselRef}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <Track ref={trackRef} distance={currentIndex * translateDistance.current}>
-        {React.Children.map(children, (child) => {
-          return React.cloneElement(
+    <CarouselContainer ref={carouselRef}>
+      <Track
+        ref={trackRef}
+        width={trackWidth}
+        distance={currentIndex * slideWidthWithMargin}
+        trackAnimation={trackAnimation.current}
+        duration={duration}
+      >
+        {React.Children.map(makeSlideClone(), (child, index) =>
+          React.cloneElement(
             child as ReactElement<PropsWithChildren<CarouselItemProps>>,
             {
+              key: index,
               width: slideWidth,
               margin,
             },
-          );
-        })}
+          ),
+        )}
       </Track>
       <Indicators>
         <Button type="button" variant="icon" size="medium" onClick={movePrev}>
@@ -184,8 +122,8 @@ const Carousel = ({ width, margin, children }: CarouselProps) => {
           <Indicator
             type="button"
             value={index}
-            isCurrent={currentIndex % originSlideCount.current === index}
-            onClick={updateIndex}
+            isCurrent={currentIndex % originalSlideCount === index}
+            onClick={moveClickedSlide}
           >
             {index + 1}
           </Indicator>
@@ -194,21 +132,23 @@ const Carousel = ({ width, margin, children }: CarouselProps) => {
           <RightArrowSVG />
         </Button>
       </Indicators>
-    </Container>
+    </CarouselContainer>
   );
 };
 
-const Container = styled.div`
+const CarouselContainer = styled.div`
   position: relative;
   width: 100%;
   overflow: hidden;
 `;
 
-const Track = styled.div<{ distance: number }>`
+// prettier-ignore
+const Track = styled.div<{ width: number; distance: number; trackAnimation: boolean; duration: number }>` 
   position: relative;
-  margin: 0 auto;
+  width: ${({ width }) => `${width}px`};
   transform: ${({ distance }) => `translateX(-${distance}px)`};
-  transition: transform 300ms;
+  transition: ${({ trackAnimation, duration }) =>
+    trackAnimation ? `transform ${duration}ms` : 'none'};
   white-space: nowrap;
 `;
 
