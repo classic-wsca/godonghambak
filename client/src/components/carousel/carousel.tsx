@@ -36,16 +36,18 @@ const Carousel = ({
   autoplayReverse = false,
   children,
 }: CarouselProps) => {
-  const originalSlideCount = useMemo(() => React.Children.count(children), [children]); // prettier-ignore
-  const [currentIndex, setCurrentIndex] = useState(originalSlideCount);
+  const slideCount = useMemo(() => React.Children.count(children), [children]); // prettier-ignore
+  const [currentIndex, setCurrentIndex] = useState(slideCount);
   const [slideWidth, setSlideWidth] = useState(width || window.innerWidth - margin * 2); // prettier-ignore
   const [initialPosition, setInitialPosition] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
   const [paused, setPaused] = useState(false);
 
   const carouselRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const trackAnimationRef = useRef(true);
-  const slideCount = originalSlideCount * 3;
+  const startX = useRef<number>(0);
+  const draggedDistance = useRef<number>(0);
   const slideWidthWithMargin = slideWidth + margin * 2;
 
   const moveSlideWithoutAnimation = useCallback(
@@ -64,18 +66,18 @@ const Carousel = ({
   const movePrev = useCallback(() => {
     setCurrentIndex((prev) => prev - 1);
 
-    if (currentIndex === originalSlideCount - 1) {
-      moveSlideWithoutAnimation(slideCount - 2);
+    if (currentIndex === slideCount) {
+      moveSlideWithoutAnimation(slideCount * 2 - 1);
     }
-  }, [currentIndex, originalSlideCount, slideCount, moveSlideWithoutAnimation]);
+  }, [currentIndex, slideCount, moveSlideWithoutAnimation]);
 
   const moveNext = useCallback(() => {
     setCurrentIndex((prev) => prev + 1);
 
-    if (currentIndex === slideCount - 2) {
-      moveSlideWithoutAnimation(originalSlideCount - 1);
+    if (currentIndex === slideCount * 2 - 1) {
+      moveSlideWithoutAnimation(slideCount);
     }
-  }, [currentIndex, originalSlideCount, slideCount, moveSlideWithoutAnimation]);
+  }, [currentIndex, slideCount, moveSlideWithoutAnimation]);
 
   const moveClickedSlide = (e: React.MouseEvent<HTMLButtonElement>) => {
     const targetSlideIndex = Number(e.currentTarget.value);
@@ -119,6 +121,78 @@ const Carousel = ({
     }, 100);
   }, [width, margin, setTrackInitialPosition]);
 
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!carouselRef.current || !trackRef.current) {
+      return;
+    }
+
+    setIsDragging(true);
+    startX.current = e.pageX;
+  };
+
+  const handleMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!isDragging || !trackRef.current) {
+        return;
+      }
+
+      const currentX = e.pageX;
+      const originalTrackPosition =
+        slideWidthWithMargin * currentIndex - initialPosition;
+      draggedDistance.current = currentX - startX.current;
+      const translateValue = draggedDistance.current - originalTrackPosition;
+
+      trackRef.current.style.transform = `translateX(${
+        translateValue - initialPosition
+      }px)`;
+    },
+    [currentIndex, initialPosition, isDragging, slideWidthWithMargin],
+  );
+
+  const handleMouseUp = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      if (!trackRef.current) {
+        return;
+      }
+
+      e.preventDefault();
+      setIsDragging(false);
+
+      const draggedSlideCount = draggedDistance.current / slideWidthWithMargin;
+      const isOverThreshold = Math.abs(draggedSlideCount % 1) > 0.4;
+
+      let movedSlideCount = Math.floor(Math.abs(draggedSlideCount));
+      movedSlideCount = isOverThreshold ? movedSlideCount + 1 : movedSlideCount;
+      movedSlideCount *= draggedSlideCount > 0 ? -1 : 1;
+
+      setCurrentIndex((prev) => prev + movedSlideCount);
+
+      const modularValue = Math.abs(movedSlideCount) % slideCount;
+      const slideCountToMove = modularValue === 0 ? 2 : modularValue - 1;
+
+      if (
+        draggedSlideCount < 0 &&
+        currentIndex + Math.abs(movedSlideCount) > slideCount * 2 - 1
+      ) {
+        const targetSlideIndex = slideCount + slideCountToMove;
+        moveSlideWithoutAnimation(targetSlideIndex);
+      }
+
+      if (
+        draggedSlideCount > 0 &&
+        currentIndex - Math.abs(movedSlideCount) < slideCount
+      ) {
+        const targetSlideIndex = slideCount * 2 - slideCountToMove - 1;
+        moveSlideWithoutAnimation(targetSlideIndex);
+      }
+
+      startX.current = 0;
+      draggedDistance.current = 0;
+      trackRef.current.style.transform = '';
+    },
+    [slideWidthWithMargin, currentIndex, slideCount, moveSlideWithoutAnimation],
+  );
+
   const handleMouseEnter = () => {
     setPaused(true);
   };
@@ -157,11 +231,14 @@ const Carousel = ({
     >
       <Track
         ref={trackRef}
-        width={slideWidthWithMargin * slideCount}
+        width={slideWidthWithMargin * slideCount * 3}
         distance={slideWidthWithMargin * currentIndex}
         initialPosition={initialPosition}
         trackAnimation={trackAnimationRef.current}
         duration={duration}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
       >
         {React.Children.map(makeSlideClone(), (child, index) =>
           React.cloneElement(
@@ -182,7 +259,7 @@ const Carousel = ({
           <Indicator
             type="button"
             value={index}
-            isCurrent={currentIndex % originalSlideCount === index}
+            isCurrent={currentIndex % slideCount === index}
             onClick={moveClickedSlide}
           >
             {index + 1}
@@ -210,8 +287,9 @@ const Track = styled.div<{
   duration: number;
 }>`
   position: relative;
-  left: ${({ initialPosition }) => pixelToRem(initialPosition)};
   width: ${({ width }) => pixelToRem(width)};
+  // left 값으로 초기 포지션을 조절해줘야 슬라이드가 두개 일때도 밀리지 않고 제대로 이동 가능
+  left: ${({ initialPosition }) => pixelToRem(initialPosition)};
   transform: ${({ distance }) => `translateX(-${pixelToRem(distance)})`};
   transition: ${({ trackAnimation, duration }) =>
     trackAnimation ? `transform ${duration}ms` : 'none'};
