@@ -16,7 +16,7 @@ public interface MemberUserDao {
             + "#{member_user_birth}, null, now(), null)")
     public int insert(MemberUser memberUser);
 
-    @Select("SELECT * FROM member_user WHERE member_user_email = #{member_user_email} AND member_user_password = #{member_user_password}")
+    @Select("SELECT * FROM member_user WHERE member_user_email = #{member_user_email}")
     public MemberUser findByEmailAndPassword(SignIn signInInfo);
 
     @Select("SELECT member_user_email FROM member_user WHERE member_user_name = #{member_user_name} AND member_user_phone = #{member_user_phone}" +
