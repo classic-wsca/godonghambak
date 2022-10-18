@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.dev.godonghambak.SessionConst;
 import server.dev.godonghambak.domain.entity.MemberUser;
+import server.dev.godonghambak.exceptionhandler.exception.InternalServerException;
 import server.dev.godonghambak.service.MemberUserSignService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,7 +32,8 @@ public class MemberUserSignController {
     @GetMapping("/")
     public MemberUser signInCheck(HttpServletRequest request) {
       log.debug("test!!!!!!");
-      return null;
+        throw new InternalServerException();
+//      return null;
     }
 
     @PostMapping("/signup")

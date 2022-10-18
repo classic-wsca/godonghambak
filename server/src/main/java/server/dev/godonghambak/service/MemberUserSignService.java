@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import server.dev.godonghambak.domain.entity.MemberUser;
 import server.dev.godonghambak.dao.MemberUserDao;
+import server.dev.godonghambak.exceptionhandler.exception.InternalServerException;
 
 import java.util.UUID;
 
@@ -23,7 +24,7 @@ public class MemberUserSignService {
 
     public MemberUser signUp(SignUp signUpinfo){
 
-        //회원가입 하고자 하는 아이디 확인 중복확인
+        //회원가입 하고자 하는 아이디 확인 중복확인 후 예외처리
 
         //패스워드 인코딩
         String encodePassword = passwordEncoder.encode(signUpinfo.getMember_user_password());
@@ -43,7 +44,9 @@ public class MemberUserSignService {
             return newMember;
         }
 
-        return null;
+        //default 예외처리
+//        return null;
+        throw new InternalServerException();
     }
 
     public MemberUser signIn(SignIn signInInfo) {
@@ -51,12 +54,14 @@ public class MemberUserSignService {
         MemberUser result = memberUserRepository.findByEmailAndPassword(signInInfo);
 
         //패스워드 확인
-//        boolean passwordResult = passwordEncoder.matches(signInInfo.getMember_user_password(), result.getMember_user_password());
-        boolean passwordResult = passwordEncoder.matches(result.getMember_user_password(), signInInfo.getMember_user_password());
+        boolean passwordResult = passwordEncoder.matches(signInInfo.getMember_user_password(), result.getMember_user_password());
+//        boolean passwordResult = passwordEncoder.matches(result.getMember_user_password(), signInInfo.getMember_user_password());
 
         if(passwordResult && result != null) {
             return result;
         }
+
+        //비밀번호가 맞지 않다는 예외처리
         return null;
     }
 
@@ -69,12 +74,20 @@ public class MemberUserSignService {
                                         .build();
 
         FindEmailResult findEmailResult = memberUserRepository.findEmail(findEmail);
-        return findEmailResult;
+
+        if(findEmailResult != null) {
+            return findEmailResult;
+        }
+
+        //아이디 못찾았다는 예외처리
+        return null;
     }
 
     public boolean changePassword(ChangePassword changePassword) {
         int updateResult = memberUserRepository.updatePassword(changePassword);
         if(updateResult > 0) return true;
+
+        //default 예외처리
         return false;
     }
 }

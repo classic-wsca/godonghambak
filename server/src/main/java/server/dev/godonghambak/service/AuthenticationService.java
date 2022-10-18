@@ -5,6 +5,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import server.dev.godonghambak.domain.entity.Authentication;
 import server.dev.godonghambak.dao.AuthenticationDao;
+import server.dev.godonghambak.exceptionhandler.exception.InternalServerException;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
@@ -59,8 +60,8 @@ public class AuthenticationService {
                 return true;
             }
         }
-        //예외처리
-        return false;
+        //default 예외처리
+        throw new InternalServerException();
     }
 
     // 인증번호 조회
@@ -74,6 +75,8 @@ public class AuthenticationService {
         boolean expirationCheckResult = expirationCheck(findResult.getAuthentication_expiration());
 
         if(expirationCheckResult) return true;
+
+        //인증번호가 안맞았을 시 예외처리
         return false;
     }
 
