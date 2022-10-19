@@ -22,19 +22,21 @@ interface CarouselProps extends PropsWithChildren {
   width?: number;
   margin?: number;
   duration?: number;
+  draggable?: boolean;
   autoplay?: boolean;
   autoplayInterval?: number;
   autoplayReverse?: boolean;
 }
 
 const Carousel = ({
-  width,
-  margin = 0,
-  duration = 300,
-  autoplay = true,
-  autoplayInterval = 4000,
-  autoplayReverse = false,
   children,
+  width, // slideWidth
+  margin = 0, // slide 사이 여백
+  duration = 300, // animation duration
+  draggable = true, // 드래그 가능 여부
+  autoplay = true, // autoSlide 기능 여부
+  autoplayInterval = 4000, // autoSlide 시간
+  autoplayReverse = false, // autoSlide 방향, default 오른쪽
 }: CarouselProps) => {
   const slideCount = useMemo(() => React.Children.count(children), [children]); // prettier-ignore
   const [currentIndex, setCurrentIndex] = useState(slideCount);
@@ -121,22 +123,31 @@ const Carousel = ({
     }, 100);
   }, [width, margin, setTrackInitialPosition]);
 
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!carouselRef.current || !trackRef.current) {
+  const handleDragStart = (
+    e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>,
+  ) => {
+    if (!draggable) {
       return;
     }
 
     setIsDragging(true);
-    startX.current = e.pageX;
+
+    if ('touches' in e) {
+      setPaused(true);
+    }
+
+    startX.current = 'touches' in e ? e.changedTouches[0].pageX : e.pageX;
   };
 
-  const handleMouseMove = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!isDragging || !trackRef.current) {
+  const handleDragMove = useCallback(
+    (
+      e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>,
+    ) => {
+      if (!isDragging || !trackRef.current || !draggable) {
         return;
       }
 
-      const currentX = e.pageX;
+      const currentX = 'touches' in e ? e.changedTouches[0].pageX : e.pageX;
       const originalTrackPosition =
         slideWidthWithMargin * currentIndex - initialPosition;
       draggedDistance.current = currentX - startX.current;
@@ -146,12 +157,20 @@ const Carousel = ({
         translateValue - initialPosition
       }px)`;
     },
-    [currentIndex, initialPosition, isDragging, slideWidthWithMargin],
+    [
+      slideWidthWithMargin,
+      currentIndex,
+      initialPosition,
+      isDragging,
+      draggable,
+    ],
   );
 
-  const handleMouseUp = useCallback(
-    (e: React.MouseEvent<HTMLDivElement>) => {
-      if (!trackRef.current) {
+  const handleDragEnd = useCallback(
+    (
+      e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>,
+    ) => {
+      if (!trackRef.current || !draggable) {
         return;
       }
 
@@ -169,28 +188,38 @@ const Carousel = ({
 
       const modularValue = Math.abs(movedSlideCount) % slideCount;
       const slideCountToMove = modularValue === 0 ? 2 : modularValue - 1;
-
-      if (
+      const isDragToLeft =
         draggedSlideCount < 0 &&
-        currentIndex + Math.abs(movedSlideCount) > slideCount * 2 - 1
-      ) {
+        currentIndex + Math.abs(movedSlideCount) > slideCount * 2 - 1;
+      const isDragToRight =
+        draggedSlideCount > 0 &&
+        currentIndex - Math.abs(movedSlideCount) < slideCount;
+
+      if (isDragToLeft) {
         const targetSlideIndex = slideCount + slideCountToMove;
         moveSlideWithoutAnimation(targetSlideIndex);
       }
 
-      if (
-        draggedSlideCount > 0 &&
-        currentIndex - Math.abs(movedSlideCount) < slideCount
-      ) {
+      if (isDragToRight) {
         const targetSlideIndex = slideCount * 2 - slideCountToMove - 1;
         moveSlideWithoutAnimation(targetSlideIndex);
+      }
+
+      if ('touches' in e) {
+        setPaused(false);
       }
 
       startX.current = 0;
       draggedDistance.current = 0;
       trackRef.current.style.transform = '';
     },
-    [slideWidthWithMargin, currentIndex, slideCount, moveSlideWithoutAnimation],
+    [
+      slideWidthWithMargin,
+      currentIndex,
+      slideCount,
+      moveSlideWithoutAnimation,
+      draggable,
+    ],
   );
 
   const handleMouseEnter = () => {
@@ -236,9 +265,13 @@ const Carousel = ({
         initialPosition={initialPosition}
         trackAnimation={trackAnimationRef.current}
         duration={duration}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
+        onMouseDown={handleDragStart}
+        onTouchStart={handleDragStart}
+        onMouseMove={handleDragMove}
+        onTouchMove={handleDragMove}
+        onMouseUp={handleDragEnd}
+        onTouchEnd={handleDragEnd}
+        onMouseLeave={handleDragEnd}
       >
         {React.Children.map(makeSlideClone(), (child, index) =>
           React.cloneElement(
