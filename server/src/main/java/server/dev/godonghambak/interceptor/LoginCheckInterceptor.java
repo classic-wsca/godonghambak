@@ -3,6 +3,7 @@ package server.dev.godonghambak.interceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 import server.dev.godonghambak.SessionConst;
+import server.dev.godonghambak.exceptionhandler.exception.authentication.SessionException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +21,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute(SessionConst.LOGIN_MEMBER) == null) {
             log.info("미인증 사용자 요청");
-            return false;
+            throw new SessionException();
         }
 
         return true;

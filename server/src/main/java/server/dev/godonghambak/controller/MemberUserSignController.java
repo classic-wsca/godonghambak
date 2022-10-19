@@ -29,13 +29,6 @@ public class MemberUserSignController {
 
     private final MemberUserSignService memberUserSignService;
 
-    @GetMapping("/")
-    public MemberUser signInCheck(HttpServletRequest request) {
-      log.debug("test!!!!!!");
-        throw new InternalServerException();
-//      return null;
-    }
-
     @PostMapping("/signup")
     @ApiOperation(value = "가맹점주 회원가입", notes = "가맹점주 회원기입")
     public ResponseEntity<?> signUp(

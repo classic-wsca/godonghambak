@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import server.dev.godonghambak.domain.entity.Authentication;
 import server.dev.godonghambak.dao.AuthenticationDao;
 import server.dev.godonghambak.exceptionhandler.exception.InternalServerException;
+import server.dev.godonghambak.exceptionhandler.exception.authentication.CheckPasswordException;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
@@ -60,7 +61,7 @@ public class AuthenticationService {
                 return true;
             }
         }
-        //default 예외처리
+        //DB 예외처리
         throw new InternalServerException();
     }
 
@@ -76,8 +77,8 @@ public class AuthenticationService {
 
         if(expirationCheckResult) return true;
 
-        //인증번호가 안맞았을 시 예외처리
-        return false;
+        //인증번호가 안맞거나, 인증번호 제한시간 경과 시 예외처리
+        throw new CheckPasswordException();
     }
 
     public boolean expirationCheck(Timestamp expirationTime) {
