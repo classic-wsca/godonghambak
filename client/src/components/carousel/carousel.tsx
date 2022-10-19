@@ -50,12 +50,50 @@ const Carousel = ({
   const [isDragging, setIsDragging] = useState(false);
   const [paused, setPaused] = useState(false);
 
-  const carouselRef = useRef<HTMLDivElement>(null);
+  const carouselRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLUListElement>(null);
   const trackAnimationRef = useRef(true);
   const startX = useRef<number>(0);
   const draggedDistance = useRef<number>(0);
   const slideWidthWithMargin = slideWidth + margin * 2;
+
+  const makeSlideClone = useCallback(() => {
+    const arrayChildren = React.Children.toArray(children);
+    const slides = [...arrayChildren, ...arrayChildren, ...arrayChildren];
+
+    return slides;
+  }, [children]);
+
+  const setTrackInitialPosition = useCallback(() => {
+    if (!carouselRef.current || !width) {
+      return;
+    }
+
+    const distance =
+      carouselRef.current.offsetWidth / 2 - slideWidth / 2 - margin;
+    setInitialPosition(distance);
+  }, [width, margin, slideWidth]);
+
+  const updateSlideWidth = useCallback(() => {
+    // 사용자 지정 width가 있을 경우 slideWidth의 크기 변경 필요 없음, 중앙 정렬만 해주고 return
+    if (width) {
+      setTrackInitialPosition();
+      return;
+    }
+
+    if (!carouselRef.current) {
+      return;
+    }
+
+    const newSlideWidth = carouselRef.current.offsetWidth - margin * 2;
+    setSlideWidth(newSlideWidth);
+
+    // 브라우저 크기 변경 중 animation 제거
+    trackAnimationRef.current = false;
+    setTimeout(() => {
+      trackAnimationRef.current = true;
+    }, 100);
+  }, [width, margin, setTrackInitialPosition]);
 
   const moveSlideWithoutAnimation = useCallback(
     (targetSlideIndex: number) => {
@@ -104,44 +142,6 @@ const Carousel = ({
     const targetSlideIndex = Number(e.currentTarget.value);
     setCurrentIndex(targetSlideIndex);
   };
-
-  const makeSlideClone = useCallback(() => {
-    const arrayChildren = React.Children.toArray(children);
-    const slides = [...arrayChildren, ...arrayChildren, ...arrayChildren];
-
-    return slides;
-  }, [children]);
-
-  const setTrackInitialPosition = useCallback(() => {
-    if (!carouselRef.current || !width) {
-      return;
-    }
-
-    const distance =
-      carouselRef.current.offsetWidth / 2 - slideWidth / 2 - margin;
-    setInitialPosition(distance);
-  }, [width, margin, slideWidth]);
-
-  const updateSlideWidth = useCallback(() => {
-    // 사용자 지정 width가 있을 경우 slideWidth의 크기 변경 필요 없음, 중앙 정렬만 해주고 return
-    if (width) {
-      setTrackInitialPosition();
-      return;
-    }
-
-    if (!carouselRef.current) {
-      return;
-    }
-
-    const newSlideWidth = carouselRef.current.offsetWidth - margin * 2;
-    setSlideWidth(newSlideWidth);
-
-    // 브라우저 크기 변경 중 animation 제거
-    trackAnimationRef.current = false;
-    setTimeout(() => {
-      trackAnimationRef.current = true;
-    }, 100);
-  }, [width, margin, setTrackInitialPosition]);
 
   const handleDragStart = (e: MouseAndTouchEvent<HTMLUListElement>) => {
     if (!draggable) {
@@ -272,6 +272,8 @@ const Carousel = ({
       onTouchStart={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onTouchEnd={handleMouseLeave}
+      role="region"
+      aria-roledescription="carousel"
     >
       <Track
         ref={trackRef}
@@ -287,54 +289,72 @@ const Carousel = ({
         onMouseUp={handleDragEnd}
         onTouchEnd={handleDragEnd}
         onMouseLeave={handleDragEnd}
+        aria-label="slides"
+        aria-live="off"
       >
         {React.Children.map(makeSlideClone(), (child, index) =>
           React.cloneElement(
             child as ReactElement<PropsWithChildren<CarouselItemProps>>,
             {
               key: index,
+              id: `carousel-item-${(index % slideCount) + 1}`,
               width: slideWidth,
               margin,
+              label: `${(index % slideCount) + 1} of ${slideCount}`,
             },
           ),
         )}
       </Track>
-      <Indicators>
+      <Indicators role="tablist" aria-label="slides">
         {button && (
-          <LeftButton
-            type="button"
-            variant="icon"
-            size="medium"
-            topValue={trackRef.current ? trackRef.current.offsetHeight / 2 : 0}
-            leftValue={margin - 100}
-            onClick={movePrev}
-            onTouchEnd={movePrev}
-          >
-            <LeftArrowSVG />
-          </LeftButton>
+          <>
+            <LeftButton
+              type="button"
+              variant="icon"
+              size="medium"
+              topValue={
+                trackRef.current ? trackRef.current.offsetHeight / 2 : 0
+              }
+              leftValue={margin - 100}
+              onClick={movePrev}
+              onTouchEnd={movePrev}
+              aria-label="prev-button"
+            >
+              <LeftArrowSVG />
+            </LeftButton>
+            <RightButton
+              type="button"
+              variant="icon"
+              size="medium"
+              topValue={
+                trackRef.current ? trackRef.current.offsetHeight / 2 : 0
+              }
+              rightValue={margin - 100}
+              onClick={moveNext}
+              onTouchEnd={moveNext}
+              aria-label="next-button"
+            >
+              <RightArrowSVG />
+            </RightButton>
+          </>
         )}
         {indicator &&
           React.Children.map(children, (_, index) => (
             <Indicator
+              id={`carousel-tab-${index}`}
               type="button"
               value={index}
-              isCurrent={currentIndex % slideCount === index}
+              isCurrent={index === currentIndex % slideCount}
               onClick={moveClickedSlide}
+              role="tab"
+              aria-label={`slide ${index}`}
+              aria-selected={
+                index === currentIndex % slideCount ? 'true' : 'false'
+              }
+              aria-controls={`carousel-item-${index}`}
+              data-slide={`slide ${index}`}
             />
           ))}
-        {button && (
-          <RightButton
-            type="button"
-            variant="icon"
-            size="medium"
-            topValue={trackRef.current ? trackRef.current.offsetHeight / 2 : 0}
-            rightValue={margin - 100}
-            onClick={moveNext}
-            onTouchEnd={moveNext}
-          >
-            <RightArrowSVG />
-          </RightButton>
-        )}
       </Indicators>
     </CarouselWrapper>
   );
