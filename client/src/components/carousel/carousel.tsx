@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 import type { PropsWithChildren, ReactElement } from 'react';
 import type { CarouselItemProps } from './carousel-item';
+import type { MouseAndTouchEvent } from '~types/event';
 
 import React, {
   useState,
@@ -9,7 +10,7 @@ import React, {
   useCallback,
   useMemo,
 } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 import LeftArrowSVG from '~public/svgs/chevron-left.svg';
 import RightArrowSVG from '~public/svgs/chevron-right.svg';
@@ -18,7 +19,7 @@ import { Button } from '~components/common';
 import { useInterval } from '~hooks/index';
 import { pixelToRem } from '~utils/style-utils';
 
-interface CarouselProps extends PropsWithChildren {
+export interface CarouselProps extends PropsWithChildren {
   width?: number;
   margin?: number;
   duration?: number;
@@ -26,27 +27,31 @@ interface CarouselProps extends PropsWithChildren {
   autoplay?: boolean;
   autoplayInterval?: number;
   autoplayReverse?: boolean;
+  button?: boolean;
+  indicator?: boolean;
 }
 
 const Carousel = ({
   children,
   width, // slideWidth
-  margin = 0, // slide 사이 여백
+  margin = 130, // slide 사이 여백
   duration = 300, // animation duration
   draggable = true, // 드래그 가능 여부
   autoplay = true, // autoSlide 기능 여부
   autoplayInterval = 4000, // autoSlide 시간
   autoplayReverse = false, // autoSlide 방향, default 오른쪽
+  button = true, // button 여부
+  indicator = true, // indicator 여부
 }: CarouselProps) => {
   const slideCount = useMemo(() => React.Children.count(children), [children]); // prettier-ignore
   const [currentIndex, setCurrentIndex] = useState(slideCount);
-  const [slideWidth, setSlideWidth] = useState(width || window.innerWidth - margin * 2); // prettier-ignore
+  const [slideWidth, setSlideWidth] = useState(0);
   const [initialPosition, setInitialPosition] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [paused, setPaused] = useState(false);
 
   const carouselRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLUListElement>(null);
   const trackAnimationRef = useRef(true);
   const startX = useRef<number>(0);
   const draggedDistance = useRef<number>(0);
@@ -65,21 +70,35 @@ const Carousel = ({
     [duration],
   );
 
-  const movePrev = useCallback(() => {
-    setCurrentIndex((prev) => prev - 1);
+  const movePrev = useCallback(
+    (e?: MouseAndTouchEvent<HTMLButtonElement>) => {
+      if (e) {
+        e.preventDefault();
+      }
 
-    if (currentIndex === slideCount) {
-      moveSlideWithoutAnimation(slideCount * 2 - 1);
-    }
-  }, [currentIndex, slideCount, moveSlideWithoutAnimation]);
+      setCurrentIndex((prev) => prev - 1);
 
-  const moveNext = useCallback(() => {
-    setCurrentIndex((prev) => prev + 1);
+      if (currentIndex === slideCount) {
+        moveSlideWithoutAnimation(slideCount * 2 - 1);
+      }
+    },
+    [currentIndex, slideCount, moveSlideWithoutAnimation],
+  );
 
-    if (currentIndex === slideCount * 2 - 1) {
-      moveSlideWithoutAnimation(slideCount);
-    }
-  }, [currentIndex, slideCount, moveSlideWithoutAnimation]);
+  const moveNext = useCallback(
+    (e?: MouseAndTouchEvent<HTMLButtonElement>) => {
+      if (e) {
+        e.preventDefault();
+      }
+
+      setCurrentIndex((prev) => prev + 1);
+
+      if (currentIndex === slideCount * 2 - 1) {
+        moveSlideWithoutAnimation(slideCount);
+      }
+    },
+    [currentIndex, slideCount, moveSlideWithoutAnimation],
+  );
 
   const moveClickedSlide = (e: React.MouseEvent<HTMLButtonElement>) => {
     const targetSlideIndex = Number(e.currentTarget.value);
@@ -98,9 +117,10 @@ const Carousel = ({
       return;
     }
 
-    const distance = carouselRef.current.offsetWidth / 2 - slideWidth / 2;
+    const distance =
+      carouselRef.current.offsetWidth / 2 - slideWidth / 2 - margin;
     setInitialPosition(distance);
-  }, [width, slideWidth]);
+  }, [width, margin, slideWidth]);
 
   const updateSlideWidth = useCallback(() => {
     // 사용자 지정 width가 있을 경우 slideWidth의 크기 변경 필요 없음, 중앙 정렬만 해주고 return
@@ -123,26 +143,18 @@ const Carousel = ({
     }, 100);
   }, [width, margin, setTrackInitialPosition]);
 
-  const handleDragStart = (
-    e: React.TouchEvent<HTMLDivElement> | React.MouseEvent<HTMLDivElement>,
-  ) => {
+  const handleDragStart = (e: MouseAndTouchEvent<HTMLUListElement>) => {
     if (!draggable) {
       return;
     }
 
     setIsDragging(true);
 
-    if ('touches' in e) {
-      setPaused(true);
-    }
-
     startX.current = 'touches' in e ? e.changedTouches[0].pageX : e.pageX;
   };
 
   const handleDragMove = useCallback(
-    (
-      e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>,
-    ) => {
+    (e: MouseAndTouchEvent<HTMLUListElement>) => {
       if (!isDragging || !trackRef.current || !draggable) {
         return;
       }
@@ -167,13 +179,10 @@ const Carousel = ({
   );
 
   const handleDragEnd = useCallback(
-    (
-      e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>,
-    ) => {
+    (e: MouseAndTouchEvent<HTMLUListElement>) => {
       if (!trackRef.current || !draggable) {
         return;
       }
-
       e.preventDefault();
       setIsDragging(false);
 
@@ -205,10 +214,6 @@ const Carousel = ({
         moveSlideWithoutAnimation(targetSlideIndex);
       }
 
-      if ('touches' in e) {
-        setPaused(false);
-      }
-
       startX.current = 0;
       draggedDistance.current = 0;
       trackRef.current.style.transform = '';
@@ -229,6 +234,14 @@ const Carousel = ({
   const handleMouseLeave = () => {
     setPaused(false);
   };
+
+  useEffect(() => {
+    if (!carouselRef.current) {
+      return;
+    }
+
+    setSlideWidth(width || carouselRef.current.offsetWidth - margin * 2);
+  }, [carouselRef, width, margin]);
 
   useEffect(() => {
     setTrackInitialPosition();
@@ -253,10 +266,12 @@ const Carousel = ({
   }, autoplayInterval);
 
   return (
-    <CarouselContainer
+    <CarouselWrapper
       ref={carouselRef}
       onMouseEnter={handleMouseEnter}
+      onTouchStart={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onTouchEnd={handleMouseLeave}
     >
       <Track
         ref={trackRef}
@@ -285,34 +300,53 @@ const Carousel = ({
         )}
       </Track>
       <Indicators>
-        <Button type="button" variant="icon" size="medium" onClick={movePrev}>
-          <LeftArrowSVG />
-        </Button>
-        {React.Children.map(children, (_, index) => (
-          <Indicator
+        {button && (
+          <LeftButton
             type="button"
-            value={index}
-            isCurrent={currentIndex % slideCount === index}
-            onClick={moveClickedSlide}
+            variant="icon"
+            size="medium"
+            topValue={trackRef.current ? trackRef.current.offsetHeight / 2 : 0}
+            leftValue={margin - 100}
+            onClick={movePrev}
+            onTouchEnd={movePrev}
           >
-            {index + 1}
-          </Indicator>
-        ))}
-        <Button type="button" variant="icon" size="medium" onClick={moveNext}>
-          <RightArrowSVG />
-        </Button>
+            <LeftArrowSVG />
+          </LeftButton>
+        )}
+        {indicator &&
+          React.Children.map(children, (_, index) => (
+            <Indicator
+              type="button"
+              value={index}
+              isCurrent={currentIndex % slideCount === index}
+              onClick={moveClickedSlide}
+            />
+          ))}
+        {button && (
+          <RightButton
+            type="button"
+            variant="icon"
+            size="medium"
+            topValue={trackRef.current ? trackRef.current.offsetHeight / 2 : 0}
+            rightValue={margin - 100}
+            onClick={moveNext}
+            onTouchEnd={moveNext}
+          >
+            <RightArrowSVG />
+          </RightButton>
+        )}
       </Indicators>
-    </CarouselContainer>
+    </CarouselWrapper>
   );
 };
 
-const CarouselContainer = styled.div`
+const CarouselWrapper = styled.section`
   position: relative;
   width: 100%;
   overflow: hidden;
 `;
 
-const Track = styled.div<{
+const Track = styled.ul<{
   width: number;
   distance: number;
   initialPosition: number;
@@ -320,9 +354,12 @@ const Track = styled.div<{
   duration: number;
 }>`
   position: relative;
-  width: ${({ width }) => pixelToRem(width)};
   // left 값으로 초기 포지션을 조절해줘야 슬라이드가 두개 일때도 밀리지 않고 제대로 이동 가능
   left: ${({ initialPosition }) => pixelToRem(initialPosition)};
+  width: ${({ width }) => pixelToRem(width)};
+  margin-block-start: 0;
+  margin-block-end: 0;
+  padding-inline-start: 0;
   transform: ${({ distance }) => `translateX(-${pixelToRem(distance)})`};
   transition: ${({ trackAnimation, duration }) =>
     trackAnimation ? `transform ${duration}ms` : 'none'};
@@ -332,19 +369,56 @@ const Track = styled.div<{
 const Indicators = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: ${pixelToRem(30)};
+  z-index: 1000;
 
   button {
-    margin: ${pixelToRem(5)};
+    margin: 0 ${pixelToRem(8)};
   }
+
+  @media ${({ theme }) => theme.breakPoints.extraLarge} {
+    position: absolute;
+    left: 50%;
+    bottom: ${pixelToRem(30)};
+    transform: translateX(-50%);
+  } ;
 `;
 
 const Indicator = styled.button<{ isCurrent: boolean }>`
-  ${({ theme, isCurrent }) =>
-    isCurrent &&
-    css`
-      background-color: ${theme.colors.green};
-      color: white;
-    `}
+  width: ${pixelToRem(12)};
+  height: ${pixelToRem(12)};
+  border-radius: 50%;
+  background-color: ${({ theme, isCurrent }) =>
+    isCurrent ? theme.colors.green : theme.colors.gray};
+
+  @media ${({ theme }) => theme.breakPoints.large} {
+    width: ${pixelToRem(10)};
+    height: ${pixelToRem(10)};
+  }
+`;
+
+const LeftButton = styled(Button)<{ topValue: number; leftValue: number }>`
+  position: absolute;
+  top: ${({ topValue }) => pixelToRem(topValue)};
+  left: ${({ leftValue }) => pixelToRem(leftValue)};
+  transform: translateY(-50%);
+
+  @media ${({ theme }) => theme.breakPoints.extraLarge} {
+    display: none;
+  } ;
+`;
+
+const RightButton = styled(Button)<{ topValue: number; rightValue: number }>`
+  position: absolute;
+  top: ${({ topValue }) => pixelToRem(topValue)};
+  right: ${({ rightValue }) => pixelToRem(rightValue)};
+  transform: translateY(-50%);
+
+  @media ${({ theme }) => theme.breakPoints.extraLarge} {
+    display: none;
+  } ;
 `;
 
 export default Carousel;
+
+// https://www.w3.org/WAI/tutorials/carousels/structure/#using-wai-aria-roles-and-labels
