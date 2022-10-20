@@ -6,7 +6,7 @@ describe('useInterval hook', () => {
 
   beforeEach(() => {
     jest.useFakeTimers();
-    jest.spyOn(globalThis, 'setTimeout');
+    jest.spyOn(globalThis, 'setInterval');
   });
 
   afterEach(() => {
