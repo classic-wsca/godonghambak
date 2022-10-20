@@ -110,7 +110,7 @@ const Carousel = ({
 
   const movePrev = useCallback(
     (e?: MouseAndTouchEvent<HTMLButtonElement>) => {
-      if (e) {
+      if (e && 'touches' in e) {
         e.preventDefault();
       }
 
@@ -125,7 +125,7 @@ const Carousel = ({
 
   const moveNext = useCallback(
     (e?: MouseAndTouchEvent<HTMLButtonElement>) => {
-      if (e) {
+      if (e && 'touches' in e) {
         e.preventDefault();
       }
 
@@ -290,7 +290,7 @@ const Carousel = ({
         onTouchEnd={handleDragEnd}
         onMouseLeave={handleDragEnd}
         aria-label="slides"
-        aria-live="off"
+        aria-live={paused ? 'polite' : 'off'}
       >
         {React.Children.map(makeSlideClone(), (child, index) =>
           React.cloneElement(
