@@ -1,4 +1,4 @@
-import { renderHook, act } from '../test-utils';
+import { renderHook } from '../test-utils';
 import { useInterval } from '~hooks/index';
 
 describe('useInterval hook', () => {
