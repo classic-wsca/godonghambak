@@ -377,6 +377,7 @@ const Track = styled.ul<{
   // left 값으로 초기 포지션을 조절해줘야 슬라이드가 두개 일때도 밀리지 않고 제대로 이동 가능
   left: ${({ initialPosition }) => pixelToRem(initialPosition)};
   width: ${({ width }) => pixelToRem(width)};
+  height: 100%;
   margin-block-start: 0;
   margin-block-end: 0;
   padding-inline-start: 0;

@@ -36,9 +36,11 @@ const CarouselItemWrapper = styled.li<CarouselItemProps>`
   justify-content: center;
   align-items: center;
   width: ${({ width }) => `${width}px`};
-  min-height: ${pixelToRem(438)};
+  height: 100%;
+  min-height: ${pixelToRem(200)};
   margin: ${({ margin }) => `0 ${margin}px`};
   user-select: none;
+  background-color: green;
 `;
 
 export default CarouselItem;
