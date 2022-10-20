@@ -40,7 +40,6 @@ const CarouselItemWrapper = styled.li<CarouselItemProps>`
   min-height: ${pixelToRem(200)};
   margin: ${({ margin }) => `0 ${margin}px`};
   user-select: none;
-  background-color: green;
 `;
 
 export default CarouselItem;
