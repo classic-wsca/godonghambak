@@ -1,4 +1,4 @@
-import type { NavigationRoutes } from '~types/navigation';
+import type { NavigationSubRoutes } from '~types/navigation';
 import type { UnderlineAnimation } from '~types/animation';
 
 import Link from 'next/link';
@@ -13,30 +13,31 @@ import { pixelToRem } from '~utils/style-utils';
 interface NavItemProps {
   text: string;
   href: string;
-  subRoutes: Omit<NavigationRoutes, 'subRoutes'>[];
+  subRoutes: NavigationSubRoutes[];
   isActive: boolean;
 }
 
 const NavItem = ({ text, href, subRoutes, isActive }: NavItemProps) => {
-  const [isOpen, toggle] = useToggle();
+  const [isOpen, toggle] = useToggle(isActive);
   const { ref, isOnResize } = useStopAnimationOnResize<HTMLUListElement>();
 
   return (
     <>
       <Link href={href} passHref>
         <Item
-          href="replace"
           color="#fdc47c"
           height={4}
           bottom={0}
           isActive={isActive}
-          isOpen={isOpen}
           onClick={toggle}
         >
           {text}
-          <DownArrowSVG width={18} height={14} />
         </Item>
       </Link>
+      <MobileItem isActive={isActive} isOpen={isOpen} onClick={toggle}>
+        {text}
+        <DownArrowSVG width={18} height={14} />
+      </MobileItem>
       <SubList ref={ref} isOpen={isOpen} isOnResize={isOnResize}>
         {subRoutes.map(({ text: subText, href: subHref }) => (
           <li key={subText}>
@@ -52,8 +53,7 @@ const NavItem = ({ text, href, subRoutes, isActive }: NavItemProps) => {
   );
 };
 
-// prettier-ignore
-const Item = styled.a<{ isActive: boolean; isOpen: boolean } & UnderlineAnimation>`
+const Item = styled.a<{ isActive: boolean } & UnderlineAnimation>`
   position: relative;
   padding: ${pixelToRem(32)} 0;
   font-weight: 600;
@@ -61,7 +61,7 @@ const Item = styled.a<{ isActive: boolean; isOpen: boolean } & UnderlineAnimatio
   color: ${({ theme, isActive }) =>
     isActive ? theme.colors.yellow : theme.colors.dark};
 
-  &:hover + ul {
+  &:hover ~ ul {
     opacity: 1;
     visibility: visible;
   }
@@ -81,20 +81,23 @@ const Item = styled.a<{ isActive: boolean; isOpen: boolean } & UnderlineAnimatio
   }
 
   @media ${({ theme }) => theme.breakPoints.large} {
+    display: none;
+  }
+`;
+
+const MobileItem = styled.button<{ isActive: boolean; isOpen: boolean }>`
+  display: none;
+
+  @media ${({ theme }) => theme.breakPoints.large} {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
     padding: ${pixelToRem(8)};
-
-    &:before,
-    &:after {
-      display: none;
-    }
-
-    &:hover + ul {
-      opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
-      visibility: ${({ isOpen }) => (isOpen ? 'visible' : 'hidden')};
-    }
+    font-weight: 600;
+    font-size: ${({ theme }) => theme.fontSizes.medium};
+    color: ${({ theme, isActive }) =>
+      isActive ? theme.colors.yellow : theme.colors.dark};
 
     svg {
       display: inline-block;
