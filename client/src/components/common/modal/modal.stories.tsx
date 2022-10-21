@@ -8,7 +8,7 @@ import { Button } from '~components/common';
 import { useToggle } from '~hooks/index';
 
 export default {
-  title: 'components/modal',
+  title: 'components/common/modal',
   component: Modal,
   decorators: [
     (Story) => (

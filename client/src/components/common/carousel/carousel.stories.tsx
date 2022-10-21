@@ -4,7 +4,7 @@ import Carousel from './carousel';
 import CarouselItem from './carousel-item';
 
 export default {
-  title: 'components/carousel',
+  title: 'components/common/carousel',
   component: Carousel,
 } as ComponentMeta<typeof Carousel>;
 

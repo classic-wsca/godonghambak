@@ -1,7 +1,7 @@
 import userEvent from '@testing-library/user-event';
-import { render, screen } from '../test-utils';
+import { render, screen } from '../../test-utils';
 
-import { Modal, ConfimationModal } from '~components/modal';
+import { Modal, ConfimationModal } from '~components/common';
 
 import { useToggle } from '~hooks/index';
 

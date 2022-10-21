@@ -4,7 +4,7 @@ import { useEffect, useCallback } from 'react';
 import FocusLock from 'react-focus-lock';
 import styled from 'styled-components';
 
-import { Button } from '../common/button';
+import { Button } from '~components/common';
 import { Portal } from '~hocs/index';
 import CloseSVG from '~public/svgs/close.svg';
 
