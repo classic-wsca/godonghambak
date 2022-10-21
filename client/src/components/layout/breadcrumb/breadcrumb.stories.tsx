@@ -4,7 +4,7 @@ import Breadcrumb from './breadcrumb';
 import RightBracketSVG from '~public/svgs/chevron-right-thick.svg';
 
 export default {
-  title: 'components/common/breadcrumb',
+  title: 'components/layout/breadcrumb',
   component: Breadcrumb,
 } as ComponentMeta<typeof Breadcrumb>;
 

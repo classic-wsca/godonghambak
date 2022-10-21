@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 import { render, screen, createMockRouter } from '../../test-utils';
 
-import { Breadcrumb } from '~components/common';
+import { Breadcrumb } from '~components/layout';
 import RightBracketSVG from '~public/svgs/chevron-right-thick.svg';
 
 const setup = (
