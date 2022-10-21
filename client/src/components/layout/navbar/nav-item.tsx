@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import DownArrowSVG from '~public/svgs/down-arrow.svg';
 
-import { useToggle, useStopAnimationOnResize } from '~hooks/index';
+import { useToggle, useWindowResize } from '~hooks/index';
 import { underlineAnimation } from '~styles/animation';
 import { pixelToRem } from '~utils/style-utils';
 
@@ -19,7 +19,7 @@ interface NavItemProps {
 
 const NavItem = ({ text, href, subRoutes, isActive }: NavItemProps) => {
   const [isOpen, toggle] = useToggle(isActive);
-  const { ref, isOnResize } = useStopAnimationOnResize<HTMLUListElement>();
+  const { ref, isOnResize } = useWindowResize<HTMLUListElement>();
 
   return (
     <>

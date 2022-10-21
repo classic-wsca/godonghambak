@@ -2,7 +2,9 @@ import type { MutableRefObject, RefObject } from 'react';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 
-const useStopAnimationOnResize = <T extends HTMLElement>(): {
+const useWindowResize = <T extends HTMLElement>(
+  delay = 400,
+): {
   ref: RefObject<T>;
   isOnResize: boolean;
 } => {
@@ -10,24 +12,24 @@ const useStopAnimationOnResize = <T extends HTMLElement>(): {
   const ref: RefObject<T> = useRef<T>(null);
   const timerRef: MutableRefObject<NodeJS.Timeout | undefined> = useRef();
 
-  const handleAnimationStopOnResize = useCallback(() => {
+  const handleResize = useCallback(() => {
     setIsOnResize(true);
     clearTimeout(timerRef.current);
 
     timerRef.current = setTimeout(() => {
       setIsOnResize(false);
-    }, 400);
-  }, []);
+    }, delay);
+  }, [delay]);
 
   useEffect(() => {
-    window.addEventListener('resize', handleAnimationStopOnResize);
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleAnimationStopOnResize);
+      window.removeEventListener('resize', handleResize);
     };
-  }, [handleAnimationStopOnResize]);
+  }, [handleResize]);
 
   return { ref, isOnResize };
 };
 
-export default useStopAnimationOnResize;
+export default useWindowResize;

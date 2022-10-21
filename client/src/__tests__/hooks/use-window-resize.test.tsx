@@ -1,16 +1,16 @@
 import { renderHook, act, fireEvent } from '../test-utils';
-import { useStopAnimationOnResize } from '~hooks/index';
+import { useWindowResize } from '~hooks/index';
 
 describe('useStopAnimationOnResize hook', () => {
   it('should return ref object and resizing state', () => {
-    const { result } = renderHook(() => useStopAnimationOnResize());
+    const { result } = renderHook(() => useWindowResize());
 
     expect(result.current.ref).toEqual({ current: null });
     expect(result.current.isOnResize).toBe(false);
   });
 
   it('should observe resizing event of window', () => {
-    const { result } = renderHook(() => useStopAnimationOnResize());
+    const { result } = renderHook(() => useWindowResize());
 
     fireEvent(window, new Event('resize'));
 
@@ -19,7 +19,7 @@ describe('useStopAnimationOnResize hook', () => {
 
   it('should update resize state after resize event', () => {
     jest.useFakeTimers();
-    const { result } = renderHook(() => useStopAnimationOnResize());
+    const { result } = renderHook(() => useWindowResize());
 
     fireEvent(window, new Event('resize'));
     act(() => {

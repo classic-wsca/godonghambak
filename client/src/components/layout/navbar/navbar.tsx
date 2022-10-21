@@ -10,14 +10,14 @@ import NavToggle from './nav-toggle';
 
 import { Button } from '~components/common';
 
-import { useToggle, useStopAnimationOnResize } from '~hooks/index';
+import { useToggle, useWindowResize } from '~hooks/index';
 import { NAVIGATION_ROUTES } from '~constants/navigation';
 import { pixelToRem } from '~utils/style-utils';
 
 const Navbar = () => {
   const router = useRouter();
   const [isOpen, toggle] = useToggle();
-  const { ref, isOnResize } = useStopAnimationOnResize();
+  const { ref, isOnResize } = useWindowResize();
 
   const isCurrentRoute = (href: string, subRoutes: NavigationSubRoutes[]) => {
     if (href === router.asPath) {
