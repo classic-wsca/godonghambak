@@ -4,7 +4,7 @@ import Breadcrumb from './breadcrumb';
 import RightBracketSVG from '~public/svgs/chevron-right-thick.svg';
 
 export default {
-  title: 'components/common/breadcrumb',
+  title: 'components/layout/breadcrumb',
   component: Breadcrumb,
 } as ComponentMeta<typeof Breadcrumb>;
 
@@ -28,10 +28,10 @@ Menu.args = {
 };
 Menu.parameters = {
   nextRouter: {
-    path: '/메뉴/[id]',
-    asPath: '/메뉴/함박 메뉴',
+    path: '/menu/[category]',
+    asPath: '/menu',
     query: {
-      id: '함박 메뉴',
+      category: 'hambak',
     },
   },
 };
@@ -42,7 +42,7 @@ Store.args = {
 };
 Store.parameters = {
   nextRouter: {
-    path: '/매장 관리',
-    asPath: '/매장 관리',
+    path: '/store',
+    asPath: '/store',
   },
 };

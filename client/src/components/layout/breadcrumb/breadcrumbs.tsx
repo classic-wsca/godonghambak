@@ -35,10 +35,10 @@ const Breadcrumbs = ({ seperator, children }: BreadcrumbProps) => {
 };
 
 const BreadcrumbWrapper = styled.nav`
-  margin: ${pixelToRem(32)} 0;
+  margin: ${pixelToRem(128)} 0;
 
-  @media ${({ theme }) => theme.breakPoints.medium} {
-    margin: ${pixelToRem(16)} 0;
+  @media ${({ theme }) => theme.breakPoints.large} {
+    margin: ${pixelToRem(32)} 0;
   }
 
   @media ${({ theme }) => theme.breakPoints.small} {
@@ -51,6 +51,11 @@ const BreadcrumbList = styled.ol`
   justify-content: center;
   align-items: center;
   gap: ${pixelToRem(16)};
+
+  @media ${({ theme }) => theme.breakPoints.large} {
+    justify-content: end;
+    padding-right: ${pixelToRem(32)};
+  }
 `;
 
 const Seperator = styled.span`

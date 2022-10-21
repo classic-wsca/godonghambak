@@ -1,12 +1,6 @@
 export const pixelToRem = (pixel: number): string => {
-  if (typeof window === 'undefined') {
-    return `${pixel * 0.0625}rem`;
-  }
-
-  const browserFontSize = getComputedStyle(document.documentElement).fontSize;
-  const fontSize =
-    Math.round((pixel / parseFloat(browserFontSize) + Number.EPSILON) * 100) /
-    100;
+  const BASE_FONT_SIZE = 16;
+  const fontSize = pixel / BASE_FONT_SIZE;
 
   return `${fontSize}rem`;
 };

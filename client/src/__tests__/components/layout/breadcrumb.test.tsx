@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 import { render, screen, createMockRouter } from '../../test-utils';
 
-import { Breadcrumb } from '~components/common';
+import { Breadcrumb } from '~components/layout';
 import RightBracketSVG from '~public/svgs/chevron-right-thick.svg';
 
 const setup = (
@@ -37,34 +37,31 @@ describe('Breadcrumb component', () => {
     expect(getByText('홈')).toBeInTheDocument();
   });
 
-  it('should be rendered according to the pathname', () => {
+  it('should be rendered accordingly by the pathname', () => {
     const mockRouter = createMockRouter({
-      pathname: '/메뉴/[id]',
-      asPath: '/메뉴/전체 메뉴',
-      query: {
-        id: 'all',
-      },
+      pathname: '/store',
+      asPath: '/store',
     });
 
     const { breadcrumbs, getByText } = setup(mockRouter);
 
     expect(breadcrumbs).toBeInTheDocument();
     expect(getByText('홈')).toBeInTheDocument();
-    expect(getByText('메뉴')).toBeInTheDocument();
-    expect(getByText('전체 메뉴')).toBeInTheDocument();
+    expect(getByText('고동함박')).toBeInTheDocument();
+    expect(getByText('매장 찾기')).toBeInTheDocument();
   });
 
   it('should navigate accordingly', async () => {
     const mockRouter = createMockRouter({
-      pathname: '/menu/[id]',
-      asPath: '/menu/all',
+      pathname: '/menu/[category]',
+      asPath: '/menu',
       query: {
-        id: 'all',
+        category: 'set',
       },
     });
 
     const { user, getByText } = setup(mockRouter);
-    const menuLink = getByText(/menu/i);
+    const menuLink = getByText(/메뉴 소개/i);
 
     await user.click(menuLink);
 

@@ -2,17 +2,6 @@ import { pixelToRem, createBreakPoint } from '~utils/style-utils';
 
 describe('Style util tests', () => {
   describe('Pixel to rem', () => {
-    const originalWindow = global.window;
-
-    beforeEach(() => {
-      window.document.documentElement.style.fontSize = '16px';
-    });
-
-    afterAll(() => {
-      global.window = originalWindow;
-      window.document.documentElement.style.fontSize = '';
-    });
-
     it('should be possible to change to rem when the piexel is integer', () => {
       expect(pixelToRem(16)).toBe('1rem');
       expect(pixelToRem(32)).toBe('2rem');
@@ -28,25 +17,6 @@ describe('Style util tests', () => {
     it('should throw an error if pixel is negative number', () => {
       expect(pixelToRem(-16)).toBe('-1rem');
       expect(pixelToRem(-1.6)).toBe('-0.1rem');
-    });
-
-    it('should be change value if browser fontSize is changed', () => {
-      window.document.documentElement.style.fontSize = '14px';
-
-      expect(pixelToRem(14)).toBe('1rem');
-      expect(pixelToRem(28)).toBe('2rem');
-      expect(pixelToRem(1.4)).toBe('0.1rem');
-      expect(pixelToRem(2.8)).toBe('0.2rem');
-    });
-
-    it('should be return default value if window is undefined', () => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      delete global.window;
-      expect(global.window).toBeUndefined();
-
-      expect(pixelToRem(16)).toBe('1rem');
-      expect(pixelToRem(32)).toBe('2rem');
     });
   });
 
