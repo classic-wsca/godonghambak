@@ -1,10 +1,10 @@
-import type { CarouselProps } from '~components/carousel/carousel';
+import type { CarouselProps } from '~components/common/carousel/carousel';
 
 import React from 'react';
 import userEvent from '@testing-library/user-event';
-import { render, screen, act, fireEvent, cleanup } from '../test-utils';
+import { render, screen, act, fireEvent, cleanup } from '../../test-utils';
 
-import { Carousel, CarouselItem } from '~components/carousel';
+import { Carousel, CarouselItem } from '~components/common';
 
 interface TestProps extends CarouselProps {
   items?: string[];

@@ -1,10 +1,10 @@
 import type { NextRouter } from 'next/router';
 
-import { RouterContext } from 'next/dist/shared/lib/router-context';
 import userEvent from '@testing-library/user-event';
-import { render, screen, createMockRouter } from '../test-utils';
+import { RouterContext } from 'next/dist/shared/lib/router-context';
+import { render, screen, createMockRouter } from '../../test-utils';
 
-import { Breadcrumb } from '~components/breadcrumb';
+import { Breadcrumb } from '~components/common';
 import RightBracketSVG from '~public/svgs/chevron-right-thick.svg';
 
 const setup = (

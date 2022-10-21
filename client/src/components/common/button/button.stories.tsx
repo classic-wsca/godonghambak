@@ -9,7 +9,7 @@ import CloseSVG from '~public/svgs/close.svg';
 import ChevronLeftSVG from '~public/svgs/chevron-left.svg';
 
 export default {
-  title: 'common/button',
+  title: 'common/common/button',
   component: Button,
   decorators: [
     (Story) => (
