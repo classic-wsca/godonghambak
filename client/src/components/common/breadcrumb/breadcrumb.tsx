@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 
 import Breadcrumbs from './breadcrumbs';
 import BreadcrumbItem from './breadcrumb-item';
+import { NAVIGATION_ROUTES } from '~constants/navigation';
 
 interface BreadcrumbState {
   href: string;
@@ -18,24 +19,70 @@ const Breadcrumb = ({ seperator }: BreadcrumbProps) => {
   const router = useRouter();
   const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbState[]>();
 
+  const getLabel = useCallback((currentHref: string) => {
+    const subRouteArray = NAVIGATION_ROUTES.map(({ subRoutes }) => subRoutes);
+    const currentRouteIndex = subRouteArray.findIndex((routes) =>
+      routes.find(({ href }) => href === currentHref),
+    );
+
+    return currentRouteIndex !== -1
+      ? NAVIGATION_ROUTES[currentRouteIndex].text
+      : '';
+  }, []);
+
+  const getSubLabel = useCallback((currentHref: string) => {
+    const routes = NAVIGATION_ROUTES.map(({ subRoutes }) => subRoutes);
+    const subRoutes = routes.reduce((acc, cur) => {
+      return [...acc, ...cur];
+    });
+
+    let label = subRoutes.find(({ href }) => href === currentHref)?.text;
+    if (!label) {
+      label = NAVIGATION_ROUTES.find(({ href }) => href === currentHref)?.text;
+    }
+
+    return label || '고동함박';
+  }, []);
+
+  const createBreadcrumbs = (
+    href: string,
+    label: string,
+    isCurrent: boolean,
+  ) => {
+    return {
+      href,
+      label,
+      isCurrent,
+    };
+  };
+
   useEffect(() => {
     const pathWithoutQuery = router.asPath.split('?')[0];
+
     let pathArray = pathWithoutQuery.split('/');
     pathArray.shift();
 
     pathArray = pathArray.filter((path) => path !== '');
 
-    const currentBreadcrumbs = pathArray.map((path, index) => {
+    const getMainBreadcrumbs = () => {
+      const href = `/${pathArray[0]}`;
+
+      return createBreadcrumbs(href, getLabel(href), false);
+    };
+
+    const getSubBreadcrumbs = pathArray.map((_, index) => {
       const href = `/${pathArray.slice(0, index + 1).join('/')}`;
-      return {
-        href,
-        label: path.charAt(0).toUpperCase() + path.slice(1),
-        isCurrent: index === pathArray.length - 1,
-      };
+      const isCurrent = index === pathArray.length - 1;
+
+      return createBreadcrumbs(href, getSubLabel(href), isCurrent);
     });
 
+    const currentBreadcrumbs = getMainBreadcrumbs().label
+      ? [getMainBreadcrumbs(), ...getSubBreadcrumbs]
+      : getSubBreadcrumbs;
+
     setBreadcrumbs(currentBreadcrumbs);
-  }, [router.asPath]);
+  }, [router.asPath, getLabel, getSubLabel]);
 
   return (
     <Breadcrumbs seperator={seperator}>
