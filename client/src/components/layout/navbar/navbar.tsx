@@ -1,3 +1,5 @@
+import type { NavigationSubRoutes } from '~types/navigation';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -17,6 +19,18 @@ const Navbar = () => {
   const [isOpen, toggle] = useToggle();
   const { ref, isOnResize } = useStopAnimationOnResize();
 
+  const isCurrentRoute = (href: string, subRoutes: NavigationSubRoutes[]) => {
+    if (href === router.asPath) {
+      return true;
+    }
+
+    const filteredSubRoutes = subRoutes.filter(
+      ({ href: subHref }) => subHref === router.asPath,
+    );
+
+    return !!filteredSubRoutes.length;
+  };
+
   return (
     <>
       <Header>
@@ -35,7 +49,7 @@ const Navbar = () => {
                   text={text}
                   aria-label={text}
                   subRoutes={subRoutes}
-                  isActive={router.asPath === href}
+                  isActive={isCurrentRoute(href, subRoutes)}
                 />
               </li>
             ))}
