@@ -13,7 +13,6 @@ import server.dev.godonghambak.service.MemberUserSignService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.lang.reflect.Member;
 import java.text.ParseException;
 
 import static server.dev.godonghambak.domain.dto.MemberUserDto.*;
@@ -27,12 +26,6 @@ import static server.dev.godonghambak.domain.dto.MemberUserDto.*;
 public class MemberUserSignController {
 
     private final MemberUserSignService memberUserSignService;
-
-    @GetMapping("/")
-    public MemberUser signInCheck(HttpServletRequest request) {
-      log.debug("test!!!!!!");
-      return null;
-    }
 
     @PostMapping("/signup")
     @ApiOperation(value = "가맹점주 회원가입", notes = "가맹점주 회원기입")
@@ -51,7 +44,7 @@ public class MemberUserSignController {
         MemberUser result = memberUserSignService.signIn(signInInfo);
         if(result != null) {
             HttpSession session = request.getSession();
-            session.setMaxInactiveInterval(1800); //1분
+            session.setMaxInactiveInterval(1800); //30분
             session.setAttribute(SessionConst.LOGIN_MEMBER, result);
         }
         return ResponseEntity.ok(result);

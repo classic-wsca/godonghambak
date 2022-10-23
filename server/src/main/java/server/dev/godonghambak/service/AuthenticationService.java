@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import server.dev.godonghambak.domain.entity.Authentication;
-import server.dev.godonghambak.repository.AuthenticationRepository;
+import server.dev.godonghambak.dao.AuthenticationDao;
+import server.dev.godonghambak.exceptionhandler.exception.InternalServerException;
+import server.dev.godonghambak.exceptionhandler.exception.authentication.CheckPasswordException;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
@@ -21,7 +23,7 @@ import static server.dev.godonghambak.domain.dto.AuthenticationDto.*;
 public class AuthenticationService {
 
     private final JavaMailSender javaMailSender;
-    private final AuthenticationRepository authenticationRepository;
+    private final AuthenticationDao authenticationRepository;
 
     //인증 이메일 전송
     public boolean sendToEmail(SendEmail sendEmail) throws MessagingException {
@@ -59,8 +61,8 @@ public class AuthenticationService {
                 return true;
             }
         }
-        //예외처리
-        return false;
+        //DB 예외처리
+        throw new InternalServerException();
     }
 
     // 인증번호 조회
@@ -74,7 +76,9 @@ public class AuthenticationService {
         boolean expirationCheckResult = expirationCheck(findResult.getAuthentication_expiration());
 
         if(expirationCheckResult) return true;
-        return false;
+
+        //인증번호가 안맞거나, 인증번호 제한시간 경과 시 예외처리
+        throw new CheckPasswordException();
     }
 
     public boolean expirationCheck(Timestamp expirationTime) {

@@ -1,9 +1,14 @@
 package server.dev.godonghambak.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import server.dev.godonghambak.domain.entity.MemberUser;
-import server.dev.godonghambak.repository.MemberUserRepository;
+import server.dev.godonghambak.dao.MemberUserDao;
+import server.dev.godonghambak.exceptionhandler.exception.InternalServerException;
+import server.dev.godonghambak.exceptionhandler.exception.memberusersign.NoSearchEmail;
+import server.dev.godonghambak.exceptionhandler.exception.memberusersign.SameEmailException;
 
 import java.util.UUID;
 
@@ -11,37 +16,55 @@ import static server.dev.godonghambak.domain.dto.MemberUserDto.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberUserSignService {
 
-    private final MemberUserRepository memberUserRepository;
+    private final MemberUserDao memberUserRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     public MemberUser signUp(SignUp signUpinfo){
+
+        //회원가입 하고자 하는 아이디 확인 중복확인 후 예외처리
+        MemberUser byEmail = memberUserRepository.findByEmail(signUpinfo.getMember_user_email());
+        if(byEmail != null) throw new SameEmailException();
+
+        //패스워드 인코딩
+        String encodePassword = passwordEncoder.encode(signUpinfo.getMember_user_password());
 
         MemberUser newMember = MemberUser
                                 .builder()
                                 .member_user_id(UUID.randomUUID().toString().replace("-", ""))
                                 .member_user_email(signUpinfo.getMember_user_email())
-                                .member_user_password(signUpinfo.getMember_user_password())
+                                .member_user_password(encodePassword)
                                 .member_user_name(signUpinfo.getMember_user_name())
                                 .member_user_phone(signUpinfo.getMember_user_phone())
                                 .member_user_birth(signUpinfo.getMember_user_birth())
                                 .build();
-
 
         int result = memberUserRepository.insert(newMember);
         if(result > 0) {
             return newMember;
         }
 
-        return null;
+        //default 예외처리
+//        return null;
+        throw new InternalServerException();
     }
 
     public MemberUser signIn(SignIn signInInfo) {
 
-        MemberUser result = memberUserRepository.findByEmailAndPassword(signInInfo);
-        if(result != null) {
+        MemberUser result = memberUserRepository.findByEmail(signInInfo.getMember_user_email());
+
+        //패스워드 확인
+        boolean passwordResult = passwordEncoder.matches(signInInfo.getMember_user_password(), result.getMember_user_password());
+//        boolean passwordResult = passwordEncoder.matches(result.getMember_user_password(), signInInfo.getMember_user_password());
+
+        if(passwordResult && result != null) {
             return result;
         }
+
+        //비밀번호가 맞지 않다는 예외처리
         return null;
     }
 
@@ -54,12 +77,20 @@ public class MemberUserSignService {
                                         .build();
 
         FindEmailResult findEmailResult = memberUserRepository.findEmail(findEmail);
-        return findEmailResult;
+
+        if(findEmailResult != null) {
+            return findEmailResult;
+        }
+
+        //아이디 못찾았다는 예외처리
+        throw new NoSearchEmail();
     }
 
     public boolean changePassword(ChangePassword changePassword) {
         int updateResult = memberUserRepository.updatePassword(changePassword);
         if(updateResult > 0) return true;
+
+        //default 예외처리
         return false;
     }
 }
