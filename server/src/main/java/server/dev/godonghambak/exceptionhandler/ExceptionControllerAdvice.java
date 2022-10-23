@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import server.dev.godonghambak.exceptionhandler.exception.InternalServerException;
+import server.dev.godonghambak.exceptionhandler.exception.Store.NotFoundStoreException;
 import server.dev.godonghambak.exceptionhandler.exception.Store.SameStoreException;
 import server.dev.godonghambak.exceptionhandler.exception.authentication.CheckPasswordException;
 import server.dev.godonghambak.exceptionhandler.exception.authentication.SessionException;
@@ -67,5 +68,12 @@ public class ExceptionControllerAdvice {
     public ErrorResult SameStoreExHandler(SameStoreException e, HttpServletRequest request) {
         log.error("[exceptionHandler] ex", e);
         return new ErrorResult("S001", "동일한 이름의 매장이 존재합니다.", request.getRequestURI(), nowDateTime);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NotFoundStoreException.class)
+    public ErrorResult NotFoundStoreException(NotFoundStoreException e, HttpServletRequest request) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult("S002", "해당 매장을 찾을 수 없습니다.", request.getRequestURI(), nowDateTime);
     }
 }
