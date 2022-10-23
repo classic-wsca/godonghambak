@@ -363,6 +363,8 @@ const Carousel = ({
 const CarouselWrapper = styled.section`
   position: relative;
   width: 100%;
+  max-width: ${pixelToRem(1440)};
+  margin: 0 auto;
   overflow: hidden;
 `;
 
@@ -441,5 +443,3 @@ const RightButton = styled(Button)<{ topValue: number; rightValue: number }>`
 `;
 
 export default Carousel;
-
-// https://www.w3.org/WAI/tutorials/carousels/structure/#using-wai-aria-roles-and-labels
