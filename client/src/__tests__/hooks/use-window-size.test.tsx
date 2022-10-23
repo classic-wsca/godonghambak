@@ -1,29 +1,12 @@
 import { renderHook, act } from '../test-utils';
+import {
+  isClient,
+  getRandomBrowserSize,
+  triggerResize,
+} from '../test-utils/window';
 import { useWindowSize } from '~hooks/index';
-import { getRandomNumber } from '~utils/math-utils';
 
 describe('useWindowSize hook', () => {
-  const BROWSER_SIZES = [360, 768, 992, 1280, 1440, 1920, 2048];
-
-  const isClient = typeof window === 'object';
-
-  const getRandomValueOfArray = <T,>(array: T[]) => {
-    const randomIndex = getRandomNumber(0, array.length);
-    const randomBrowserSize = array[randomIndex];
-
-    return randomBrowserSize;
-  };
-
-  const triggerResize = (dimension: 'width' | 'height', value: number) => {
-    if (dimension === 'width') {
-      window.innerWidth = value;
-    } else if (dimension === 'height') {
-      window.innerHeight = value;
-    }
-
-    window.dispatchEvent(new Event('resize'));
-  };
-
   it('should be defined', () => {
     expect(useWindowSize).toBeDefined();
   });
@@ -47,7 +30,7 @@ describe('useWindowSize hook', () => {
 
   it('should re-render after width change', () => {
     const { result } = renderHook(() => useWindowSize());
-    const randomBrowserSize = getRandomValueOfArray(BROWSER_SIZES);
+    const randomBrowserSize = getRandomBrowserSize();
 
     act(() => {
       triggerResize('width', randomBrowserSize);
@@ -58,7 +41,7 @@ describe('useWindowSize hook', () => {
 
   it('should re-render after height change', () => {
     const { result } = renderHook(() => useWindowSize());
-    const randomBrowserSize = getRandomValueOfArray(BROWSER_SIZES);
+    const randomBrowserSize = getRandomBrowserSize();
 
     act(() => {
       triggerResize('height', randomBrowserSize);
