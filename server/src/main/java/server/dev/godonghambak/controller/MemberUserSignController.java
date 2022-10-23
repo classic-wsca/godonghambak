@@ -46,6 +46,7 @@ public class MemberUserSignController {
             HttpSession session = request.getSession();
             session.setMaxInactiveInterval(1800); //30분
             session.setAttribute(SessionConst.LOGIN_MEMBER, result);
+
         }
         return ResponseEntity.ok(result);
     }

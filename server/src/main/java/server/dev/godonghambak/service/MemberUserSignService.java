@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import server.dev.godonghambak.domain.entity.MemberUser;
 import server.dev.godonghambak.dao.MemberUserDao;
 import server.dev.godonghambak.exceptionhandler.exception.InternalServerException;
+import server.dev.godonghambak.exceptionhandler.exception.memberusersign.NoMatchPasswordException;
 import server.dev.godonghambak.exceptionhandler.exception.memberusersign.NoSearchEmailException;
 import server.dev.godonghambak.exceptionhandler.exception.memberusersign.SameEmailException;
 
@@ -48,7 +49,6 @@ public class MemberUserSignService {
         }
 
         //default 예외처리
-//        return null;
         throw new InternalServerException();
     }
 
@@ -65,7 +65,7 @@ public class MemberUserSignService {
         }
 
         //비밀번호가 맞지 않다는 예외처리
-        return null;
+        throw new NoMatchPasswordException();
     }
 
     public FindEmailResult findEmail(String name, String phone, String birth) {
@@ -91,6 +91,6 @@ public class MemberUserSignService {
         if(updateResult > 0) return true;
 
         //default 예외처리
-        return false;
+        throw new InternalServerException();
     }
 }

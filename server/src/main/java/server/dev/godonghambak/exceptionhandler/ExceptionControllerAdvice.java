@@ -6,10 +6,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import server.dev.godonghambak.exceptionhandler.exception.InternalServerException;
+import server.dev.godonghambak.exceptionhandler.exception.Store.CheckIdException;
 import server.dev.godonghambak.exceptionhandler.exception.Store.NotFoundStoreException;
 import server.dev.godonghambak.exceptionhandler.exception.Store.SameStoreException;
 import server.dev.godonghambak.exceptionhandler.exception.authentication.CheckPasswordException;
 import server.dev.godonghambak.exceptionhandler.exception.authentication.SessionException;
+import server.dev.godonghambak.exceptionhandler.exception.memberusersign.NoMatchPasswordException;
 import server.dev.godonghambak.exceptionhandler.exception.memberusersign.NoSearchEmailException;
 import server.dev.godonghambak.exceptionhandler.exception.memberusersign.SameEmailException;
 
@@ -62,6 +64,13 @@ public class ExceptionControllerAdvice {
         return new ErrorResult("MU002", "해당 정보로 이메일을 찾을 수 없습니다.", request.getRequestURI(), nowDateTime);
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NoMatchPasswordException.class)
+    public ErrorResult NoMatchPasswordException(NoMatchPasswordException e, HttpServletRequest request) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult("MU003", "비밀번호가 일치하지 안습니다.", request.getRequestURI(), nowDateTime);
+    }
+
     //Store Exception
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(SameStoreException.class)
@@ -75,5 +84,12 @@ public class ExceptionControllerAdvice {
     public ErrorResult NotFoundStoreException(NotFoundStoreException e, HttpServletRequest request) {
         log.error("[exceptionHandler] ex", e);
         return new ErrorResult("S002", "해당 매장을 찾을 수 없습니다.", request.getRequestURI(), nowDateTime);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(CheckIdException.class)
+    public ErrorResult CheckIdException(CheckIdException e, HttpServletRequest request) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult("S003", "본인의 매장이 아니거나, store_id 를 확인해주세요.", request.getRequestURI(), nowDateTime);
     }
 }

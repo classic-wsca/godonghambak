@@ -18,7 +18,6 @@ public class MemberUser {
     private String member_user_name;
     private String member_user_phone;
     private String member_user_birth;
-    private String store_id;
     private Timestamp member_user_create_date;
     private Timestamp member_user_delete_date;
 

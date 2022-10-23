@@ -16,6 +16,9 @@ public interface StoreDao {
     @Select("SELECT * FROM store WHERE store_name = #{store_name}")
     public Store findByName(String store_name);
 
+    @Select("SELECT * FROM store WHERE member_user_id = #{member_user_id}")
+    public List<Store> findByMemberUserId(String member_user_id);
+
     @Select("SELECT store_name, "
             + "store_image,"
             + "store_contact,"
@@ -27,10 +30,10 @@ public interface StoreDao {
             + "store_wifi,"
             + "store_kiosk "
             + "FROM store ORDER BY store_id DESC")
-    public List<InsertOrUpdateDto> findAll();
+    public List<InsertDto> findAll();
 
     @Insert("INSERT INTO store VALUES "
-            + "(#{store_id}, #{store_name}, #{store_image}, #{store_contact}, #{store_address}, #{store_businesshours},"
+            + "(#{store_id}, #{member_user_id}, #{store_name}, #{store_image}, #{store_contact}, #{store_address}, #{store_businesshours},"
             + "#{store_breaktime}, #{store_lastorder}, #{store_parking}, #{store_wifi}, #{store_kiosk})")
     public int insert(Store insertinfo);
 
@@ -44,11 +47,11 @@ public interface StoreDao {
             + "store_parking = #{store_parking},"
             + "store_wifi = #{store_wifi},"
             + "store_kiosk = #{store_kiosk} "
-            + "WHERE store_id = #{store_id}")
+            + "WHERE store_id = #{store_id} AND member_user_id = #{member_user_id}")
     public int update(Store updateInfo);
 
     @Delete("DELETE FROM store "
-            + "WHERE store_id = #{store_id} AND store_name = #{store_name}")
-    public int delete(DeleteDto deleteInfo);
+            + "WHERE store_id = #{store_id} AND member_user_id = #{member_user_id}")
+    public int delete(DeleteDto2 deleteInfo);
 
 }

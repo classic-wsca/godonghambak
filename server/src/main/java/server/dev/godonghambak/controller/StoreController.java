@@ -7,10 +7,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.dev.godonghambak.domain.dto.StoreDto.InsertOrUpdateDto;
+import server.dev.godonghambak.domain.dto.StoreDto.InsertDto;
 import server.dev.godonghambak.domain.entity.Store;
 import server.dev.godonghambak.service.StoreService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static server.dev.godonghambak.domain.dto.StoreDto.*;
@@ -25,7 +26,7 @@ public class StoreController {
 
     private final StoreService storeService;
 
-    @GetMapping("/one")
+    @GetMapping("/")
     @ApiOperation(value = "매장 단일 조회", notes = "매장 단일 조회")
     public ResponseEntity<?> selectOne(
             @ApiParam(value = "매장 이름", required = true) @RequestParam String name) {
@@ -38,34 +39,43 @@ public class StoreController {
     @ApiOperation(value = "모든 매장 조회", notes = "모든 매장 조회")
     public ResponseEntity<?> selectList() {
 
-        List<InsertOrUpdateDto> stores = storeService.selectList();
+        List<InsertDto> stores = storeService.selectList();
         return ResponseEntity.ok(stores);
     }
 
-    @PostMapping("/insert")
+    @GetMapping("/individual")
+    @ApiOperation(value = "유저 ID 따른 매장 조회", notes = "유저 ID 따른 매장 조회")
+    public ResponseEntity<?> selectIndividual(
+            @ApiParam(value = "유저 ID", required = true) @RequestParam String memberUserId) {
+
+        List<Store> stores = storeService.selectIndividual(memberUserId);
+        return ResponseEntity.ok(stores);
+    }
+
+    @PostMapping("/")
     @ApiOperation(value = "매장 추가", notes = "매장 추가")
     public ResponseEntity<?> insert(
-            @ApiParam(value = "매장 추가 정보", required = true) @RequestBody InsertOrUpdateDto storeInsertOrUpdateDto) {
+            @ApiParam(value = "매장 추가 정보", required = true) @RequestBody InsertDto storeInsertDto, HttpServletRequest request) {
 
-        Store result = storeService.insert(storeInsertOrUpdateDto);
+        Store result = storeService.insert(storeInsertDto, request);
         return ResponseEntity.ok(result);
     }
 
-    @PutMapping("/update")
+    @PutMapping("/")
     @ApiOperation(value = "매장 정보 수정", notes = "매장 정보 수정")
     public ResponseEntity<?> update(
-            @ApiParam(value = "매장 정보 수정", required = true) @RequestBody Store storeInfo) {
+            @ApiParam(value = "매장 정보 수정", required = true) @RequestBody UpdateDto updateDto, HttpServletRequest request) {
 
-        Store result = storeService.update(storeInfo);
+        Store result = storeService.update(updateDto, request);
         return ResponseEntity.ok(result);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/")
     @ApiOperation(value = "매장 정보 삭제", notes = "매장 정보 삭제")
     public ResponseEntity<?> delete(
-            @ApiParam(value = "매장 정보 삭제", required = true) @RequestBody DeleteDto storeDeleteInfoDto) {
+            @ApiParam(value = "매장 정보 삭제", required = true) @RequestBody DeleteDto1 storeDeleteInfoDto, HttpServletRequest request) {
 
-        Boolean result = storeService.delete(storeDeleteInfoDto);
+        Boolean result = storeService.delete(storeDeleteInfoDto, request);
         return ResponseEntity.ok(result);
     }
 }

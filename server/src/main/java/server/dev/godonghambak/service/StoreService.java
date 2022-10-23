@@ -3,12 +3,18 @@ package server.dev.godonghambak.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import server.dev.godonghambak.SessionConst;
+import server.dev.godonghambak.dao.MemberUserDao;
 import server.dev.godonghambak.dao.StoreDao;
+import server.dev.godonghambak.domain.entity.MemberUser;
 import server.dev.godonghambak.domain.entity.Store;
 import server.dev.godonghambak.exceptionhandler.exception.InternalServerException;
+import server.dev.godonghambak.exceptionhandler.exception.Store.CheckIdException;
 import server.dev.godonghambak.exceptionhandler.exception.Store.NotFoundStoreException;
 import server.dev.godonghambak.exceptionhandler.exception.Store.SameStoreException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,6 +26,7 @@ import static server.dev.godonghambak.domain.dto.StoreDto.*;
 public class StoreService {
 
     private final StoreDao storeDao;
+    private final MemberUserDao memberUserDao;
 
     public Store selectOne(String storeName) {
 
@@ -29,49 +36,88 @@ public class StoreService {
         return findResult;
     }
 
-    public List<InsertOrUpdateDto> selectList() {
-        List<InsertOrUpdateDto> findAllResult = storeDao.findAll();
+    public List<InsertDto> selectList() {
+        List<InsertDto> findAllResult = storeDao.findAll();
         return findAllResult;
     }
 
-    public Store insert(InsertOrUpdateDto storeInsertOrUpdateDto) {
+    public List<Store> selectIndividual(String memberUserId) {
+        List<Store> byMemberUserId = storeDao.findByMemberUserId(memberUserId);
+        if(!byMemberUserId.isEmpty()) return byMemberUserId;
+        throw new InternalServerException();
+    }
 
-        Store findResult = storeDao.findByName(storeInsertOrUpdateDto.getStore_name());
+    public Store insert(InsertDto storeInsertDto, HttpServletRequest request) {
+
+        Store findResult = storeDao.findByName(storeInsertDto.getStore_name());
         if(findResult != null) throw new SameStoreException();
+
+        HttpSession session = request.getSession(false);
+        MemberUser sessionMemberUser = (MemberUser)session.getAttribute(SessionConst.LOGIN_MEMBER);
 
         Store InsertInfo = Store.builder()
                             .store_id(UUID.randomUUID().toString().replace("-", ""))
-                            .store_name(storeInsertOrUpdateDto.getStore_name())
-                            .store_image(storeInsertOrUpdateDto.getStore_image())
-                            .store_contact(storeInsertOrUpdateDto.getStore_contact())
-                            .store_address(storeInsertOrUpdateDto.getStore_address())
-                            .store_businesshours(storeInsertOrUpdateDto.getStore_businesshours())
-                            .store_breaktime(storeInsertOrUpdateDto.getStore_breaktime())
-                            .store_lastorder(storeInsertOrUpdateDto.getStore_lastorder())
-                            .store_parking(storeInsertOrUpdateDto.isStore_parking())
-                            .store_wifi(storeInsertOrUpdateDto.isStore_wifi())
-                            .store_kiosk(storeInsertOrUpdateDto.isStore_kiosk())
+                            .member_user_id(sessionMemberUser.getMember_user_id())
+                            .store_name(storeInsertDto.getStore_name())
+                            .store_image(storeInsertDto.getStore_image())
+                            .store_contact(storeInsertDto.getStore_contact())
+                            .store_address(storeInsertDto.getStore_address())
+                            .store_businesshours(storeInsertDto.getStore_businesshours())
+                            .store_breaktime(storeInsertDto.getStore_breaktime())
+                            .store_lastorder(storeInsertDto.getStore_lastorder())
+                            .store_parking(storeInsertDto.isStore_parking())
+                            .store_wifi(storeInsertDto.isStore_wifi())
+                            .store_kiosk(storeInsertDto.isStore_kiosk())
                             .build();
 
         int insertResult = storeDao.insert(InsertInfo);
 
-        if(insertResult > 0 ) return InsertInfo;
+        if(insertResult > 0) return InsertInfo;
         throw new InternalServerException();
     }
 
-    public Store update(Store storeInfo) {
+    public Store update(UpdateDto updateDto, HttpServletRequest request) {
 
-        int updateResult = storeDao.update(storeInfo);
-        if(updateResult > 0 ) return storeInfo;
-        throw new InternalServerException();
+        HttpSession session = request.getSession(false);
+        MemberUser sessionMemberUser = (MemberUser)session.getAttribute(SessionConst.LOGIN_MEMBER);
+
+        Store updateInfo = Store.builder()
+                                .store_id(updateDto.getStore_id())
+                                .member_user_id(sessionMemberUser.getMember_user_id())
+                                .store_name(updateDto.getStore_name())
+                                .store_image(updateDto.getStore_image())
+                                .store_contact(updateDto.getStore_contact())
+                                .store_address(updateDto.getStore_address())
+                                .store_businesshours(updateDto.getStore_businesshours())
+                                .store_breaktime(updateDto.getStore_breaktime())
+                                .store_lastorder(updateDto.getStore_lastorder())
+                                .store_parking(updateDto.isStore_parking())
+                                .store_wifi(updateDto.isStore_wifi())
+                                .store_kiosk(updateDto.isStore_kiosk())
+                                .build();
+
+        int updateResult = storeDao.update(updateInfo);
+        if(updateResult > 0 ) return updateInfo;
+        throw new CheckIdException();
     }
 
 
-    public Boolean delete(DeleteDto storeDeleteInfoDto) {
+    public Boolean delete(DeleteDto1 deleteDto1, HttpServletRequest request) {
 
-        int deleteResult = storeDao.delete(storeDeleteInfoDto);
-        if(deleteResult > 0 ) return true;
-        throw new InternalServerException();
+        HttpSession session = request.getSession(false);
+        MemberUser sessionMemberUser = (MemberUser)session.getAttribute(SessionConst.LOGIN_MEMBER);
+
+        DeleteDto2 storeDeleteInfo = DeleteDto2.builder()
+                                                .store_id(deleteDto1.getStore_id())
+                                                .member_user_id(sessionMemberUser.getMember_user_id())
+                                                .build();
+
+        int deleteResult = storeDao.delete(storeDeleteInfo);
+
+        if(deleteResult > 0) return true;
+        throw new CheckIdException();
 
     }
+
+
 }
