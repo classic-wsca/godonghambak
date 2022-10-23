@@ -17,7 +17,7 @@ public interface MemberUserDao {
     public int insert(MemberUser memberUser);
 
     @Select("SELECT * FROM member_user WHERE member_user_email = #{member_user_email}")
-    public MemberUser findByEmailAndPassword(SignIn signInInfo);
+    public MemberUser findByEmail(String member_user_email);
 
     @Select("SELECT member_user_email FROM member_user WHERE member_user_name = #{member_user_name} AND member_user_phone = #{member_user_phone}" +
             "AND member_user_birth = #{member_user_birth}")

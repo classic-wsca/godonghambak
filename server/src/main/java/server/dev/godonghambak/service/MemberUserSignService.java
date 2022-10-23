@@ -2,12 +2,13 @@ package server.dev.godonghambak.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import server.dev.godonghambak.domain.entity.MemberUser;
 import server.dev.godonghambak.dao.MemberUserDao;
 import server.dev.godonghambak.exceptionhandler.exception.InternalServerException;
+import server.dev.godonghambak.exceptionhandler.exception.memberusersign.NoSearchEmail;
+import server.dev.godonghambak.exceptionhandler.exception.memberusersign.SameEmailException;
 
 import java.util.UUID;
 
@@ -25,6 +26,8 @@ public class MemberUserSignService {
     public MemberUser signUp(SignUp signUpinfo){
 
         //회원가입 하고자 하는 아이디 확인 중복확인 후 예외처리
+        MemberUser byEmail = memberUserRepository.findByEmail(signUpinfo.getMember_user_email());
+        if(byEmail != null) throw new SameEmailException();
 
         //패스워드 인코딩
         String encodePassword = passwordEncoder.encode(signUpinfo.getMember_user_password());
@@ -51,7 +54,7 @@ public class MemberUserSignService {
 
     public MemberUser signIn(SignIn signInInfo) {
 
-        MemberUser result = memberUserRepository.findByEmailAndPassword(signInInfo);
+        MemberUser result = memberUserRepository.findByEmail(signInInfo.getMember_user_email());
 
         //패스워드 확인
         boolean passwordResult = passwordEncoder.matches(signInInfo.getMember_user_password(), result.getMember_user_password());
@@ -80,7 +83,7 @@ public class MemberUserSignService {
         }
 
         //아이디 못찾았다는 예외처리
-        return null;
+        throw new NoSearchEmail();
     }
 
     public boolean changePassword(ChangePassword changePassword) {
