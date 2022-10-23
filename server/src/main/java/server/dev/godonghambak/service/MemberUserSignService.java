@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import server.dev.godonghambak.domain.entity.MemberUser;
 import server.dev.godonghambak.dao.MemberUserDao;
 import server.dev.godonghambak.exceptionhandler.exception.InternalServerException;
-import server.dev.godonghambak.exceptionhandler.exception.memberusersign.NoSearchEmail;
+import server.dev.godonghambak.exceptionhandler.exception.memberusersign.NoSearchEmailException;
 import server.dev.godonghambak.exceptionhandler.exception.memberusersign.SameEmailException;
 
 import java.util.UUID;
@@ -83,7 +83,7 @@ public class MemberUserSignService {
         }
 
         //아이디 못찾았다는 예외처리
-        throw new NoSearchEmail();
+        throw new NoSearchEmailException();
     }
 
     public boolean changePassword(ChangePassword changePassword) {
