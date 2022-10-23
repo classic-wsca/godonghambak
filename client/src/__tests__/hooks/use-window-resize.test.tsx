@@ -1,7 +1,7 @@
 import { renderHook, act, fireEvent } from '../test-utils';
 import { useWindowResize } from '~hooks/index';
 
-describe('useStopAnimationOnResize hook', () => {
+describe('useWindowResize hook', () => {
   it('should return ref object and resizing state', () => {
     const { result } = renderHook(() => useWindowResize());
 
