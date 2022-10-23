@@ -6,9 +6,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import server.dev.godonghambak.exceptionhandler.exception.InternalServerException;
+import server.dev.godonghambak.exceptionhandler.exception.Store.SameStoreException;
 import server.dev.godonghambak.exceptionhandler.exception.authentication.CheckPasswordException;
 import server.dev.godonghambak.exceptionhandler.exception.authentication.SessionException;
-import server.dev.godonghambak.exceptionhandler.exception.memberusersign.NoSearchEmail;
+import server.dev.godonghambak.exceptionhandler.exception.memberusersign.NoSearchEmailException;
 import server.dev.godonghambak.exceptionhandler.exception.memberusersign.SameEmailException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,9 +55,17 @@ public class ExceptionControllerAdvice {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(NoSearchEmail.class)
-    public ErrorResult NoSearchEmailiExHandler(NoSearchEmail e, HttpServletRequest request) {
+    @ExceptionHandler(NoSearchEmailException.class)
+    public ErrorResult NoSearchEmailiExHandler(NoSearchEmailException e, HttpServletRequest request) {
         log.error("[exceptionHandler] ex", e);
         return new ErrorResult("MU002", "해당 정보로 이메일을 찾을 수 없습니다.", request.getRequestURI(), nowDateTime);
+    }
+
+    //Store Exception
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(SameStoreException.class)
+    public ErrorResult SameStoreExHandler(SameStoreException e, HttpServletRequest request) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult("S001", "동일한 이름의 매장이 존재합니다.", request.getRequestURI(), nowDateTime);
     }
 }
