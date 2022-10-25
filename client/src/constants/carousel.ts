@@ -38,3 +38,57 @@ export const MAIN_CAROUSEL_ITEMS: MainCarouselItems[] = [
     imgUrl: '/images/ggalmaehambak.png',
   },
 ];
+
+// export const MENU_CAROUSEL_ITEMS: string[] = [
+//   '/images/menu-01.png',
+//   '/images/menu-02.png',
+//   '/images/menu-03.png',
+//   '/images/menu-04.png',
+//   '/images/menu-05.png',
+//   '/images/menu-06.png',
+//   '/images/menu-07.png',
+//   '/images/menu-08.png',
+//   '/images/menu-09.png',
+// ];
+
+export const MENU_CAROUSEL_ITEMS: Pick<
+  MainCarouselItems,
+  'title' | 'imgUrl'
+>[] = [
+  {
+    title: '고동함박',
+    imgUrl: '/images/menu-01.png',
+  },
+  {
+    title: '깔매함박',
+    imgUrl: '/images/menu-02.png',
+  },
+  {
+    title: '고동까스',
+    imgUrl: '/images/menu-03.png',
+  },
+  {
+    title: '로제함박',
+    imgUrl: '/images/menu-04.png',
+  },
+  {
+    title: '월클함박',
+    imgUrl: '/images/menu-05.png',
+  },
+  {
+    title: '함박파스타',
+    imgUrl: '/images/menu-06.png',
+  },
+  {
+    title: '혜자버거',
+    imgUrl: '/images/menu-07.png',
+  },
+  {
+    title: '돈까스',
+    imgUrl: '/images/menu-08.png',
+  },
+  {
+    title: '쫄면',
+    imgUrl: '/images/menu-09.png',
+  },
+];
