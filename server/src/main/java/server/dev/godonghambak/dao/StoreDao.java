@@ -48,7 +48,20 @@ public interface StoreDao {
             + "store_wifi = #{store_wifi},"
             + "store_kiosk = #{store_kiosk} "
             + "WHERE store_id = #{store_id} AND member_user_id = #{member_user_id}")
-    public int update(Store updateInfo);
+    public int userUpdate(Store updateInfo);
+
+    @Update("UPDATE store SET store_name = #{store_name}, "
+            + "store_image = #{store_image},"
+            + "store_contact = #{store_contact},"
+            + "store_address = #{store_address},"
+            + "store_businesshours = #{store_businesshours},"
+            + "store_breaktime = #{store_breaktime},"
+            + "store_lastorder = #{store_lastorder},"
+            + "store_parking = #{store_parking},"
+            + "store_wifi = #{store_wifi},"
+            + "store_kiosk = #{store_kiosk} "
+            + "WHERE store_id = #{store_id}")
+    public int menegeUpdate(Store updateInfo);
 
     @Delete("DELETE FROM store "
             + "WHERE store_id = #{store_id} AND member_user_id = #{member_user_id}")
