@@ -44,6 +44,7 @@ const MenuCarousel = () => {
 };
 
 const MenuCarouselWrapper = styled(Carousel)`
+  max-width: 100vw;
   padding: ${pixelToRem(90)} 0;
 
   & > ul {
