@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import server.dev.godonghambak.SessionConst;
-import server.dev.godonghambak.dao.MemberUserDao;
 import server.dev.godonghambak.dao.StoreDao;
 import server.dev.godonghambak.domain.entity.MemberUser;
 import server.dev.godonghambak.domain.entity.Store;
@@ -26,7 +25,6 @@ import static server.dev.godonghambak.domain.dto.StoreDto.*;
 public class StoreService {
 
     private final StoreDao storeDao;
-    private final MemberUserDao memberUserDao;
 
     public Store selectOne(String storeName) {
 
