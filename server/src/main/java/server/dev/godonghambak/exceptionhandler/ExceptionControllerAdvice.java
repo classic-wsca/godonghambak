@@ -11,7 +11,7 @@ import server.dev.godonghambak.exceptionhandler.exception.Store.NotFoundStoreExc
 import server.dev.godonghambak.exceptionhandler.exception.Store.SameStoreException;
 import server.dev.godonghambak.exceptionhandler.exception.authentication.CheckPasswordException;
 import server.dev.godonghambak.exceptionhandler.exception.authentication.SessionException;
-import server.dev.godonghambak.exceptionhandler.exception.memberusersign.NoMatchPasswordException;
+import server.dev.godonghambak.exceptionhandler.exception.NoMatchEmailOrPasswordException;
 import server.dev.godonghambak.exceptionhandler.exception.memberusersign.NoSearchEmailException;
 import server.dev.godonghambak.exceptionhandler.exception.memberusersign.SameEmailException;
 
@@ -65,10 +65,10 @@ public class ExceptionControllerAdvice {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(NoMatchPasswordException.class)
-    public ErrorResult NoMatchPasswordException(NoMatchPasswordException e, HttpServletRequest request) {
+    @ExceptionHandler(NoMatchEmailOrPasswordException.class)
+    public ErrorResult NoMatchPasswordException(NoMatchEmailOrPasswordException e, HttpServletRequest request) {
         log.error("[exceptionHandler] ex", e);
-        return new ErrorResult("MU003", "비밀번호가 일치하지 안습니다.", request.getRequestURI(), nowDateTime);
+        return new ErrorResult("MU003", "아아디 혹은 비밀번호를 확인해주세요.", request.getRequestURI(), nowDateTime);
     }
 
     //Store Exception

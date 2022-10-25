@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import server.dev.godonghambak.dao.MemberManagerDao;
 import server.dev.godonghambak.domain.entity.MemberManage;
 import server.dev.godonghambak.exceptionhandler.exception.InternalServerException;
+import server.dev.godonghambak.exceptionhandler.exception.NoMatchEmailOrPasswordException;
 import server.dev.godonghambak.exceptionhandler.exception.memberusersign.SameEmailException;
 
 import java.util.UUID;
@@ -45,5 +46,19 @@ public class MemberManageService {
 
         //default 예외처리
         throw new InternalServerException();
+    }
+
+    public MemberManage signIn(MSignIn signInInfo) {
+
+        MemberManage result = memberManagerDao.findByEmail(signInInfo.getMember_manage_email());
+        if(result == null) throw new NoMatchEmailOrPasswordException();
+
+        //패스워드 확인
+        boolean passwordResult = passwordEncoder.matches(signInInfo.getMember_manage_password(), result.getMember_manage_password());
+//        boolean passwordResult = passwordEncoder.matches(result.getMember_user_password(), signInInfo.getMember_user_password());
+        if(passwordResult) return result;
+
+        //비밀번호가 맞지 않다는 예외처리
+        throw new NoMatchEmailOrPasswordException();
     }
 }
