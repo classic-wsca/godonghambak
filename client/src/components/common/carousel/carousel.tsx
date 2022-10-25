@@ -20,6 +20,7 @@ import { useInterval } from '~hooks/index';
 import { pixelToRem } from '~utils/style-utils';
 
 export interface CarouselProps extends PropsWithChildren {
+  className?: string;
   width?: number;
   margin?: number;
   duration?: number;
@@ -32,7 +33,7 @@ export interface CarouselProps extends PropsWithChildren {
 }
 
 const Carousel = ({
-  children,
+  className, // 스타일 오버라이딩을 위해
   width, // slideWidth
   margin = 130, // slide 사이 여백
   duration = 300, // animation duration
@@ -42,6 +43,7 @@ const Carousel = ({
   autoplayReverse = false, // autoSlide 방향, default 오른쪽
   button = true, // button 여부
   indicator = true, // indicator 여부
+  children,
 }: CarouselProps) => {
   const slideCount = useMemo(() => React.Children.count(children), [children]); // prettier-ignore
   const [currentIndex, setCurrentIndex] = useState(slideCount);
@@ -65,14 +67,15 @@ const Carousel = ({
   }, [children]);
 
   const setTrackInitialPosition = useCallback(() => {
-    if (!carouselRef.current || !width) {
+    if (!carouselRef.current) {
       return;
     }
 
     const distance =
       carouselRef.current.offsetWidth / 2 - slideWidth / 2 - margin;
+
     setInitialPosition(distance);
-  }, [width, margin, slideWidth]);
+  }, [margin, slideWidth]);
 
   const updateSlideWidth = useCallback(() => {
     // 사용자 지정 width가 있을 경우 slideWidth의 크기 변경 필요 없음, 중앙 정렬만 해주고 return
@@ -227,13 +230,28 @@ const Carousel = ({
     ],
   );
 
-  const handleMouseEnter = () => {
+  const handleFocus = () => {
     setPaused(true);
   };
 
-  const handleMouseLeave = () => {
+  const handleBlur = () => {
     setPaused(false);
   };
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent): void => {
+      if (!carouselRef.current) {
+        return;
+      }
+
+      if (e.key === 'ArrowLeft') {
+        movePrev();
+      } else if (e.key === 'ArrowRight') {
+        moveNext();
+      }
+    },
+    [movePrev, moveNext],
+  );
 
   useEffect(() => {
     if (!carouselRef.current) {
@@ -268,12 +286,17 @@ const Carousel = ({
   return (
     <CarouselWrapper
       ref={carouselRef}
-      onMouseEnter={handleMouseEnter}
-      onTouchStart={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onTouchEnd={handleMouseLeave}
+      className={className}
+      onMouseEnter={handleFocus}
+      onTouchStart={handleFocus}
+      onMouseLeave={handleBlur}
+      onTouchEnd={handleBlur}
+      onKeyDown={handleKeyDown}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
       role="region"
       aria-roledescription="carousel"
+      tabIndex={0} // 마크업 순서에 따라 초점을 가질 수 있도록
     >
       <Track
         ref={trackRef}
@@ -297,49 +320,47 @@ const Carousel = ({
             child as ReactElement<PropsWithChildren<CarouselItemProps>>,
             {
               key: index,
-              id: `carousel-item-${(index % slideCount) + 1}`,
+              id: `carousel-item-${index + 1}`,
               width: slideWidth,
               margin,
               label: `${(index % slideCount) + 1} of ${slideCount}`,
+              currentIndex,
+              slideCount,
             },
           ),
         )}
       </Track>
-      <Indicators role="tablist" aria-label="slides">
-        {button && (
-          <>
-            <LeftButton
-              type="button"
-              variant="icon"
-              size="medium"
-              topValue={
-                trackRef.current ? trackRef.current.offsetHeight / 2 : 0
-              }
-              leftValue={margin - 100}
-              onClick={movePrev}
-              onTouchEnd={movePrev}
-              aria-label="prev-button"
-            >
-              <LeftArrowSVG />
-            </LeftButton>
-            <RightButton
-              type="button"
-              variant="icon"
-              size="medium"
-              topValue={
-                trackRef.current ? trackRef.current.offsetHeight / 2 : 0
-              }
-              rightValue={margin - 100}
-              onClick={moveNext}
-              onTouchEnd={moveNext}
-              aria-label="next-button"
-            >
-              <RightArrowSVG />
-            </RightButton>
-          </>
-        )}
-        {indicator &&
-          React.Children.map(children, (_, index) => (
+      {button && (
+        <>
+          <LeftButton
+            type="button"
+            variant="icon"
+            size="medium"
+            topValue={trackRef.current ? trackRef.current.offsetHeight / 2 : 0}
+            leftValue={margin - 100}
+            onClick={movePrev}
+            onTouchEnd={movePrev}
+            aria-label="prev-button"
+          >
+            <LeftArrowSVG />
+          </LeftButton>
+          <RightButton
+            type="button"
+            variant="icon"
+            size="medium"
+            topValue={trackRef.current ? trackRef.current.offsetHeight / 2 : 0}
+            rightValue={margin - 100}
+            onClick={moveNext}
+            onTouchEnd={moveNext}
+            aria-label="next-button"
+          >
+            <RightArrowSVG />
+          </RightButton>
+        </>
+      )}
+      {indicator && (
+        <Indicators role="tablist" aria-label="slides">
+          {React.Children.map(children, (_, index) => (
             <Indicator
               id={`carousel-tab-${index}`}
               type="button"
@@ -355,7 +376,8 @@ const Carousel = ({
               data-slide={`slide ${index}`}
             />
           ))}
-      </Indicators>
+        </Indicators>
+      )}
     </CarouselWrapper>
   );
 };
