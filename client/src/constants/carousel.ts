@@ -39,18 +39,6 @@ export const MAIN_CAROUSEL_ITEMS: MainCarouselItems[] = [
   },
 ];
 
-// export const MENU_CAROUSEL_ITEMS: string[] = [
-//   '/images/menu-01.png',
-//   '/images/menu-02.png',
-//   '/images/menu-03.png',
-//   '/images/menu-04.png',
-//   '/images/menu-05.png',
-//   '/images/menu-06.png',
-//   '/images/menu-07.png',
-//   '/images/menu-08.png',
-//   '/images/menu-09.png',
-// ];
-
 export const MENU_CAROUSEL_ITEMS: Pick<
   MainCarouselItems,
   'title' | 'imgUrl'
@@ -90,5 +78,20 @@ export const MENU_CAROUSEL_ITEMS: Pick<
   {
     title: '쫄면',
     imgUrl: '/images/menu-09.png',
+  },
+];
+
+export const CHARACTER_CAROUSEL_ITEMS = [
+  {
+    src: '/images/character-godong.png',
+    alt: '고동이',
+  },
+  {
+    src: '/images/character-gosoon.png',
+    alt: '고순이',
+  },
+  {
+    src: '/images/character-hyeja.png',
+    alt: '혜자씨',
   },
 ];
