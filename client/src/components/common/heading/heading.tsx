@@ -21,13 +21,13 @@ interface HeadingProps extends MarginPadding, PropsWithChildren {
 
 const Heading = ({ as = 'h1', children, ...rest }: HeadingProps) => {
   return (
-    <StyledHeading as={as} {...rest}>
+    <Base as={as} {...rest}>
       {children}
-    </StyledHeading>
+    </Base>
   );
 };
 
-const StyledHeading = styled.h1<HeadingProps>`
+const Base = styled.h1<HeadingProps>`
   ${({ theme, as: headingLevel }) =>
     headingLevel &&
     css`

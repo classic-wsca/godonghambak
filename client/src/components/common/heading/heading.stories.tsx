@@ -7,7 +7,7 @@ import Heading, { HeadingLevel } from './heading';
 import { fontSizes } from '~styles/theme';
 
 export default {
-  title: 'components/carousel/heading',
+  title: 'components/common/heading',
   component: Heading,
 } as ComponentMeta<typeof Heading>;
 
