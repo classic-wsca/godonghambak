@@ -86,7 +86,7 @@ public class StoreService {
                                     .store_wifi(storeInsertDto.isStore_wifi())
                                     .store_kiosk(storeInsertDto.isStore_kiosk())
                                     .build();
-        }
+        }   
 
         int insertResult = storeDao.insert(InsertInfo);
 
