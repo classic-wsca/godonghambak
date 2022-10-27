@@ -1,6 +1,18 @@
-import type { MainCarouselItems } from '~types/carousel';
+import type { GlobalColors } from '~types/common';
 
-export const MAIN_CAROUSEL_ITEMS: MainCarouselItems[] = [
+interface CarouselItem {
+  title: string;
+  subTitle: string;
+  content: string;
+  link: {
+    text: string;
+    href: string;
+  };
+  color: GlobalColors;
+  imgUrl: string;
+}
+
+export const MAIN_CAROUSEL_ITEMS: CarouselItem[] = [
   {
     title: '고동함박',
     subTitle: '육즙 가득 품은 함박 스테이크',
@@ -39,10 +51,7 @@ export const MAIN_CAROUSEL_ITEMS: MainCarouselItems[] = [
   },
 ];
 
-export const MENU_CAROUSEL_ITEMS: Pick<
-  MainCarouselItems,
-  'title' | 'imgUrl'
->[] = [
+export const MENU_CAROUSEL_ITEMS: Pick<CarouselItem, 'title' | 'imgUrl'>[] = [
   {
     title: '고동함박',
     imgUrl: '/images/menu-01.png',
