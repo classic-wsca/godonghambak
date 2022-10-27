@@ -11,16 +11,16 @@ export const BUTTON_SIZES: Partial<
 > = {
   'x-small': css`
     padding: ${pixelToRem(11)} ${pixelToRem(18)};
-    font-size: ${({ theme }) => theme.fontSizes.small};
+    font-size: ${({ theme }) => theme.fontSizes.sm};
     font-weight: 400;
   `,
   small: css`
     padding: ${pixelToRem(12)} ${pixelToRem(24)};
-    font-size: ${({ theme }) => theme.fontSizes.medium};
+    font-size: ${({ theme }) => theme.fontSizes.lg};
   `,
   medium: css`
     padding: ${pixelToRem(12)} ${pixelToRem(48)};
-    font-size: ${({ theme }) => theme.fontSizes.large};
+    font-size: ${({ theme }) => theme.fontSizes.xl};
   `,
   large: css`
     padding: ${pixelToRem(20)} ${pixelToRem(55)};
@@ -28,7 +28,7 @@ export const BUTTON_SIZES: Partial<
   `,
   'x-large': css`
     padding: ${pixelToRem(20)} ${pixelToRem(68)};
-    font-size: ${({ theme }) => theme.fontSizes.large};
+    font-size: ${({ theme }) => theme.fontSizes.xl};
   `,
 };
 

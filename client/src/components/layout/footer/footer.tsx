@@ -101,7 +101,7 @@ const CompanyInfo = styled.div`
 
   li {
     padding: ${pixelToRem(4)} 0;
-    font-size: ${({ theme }) => theme.fontSizes.small};
+    font-size: ${({ theme }) => theme.fontSizes.sm};
   }
 
   li:first-child {

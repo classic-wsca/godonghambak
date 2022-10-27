@@ -30,7 +30,7 @@ const BreadcrumbItem = ({
 };
 
 const LinkItem = styled.a<{ isCurrent?: boolean }>`
-  font-size: ${({ theme }) => theme.fontSizes.medium};
+  font-size: ${({ theme }) => theme.fontSizes.lg};
   color: ${({ theme, isCurrent }) =>
     isCurrent ? theme.colors.green : theme.colors.gray_700};
 `;

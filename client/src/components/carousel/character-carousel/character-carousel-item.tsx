@@ -55,7 +55,7 @@ const CarouselItemWrapper = styled.li<
 
 const Description = styled.p<{ marginTop: number; color: 'light' | 'dark' }>`
   margin-top: ${({ marginTop }) => pixelToRem(marginTop + 16)};
-  font-size: ${({ theme }) => theme.fontSizes.h5};
+  font-size: ${({ theme }) => theme.fontSizes['3xl']};
   font-weight: 500;
   color: ${({ theme, color }) => theme.colors[color]};
   text-align: center;

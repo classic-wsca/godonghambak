@@ -23,17 +23,19 @@ export const colors = {
 };
 
 export const fontSizes = {
-  h1: pixelToRem(44),
-  h2: pixelToRem(40),
-  h3: pixelToRem(32),
-  h4: pixelToRem(28),
-  h5: pixelToRem(24),
-  h6: pixelToRem(22),
-  large: pixelToRem(20),
-  medium: pixelToRem(18),
-  small: pixelToRem(14),
-  bigFont_large: pixelToRem(64),
-  bigFont_small: pixelToRem(60),
+  '9xl': pixelToRem(64),
+  '8xl': pixelToRem(60),
+  '7xl': pixelToRem(44),
+  '6xl': pixelToRem(40),
+  '5xl': pixelToRem(32),
+  '4xl': pixelToRem(28),
+  '3xl': pixelToRem(24),
+  '2xl': pixelToRem(22),
+  xl: pixelToRem(20),
+  lg: pixelToRem(18),
+  md: pixelToRem(16),
+  sm: pixelToRem(14),
+  xs: pixelToRem(12),
 };
 
 export const breakPoints = {

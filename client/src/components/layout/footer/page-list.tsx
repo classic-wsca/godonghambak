@@ -49,7 +49,7 @@ const Trigger = styled.div<{ isOpen: boolean }>`
   justify-content: space-between;
   align-items: center;
   padding-bottom: ${pixelToRem(12)};
-  font-size: ${({ theme }) => theme.fontSizes.large};
+  font-size: ${({ theme }) => theme.fontSizes.xl};
 
   h4 {
     margin-top: 0;
@@ -113,7 +113,7 @@ const Item = styled.a<UnderlineAnimation>`
   }
 
   @media ${({ theme }) => theme.breakPoints.medium} {
-    font-size: ${({ theme }) => theme.fontSizes.small};
+    font-size: ${({ theme }) => theme.fontSizes.sm};
   }
 
   ${underlineAnimation};

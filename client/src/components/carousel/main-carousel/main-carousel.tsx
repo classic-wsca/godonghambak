@@ -98,7 +98,7 @@ const ContentBox = styled.div`
     a {
       margin: ${pixelToRem(16)} 0;
       padding: ${pixelToRem(16)} ${pixelToRem(32)};
-      font-size: ${({ theme }) => theme.fontSizes.small};
+      font-size: ${({ theme }) => theme.fontSizes.sm};
     }
   }
 `;
@@ -106,47 +106,47 @@ const ContentBox = styled.div`
 const Title = styled.h2<{ color: GlobalColors }>`
   margin-top: ${pixelToRem(20)};
   font-family: 'Hahmlet', 'Noto Sans KR', -apple-system, sans-serif;
-  font-size: ${({ theme }) => theme.fontSizes.bigFont_small};
+  font-size: ${({ theme }) => theme.fontSizes['8xl']};
   color: ${({ theme, color }) => theme.colors[color]};
 
   @media ${({ theme }) => theme.breakPoints.large} {
-    font-size: ${({ theme }) => theme.fontSizes.h1};
+    font-size: ${({ theme }) => theme.fontSizes['7xl']};
   }
 
   @media ${({ theme }) => theme.breakPoints.medium} {
     margin: 0;
-    font-size: ${({ theme }) => theme.fontSizes.h4};
+    font-size: ${({ theme }) => theme.fontSizes['4xl']};
   }
 `;
 
 const SubTitle = styled.h3`
   margin-bottom: 0;
-  font-size: ${({ theme }) => theme.fontSizes.h4};
+  font-size: ${({ theme }) => theme.fontSizes['4xl']};
 
   @media ${({ theme }) => theme.breakPoints.large} {
-    font-size: ${({ theme }) => theme.fontSizes.h6};
+    font-size: ${({ theme }) => theme.fontSizes['2xl']};
   }
 
   @media ${({ theme }) => theme.breakPoints.medium} {
     margin-top: 0;
     margin-bottom: ${pixelToRem(16)};
-    font-size: ${({ theme }) => theme.fontSizes.medium};
+    font-size: ${({ theme }) => theme.fontSizes.lg};
     font-weight: 500;
   }
 `;
 
 const Content = styled.p`
-  font-size: ${({ theme }) => theme.fontSizes.h6};
+  font-size: ${({ theme }) => theme.fontSizes['2xl']};
   font-weight: 300;
   line-height: 1.5;
   white-space: pre-wrap;
 
   @media ${({ theme }) => theme.breakPoints.large} {
-    font-size: ${({ theme }) => theme.fontSizes.medium};
+    font-size: ${({ theme }) => theme.fontSizes.lg};
   }
 
   @media ${({ theme }) => theme.breakPoints.medium} {
-    font-size: ${({ theme }) => theme.fontSizes.small};
+    font-size: ${({ theme }) => theme.fontSizes.sm};
     white-space: normal;
     overflow: hidden;
     text-overflow: ellipsis;

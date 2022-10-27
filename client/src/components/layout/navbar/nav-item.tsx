@@ -57,7 +57,7 @@ const Item = styled.a<{ isActive: boolean } & UnderlineAnimation>`
   position: relative;
   padding: ${pixelToRem(32)} 0;
   font-weight: 600;
-  font-size: ${({ theme }) => theme.fontSizes.medium};
+  font-size: ${({ theme }) => theme.fontSizes.lg};
   color: ${({ theme, isActive }) =>
     isActive ? theme.colors.yellow : theme.colors.dark};
 
@@ -95,7 +95,7 @@ const MobileItem = styled.button<{ isActive: boolean; isOpen: boolean }>`
     width: 100%;
     padding: ${pixelToRem(8)};
     font-weight: 600;
-    font-size: ${({ theme }) => theme.fontSizes.medium};
+    font-size: ${({ theme }) => theme.fontSizes.lg};
     color: ${({ theme, isActive }) =>
       isActive ? theme.colors.yellow : theme.colors.dark};
 
