@@ -22,7 +22,8 @@ export type TextElement =
   | 'del'
   | 'ins'
   | 'sub'
-  | 'sup';
+  | 'sup'
+  | 'span';
 
 interface TextProps extends MarginPadding, PropsWithChildren {
   id?: string;

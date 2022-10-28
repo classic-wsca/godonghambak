@@ -40,6 +40,7 @@ describe('Text component', () => {
       'mark',
       'sub',
       'sup',
+      'span',
     ];
     const index = getRandomNumber(0, tags.length);
     const currentTag = tags[index];

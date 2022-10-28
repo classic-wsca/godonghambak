@@ -38,6 +38,7 @@ export const CustomElements: ComponentStory<typeof Text> = ({ ...args }) => {
     'mark',
     'sub',
     'sup',
+    'span',
   ];
 
   return (
