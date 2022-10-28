@@ -11,3 +11,4 @@ export { Section } from './section';
 export { Carousel, CarouselItem } from './carousel';
 export { Modal, ConfimationModal } from './modal';
 export { Heading } from './heading';
+export { Text } from './text';
