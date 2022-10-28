@@ -10,8 +10,7 @@ import server.dev.godonghambak.domain.entity.MemberUser;
 public interface MemberManagerDao {
 
     @Insert("INSERT INTO member_manage VALUES "
-            + "(#{member_manage_id}, #{member_manage_email}, #{member_manage_password}, #{member_manage_name}, "
-            + "#{manage_info_id}, #{menu_id})")
+            + "(#{member_manage_id}, #{member_manage_email}, #{member_manage_password}, #{member_manage_name})")
     public int insert(MemberManage memberManage);
 
     @Select("SELECT * FROM member_manage WHERE member_manage_email = #{member_manage_email}")
