@@ -1,4 +1,6 @@
 import type { PropsWithChildren } from 'react';
+import type * as CSS from 'csstype';
+
 import type { GlobalColors } from '~types/common';
 import type { MarginPadding } from '~types/margin-padding';
 import type { FontSizes, FontWeight } from '~types/font';
@@ -15,7 +17,7 @@ interface HeadingProps extends MarginPadding, PropsWithChildren {
   as?: HeadingLevel;
   size?: FontSizes;
   color?: GlobalColors;
-  fontWeight?: FontWeight;
+  fontWeight?: CSS.Property.FontWeight;
   numberOfLines?: number;
 }
 
