@@ -12,7 +12,6 @@ import server.dev.godonghambak.exceptionhandler.exception.InternalServerExceptio
 import server.dev.godonghambak.exceptionhandler.exception.Store.CheckIdException;
 import server.dev.godonghambak.exceptionhandler.exception.Store.NotFoundStoreException;
 import server.dev.godonghambak.exceptionhandler.exception.Store.SameStoreException;
-import server.dev.godonghambak.exceptionhandler.exception.authentication.SessionException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -60,6 +59,7 @@ public class StoreService {
         if(sessionMemberManage != null) {
             InsertInfo = Store.builder()
                                     .store_id(UUID.randomUUID().toString().replace("-", ""))
+                                    .member_manage_id(sessionMemberManage.getMember_manage_id())
                                     .store_name(storeInsertDto.getStore_name())
                                     .store_image(storeInsertDto.getStore_image())
                                     .store_contact(storeInsertDto.getStore_contact())
@@ -86,7 +86,7 @@ public class StoreService {
                                     .store_wifi(storeInsertDto.isStore_wifi())
                                     .store_kiosk(storeInsertDto.isStore_kiosk())
                                     .build();
-        }   
+        }
 
         int insertResult = storeDao.insert(InsertInfo);
 
@@ -118,7 +118,7 @@ public class StoreService {
                                     .store_kiosk(updateDto.isStore_kiosk())
                                     .build();
 
-            updateResult = storeDao.menegeUpdate(updateInfo);
+            updateResult = storeDao.manageUpdate(updateInfo);
 
         }else{
             updateInfo = Store.builder()
@@ -149,13 +149,24 @@ public class StoreService {
 
         HttpSession session = request.getSession(false);
         MemberUser sessionMemberUser = (MemberUser)session.getAttribute(SessionConst.LOGIN_MEMBER);
+        MemberManage sessionMemberManage = (MemberManage)session.getAttribute(SessionConst.LOGIN_MANAGER);
 
-        DeleteDto2 storeDeleteInfo = DeleteDto2.builder()
-                                                .store_id(deleteDto1.getStore_id())
-                                                .member_user_id(sessionMemberUser.getMember_user_id())
-                                                .build();
+        DeleteDto2 storeDeleteInfo;
+        int deleteResult;
+        if (sessionMemberManage != null) {
+            storeDeleteInfo = DeleteDto2.builder()
+                                            .store_id(deleteDto1.getStore_id())
+                                            .member_manage_id(sessionMemberManage.getManage_info_id())
+                                            .build();
+            deleteResult = storeDao.manageDelete(storeDeleteInfo);
 
-        int deleteResult = storeDao.delete(storeDeleteInfo);
+        } else {
+            storeDeleteInfo = DeleteDto2.builder()
+                                            .store_id(deleteDto1.getStore_id())
+                                            .member_user_id(sessionMemberUser.getMember_user_id())
+                                            .build();
+            deleteResult = storeDao.userDelete(storeDeleteInfo);
+        }
 
         if(deleteResult > 0) return true;
         throw new CheckIdException();

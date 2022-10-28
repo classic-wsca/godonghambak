@@ -33,9 +33,9 @@ public interface StoreDao {
     public List<InsertDto> findAll();
 
     @Insert("INSERT INTO store VALUES "
-            + "(#{store_id}, #{member_user_id}, #{store_name}, #{store_image}, #{store_contact}, #{store_address}, #{store_businesshours},"
+            + "(#{store_id}, #{member_user_id}, #{member_manage_id}, #{store_name}, #{store_image}, #{store_contact}, #{store_address}, #{store_businesshours},"
             + "#{store_breaktime}, #{store_lastorder}, #{store_parking}, #{store_wifi}, #{store_kiosk})")
-    public int insert(Store insertinfo);
+    public int insert(Store insertInfo);
 
     @Update("UPDATE store SET store_name = #{store_name}, "
             + "store_image = #{store_image},"
@@ -61,10 +61,14 @@ public interface StoreDao {
             + "store_wifi = #{store_wifi},"
             + "store_kiosk = #{store_kiosk} "
             + "WHERE store_id = #{store_id}")
-    public int menegeUpdate(Store updateInfo);
+    public int manageUpdate(Store updateInfo);
 
     @Delete("DELETE FROM store "
             + "WHERE store_id = #{store_id} AND member_user_id = #{member_user_id}")
-    public int delete(DeleteDto2 deleteInfo);
+    public int userDelete(DeleteDto2 deleteInfo);
+
+    @Delete("DELETE FROM store "
+            + "WHERE store_id = #{store_id}")
+    public int manageDelete(DeleteDto2 deleteInfo);
 
 }

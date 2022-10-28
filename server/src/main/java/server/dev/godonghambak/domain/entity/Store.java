@@ -12,6 +12,7 @@ public class Store {
 
     private String store_id;
     private String member_user_id;
+    private String member_manage_id;
     private String store_name;
     private String store_image;
     private String store_contact;

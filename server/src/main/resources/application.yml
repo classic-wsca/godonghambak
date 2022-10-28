@@ -6,9 +6,9 @@ spring:
       matching-strategy: ant_path_matcher
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url : jdbc:mysql://192.168.219.100:3306/godonghambak?serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false&characterEncoding=UTF-8
+    url : jdbc:mysql://localhost:3306/godonghambak?serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false&characterEncoding=UTF-8
     username: root
-    password: root
+    password: rudgh1356!
 
   #gmail smtp
   mail:

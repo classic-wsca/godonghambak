@@ -66,6 +66,7 @@ public class StoreDto {
 
         private String store_id;
         private String member_user_id;
+        private String member_manage_id;
     }
 
 }
