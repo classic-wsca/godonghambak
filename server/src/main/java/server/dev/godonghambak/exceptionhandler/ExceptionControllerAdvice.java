@@ -14,6 +14,8 @@ import server.dev.godonghambak.exceptionhandler.exception.authentication.Session
 import server.dev.godonghambak.exceptionhandler.exception.NoMatchEmailOrPasswordException;
 import server.dev.godonghambak.exceptionhandler.exception.memberusersign.NoSearchEmailException;
 import server.dev.godonghambak.exceptionhandler.exception.memberusersign.SameEmailException;
+import server.dev.godonghambak.exceptionhandler.exception.menu.NotFoundMenuException;
+import server.dev.godonghambak.exceptionhandler.exception.menu.SameMenuExHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -91,5 +93,20 @@ public class ExceptionControllerAdvice {
     public ErrorResult CheckIdException(CheckIdException e, HttpServletRequest request) {
         log.error("[exceptionHandler] ex", e);
         return new ErrorResult("S003", "본인의 매장이 아니거나, store_id 를 확인해주세요.", request.getRequestURI(), nowDateTime);
+    }
+
+    //Menu Exception
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(NotFoundMenuException.class)
+    public ErrorResult NotFoundMenuException(NotFoundMenuException e, HttpServletRequest request) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult("    M001", "해당 메뉴를 찾을 수 없습니다.", request.getRequestURI(), nowDateTime);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(SameMenuExHandler.class)
+    public ErrorResult SameMenuExHandler(SameMenuExHandler e, HttpServletRequest request) {
+        log.error("[exceptionHandler] ex", e);
+        return new ErrorResult("M002", "동일한 이름의 메뉴가 존재합니다.", request.getRequestURI(), nowDateTime);
     }
 }

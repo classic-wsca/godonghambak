@@ -35,8 +35,8 @@ public class StoreService {
         return findResult;
     }
 
-    public List<InsertDto> selectList() {
-        List<InsertDto> findAllResult = storeDao.findAll();
+    public List<InsertStoreInput> selectList() {
+        List<InsertStoreInput> findAllResult = storeDao.findAll();
         return findAllResult;
     }
 
@@ -46,9 +46,9 @@ public class StoreService {
         throw new InternalServerException();
     }
 
-    public Store insert(InsertDto storeInsertDto, HttpServletRequest request) {
+    public Store insert(InsertStoreInput storeInsertStoreInput, HttpServletRequest request) {
 
-        Store findResult = storeDao.findByName(storeInsertDto.getStore_name());
+        Store findResult = storeDao.findByName(storeInsertStoreInput.getStore_name());
         if(findResult != null) throw new SameStoreException();
 
         HttpSession session = request.getSession(false);
@@ -60,31 +60,31 @@ public class StoreService {
             InsertInfo = Store.builder()
                                     .store_id(UUID.randomUUID().toString().replace("-", ""))
                                     .member_manage_id(sessionMemberManage.getMember_manage_id())
-                                    .store_name(storeInsertDto.getStore_name())
-                                    .store_image(storeInsertDto.getStore_image())
-                                    .store_contact(storeInsertDto.getStore_contact())
-                                    .store_address(storeInsertDto.getStore_address())
-                                    .store_businesshours(storeInsertDto.getStore_businesshours())
-                                    .store_breaktime(storeInsertDto.getStore_breaktime())
-                                    .store_lastorder(storeInsertDto.getStore_lastorder())
-                                    .store_parking(storeInsertDto.isStore_parking())
-                                    .store_wifi(storeInsertDto.isStore_wifi())
-                                    .store_kiosk(storeInsertDto.isStore_kiosk())
+                                    .store_name(storeInsertStoreInput.getStore_name())
+                                    .store_image(storeInsertStoreInput.getStore_image())
+                                    .store_contact(storeInsertStoreInput.getStore_contact())
+                                    .store_address(storeInsertStoreInput.getStore_address())
+                                    .store_businesshours(storeInsertStoreInput.getStore_businesshours())
+                                    .store_breaktime(storeInsertStoreInput.getStore_breaktime())
+                                    .store_lastorder(storeInsertStoreInput.getStore_lastorder())
+                                    .store_parking(storeInsertStoreInput.isStore_parking())
+                                    .store_wifi(storeInsertStoreInput.isStore_wifi())
+                                    .store_kiosk(storeInsertStoreInput.isStore_kiosk())
                                     .build();
         } else{
             InsertInfo = Store.builder()
                                     .store_id(UUID.randomUUID().toString().replace("-", ""))
                                     .member_user_id(sessionMemberUser.getMember_user_id())
-                                    .store_name(storeInsertDto.getStore_name())
-                                    .store_image(storeInsertDto.getStore_image())
-                                    .store_contact(storeInsertDto.getStore_contact())
-                                    .store_address(storeInsertDto.getStore_address())
-                                    .store_businesshours(storeInsertDto.getStore_businesshours())
-                                    .store_breaktime(storeInsertDto.getStore_breaktime())
-                                    .store_lastorder(storeInsertDto.getStore_lastorder())
-                                    .store_parking(storeInsertDto.isStore_parking())
-                                    .store_wifi(storeInsertDto.isStore_wifi())
-                                    .store_kiosk(storeInsertDto.isStore_kiosk())
+                                    .store_name(storeInsertStoreInput.getStore_name())
+                                    .store_image(storeInsertStoreInput.getStore_image())
+                                    .store_contact(storeInsertStoreInput.getStore_contact())
+                                    .store_address(storeInsertStoreInput.getStore_address())
+                                    .store_businesshours(storeInsertStoreInput.getStore_businesshours())
+                                    .store_breaktime(storeInsertStoreInput.getStore_breaktime())
+                                    .store_lastorder(storeInsertStoreInput.getStore_lastorder())
+                                    .store_parking(storeInsertStoreInput.isStore_parking())
+                                    .store_wifi(storeInsertStoreInput.isStore_wifi())
+                                    .store_kiosk(storeInsertStoreInput.isStore_kiosk())
                                     .build();
         }
 
@@ -94,7 +94,7 @@ public class StoreService {
         throw new InternalServerException();
     }
 
-    public Store update(UpdateDto updateDto, HttpServletRequest request) {
+    public Store update(UpdateStoreInput updateStoreInput, HttpServletRequest request) {
 
         HttpSession session = request.getSession(false);
         MemberUser sessionMemberUser = (MemberUser)session.getAttribute(SessionConst.LOGIN_MEMBER);
@@ -105,35 +105,35 @@ public class StoreService {
 
         if(sessionMemberManage != null) {
             updateInfo = Store.builder()
-                                    .store_id(updateDto.getStore_id())
-                                    .store_name(updateDto.getStore_name())
-                                    .store_image(updateDto.getStore_image())
-                                    .store_contact(updateDto.getStore_contact())
-                                    .store_address(updateDto.getStore_address())
-                                    .store_businesshours(updateDto.getStore_businesshours())
-                                    .store_breaktime(updateDto.getStore_breaktime())
-                                    .store_lastorder(updateDto.getStore_lastorder())
-                                    .store_parking(updateDto.isStore_parking())
-                                    .store_wifi(updateDto.isStore_wifi())
-                                    .store_kiosk(updateDto.isStore_kiosk())
+                                    .store_id(updateStoreInput.getStore_id())
+                                    .store_name(updateStoreInput.getStore_name())
+                                    .store_image(updateStoreInput.getStore_image())
+                                    .store_contact(updateStoreInput.getStore_contact())
+                                    .store_address(updateStoreInput.getStore_address())
+                                    .store_businesshours(updateStoreInput.getStore_businesshours())
+                                    .store_breaktime(updateStoreInput.getStore_breaktime())
+                                    .store_lastorder(updateStoreInput.getStore_lastorder())
+                                    .store_parking(updateStoreInput.isStore_parking())
+                                    .store_wifi(updateStoreInput.isStore_wifi())
+                                    .store_kiosk(updateStoreInput.isStore_kiosk())
                                     .build();
 
             updateResult = storeDao.manageUpdate(updateInfo);
 
         }else{
             updateInfo = Store.builder()
-                                    .store_id(updateDto.getStore_id())
+                                    .store_id(updateStoreInput.getStore_id())
                                     .member_user_id(sessionMemberUser.getMember_user_id())
-                                    .store_name(updateDto.getStore_name())
-                                    .store_image(updateDto.getStore_image())
-                                    .store_contact(updateDto.getStore_contact())
-                                    .store_address(updateDto.getStore_address())
-                                    .store_businesshours(updateDto.getStore_businesshours())
-                                    .store_breaktime(updateDto.getStore_breaktime())
-                                    .store_lastorder(updateDto.getStore_lastorder())
-                                    .store_parking(updateDto.isStore_parking())
-                                    .store_wifi(updateDto.isStore_wifi())
-                                    .store_kiosk(updateDto.isStore_kiosk())
+                                    .store_name(updateStoreInput.getStore_name())
+                                    .store_image(updateStoreInput.getStore_image())
+                                    .store_contact(updateStoreInput.getStore_contact())
+                                    .store_address(updateStoreInput.getStore_address())
+                                    .store_businesshours(updateStoreInput.getStore_businesshours())
+                                    .store_breaktime(updateStoreInput.getStore_breaktime())
+                                    .store_lastorder(updateStoreInput.getStore_lastorder())
+                                    .store_parking(updateStoreInput.isStore_parking())
+                                    .store_wifi(updateStoreInput.isStore_wifi())
+                                    .store_kiosk(updateStoreInput.isStore_kiosk())
                                     .build();
 
             updateResult = storeDao.userUpdate(updateInfo);
@@ -145,24 +145,24 @@ public class StoreService {
     }
 
 
-    public Boolean delete(DeleteDto1 deleteDto1, HttpServletRequest request) {
+    public Boolean delete(DeleteStoreInput deleteStoreInput, HttpServletRequest request) {
 
         HttpSession session = request.getSession(false);
         MemberUser sessionMemberUser = (MemberUser)session.getAttribute(SessionConst.LOGIN_MEMBER);
         MemberManage sessionMemberManage = (MemberManage)session.getAttribute(SessionConst.LOGIN_MANAGER);
 
-        DeleteDto2 storeDeleteInfo;
+        DeleteQueryInfo storeDeleteInfo;
         int deleteResult;
         if (sessionMemberManage != null) {
-            storeDeleteInfo = DeleteDto2.builder()
-                                            .store_id(deleteDto1.getStore_id())
+            storeDeleteInfo = DeleteQueryInfo.builder()
+                                            .store_id(deleteStoreInput.getStore_id())
                                             .member_manage_id(sessionMemberManage.getManage_info_id())
                                             .build();
             deleteResult = storeDao.manageDelete(storeDeleteInfo);
 
         } else {
-            storeDeleteInfo = DeleteDto2.builder()
-                                            .store_id(deleteDto1.getStore_id())
+            storeDeleteInfo = DeleteQueryInfo.builder()
+                                            .store_id(deleteStoreInput.getStore_id())
                                             .member_user_id(sessionMemberUser.getMember_user_id())
                                             .build();
             deleteResult = storeDao.userDelete(storeDeleteInfo);

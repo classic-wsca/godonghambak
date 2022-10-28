@@ -16,7 +16,7 @@ import static server.dev.godonghambak.domain.dto.AuthenticationDto.*;
 @Api(tags = {"2. Authentication"})
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/Authentication")
+@RequestMapping("/api/v1/authentication")
 @CrossOrigin
 public class AuthenticationController {
 

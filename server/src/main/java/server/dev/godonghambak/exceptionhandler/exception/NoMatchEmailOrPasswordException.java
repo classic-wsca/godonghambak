@@ -1,6 +1,6 @@
 package server.dev.godonghambak.exceptionhandler.exception;
 
-public class NoMatchEmailOrPasswordException extends RuntimeException {
+public class  NoMatchEmailOrPasswordException extends RuntimeException {
     public NoMatchEmailOrPasswordException() {
         super();
     }

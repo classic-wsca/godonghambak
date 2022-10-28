@@ -30,7 +30,7 @@ public interface StoreDao {
             + "store_wifi,"
             + "store_kiosk "
             + "FROM store ORDER BY store_id DESC")
-    public List<InsertDto> findAll();
+    public List<InsertStoreInput> findAll();
 
     @Insert("INSERT INTO store VALUES "
             + "(#{store_id}, #{member_user_id}, #{member_manage_id}, #{store_name}, #{store_image}, #{store_contact}, #{store_address}, #{store_businesshours},"
@@ -65,10 +65,10 @@ public interface StoreDao {
 
     @Delete("DELETE FROM store "
             + "WHERE store_id = #{store_id} AND member_user_id = #{member_user_id}")
-    public int userDelete(DeleteDto2 deleteInfo);
+    public int userDelete(DeleteQueryInfo deleteInfo);
 
     @Delete("DELETE FROM store "
             + "WHERE store_id = #{store_id}")
-    public int manageDelete(DeleteDto2 deleteInfo);
+    public int manageDelete(DeleteQueryInfo deleteInfo);
 
 }

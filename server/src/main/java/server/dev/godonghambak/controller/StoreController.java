@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.dev.godonghambak.domain.dto.StoreDto.InsertDto;
+import server.dev.godonghambak.domain.dto.StoreDto.InsertStoreInput;
 import server.dev.godonghambak.domain.entity.Store;
 import server.dev.godonghambak.service.StoreService;
 
@@ -26,7 +26,7 @@ public class StoreController {
 
     private final StoreService storeService;
 
-    @GetMapping("/")
+    @GetMapping
     @ApiOperation(value = "매장 단일 조회", notes = "매장 단일 조회")
     public ResponseEntity<?> selectOne(
             @ApiParam(value = "매장 이름", required = true) @RequestParam String name) {
@@ -39,7 +39,7 @@ public class StoreController {
     @ApiOperation(value = "모든 매장 조회", notes = "모든 매장 조회")
     public ResponseEntity<?> selectList() {
 
-        List<InsertDto> stores = storeService.selectList();
+        List<InsertStoreInput> stores = storeService.selectList();
         return ResponseEntity.ok(stores);
     }
 
@@ -52,28 +52,28 @@ public class StoreController {
         return ResponseEntity.ok(stores);
     }
 
-    @PostMapping("/")
+    @PostMapping
     @ApiOperation(value = "매장 추가", notes = "매장 추가")
     public ResponseEntity<?> insert(
-            @ApiParam(value = "매장 추가 정보", required = true) @RequestBody InsertDto storeInsertDto, HttpServletRequest request) {
+            @ApiParam(value = "매장 추가 정보", required = true) @RequestBody InsertStoreInput storeInsertStoreInput, HttpServletRequest request) {
 
-        Store result = storeService.insert(storeInsertDto, request);
+        Store result = storeService.insert(storeInsertStoreInput, request);
         return ResponseEntity.ok(result);
     }
 
-    @PutMapping("/")
+    @PutMapping
     @ApiOperation(value = "매장 정보 수정", notes = "매장 정보 수정")
     public ResponseEntity<?> update(
-            @ApiParam(value = "매장 정보 수정", required = true) @RequestBody UpdateDto updateDto, HttpServletRequest request) {
+            @ApiParam(value = "매장 정보 수정", required = true) @RequestBody UpdateStoreInput updateStoreInput, HttpServletRequest request) {
 
-        Store result = storeService.update(updateDto, request);
+        Store result = storeService.update(updateStoreInput, request);
         return ResponseEntity.ok(result);
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping
     @ApiOperation(value = "매장 정보 삭제", notes = "매장 정보 삭제")
     public ResponseEntity<?> delete(
-            @ApiParam(value = "매장 정보 삭제", required = true) @RequestBody DeleteDto1 storeDeleteInfoDto, HttpServletRequest request) {
+            @ApiParam(value = "매장 정보 삭제", required = true) @RequestBody DeleteStoreInput storeDeleteInfoDto, HttpServletRequest request) {
 
         Boolean result = storeService.delete(storeDeleteInfoDto, request);
         return ResponseEntity.ok(result);

@@ -10,7 +10,7 @@ public class StoreDto {
     @AllArgsConstructor
     @ToString
     @Builder
-    public static class InsertDto {
+    public static class InsertStoreInput {
 
         private String store_name;
         private String store_image;
@@ -30,7 +30,7 @@ public class StoreDto {
     @AllArgsConstructor
     @ToString
     @Builder
-    public static class UpdateDto {
+    public static class UpdateStoreInput {
 
         private String store_id;
         private String store_name;
@@ -51,7 +51,7 @@ public class StoreDto {
     @AllArgsConstructor
     @ToString
     @Builder
-    public static class DeleteDto1 {
+    public static class DeleteStoreInput {
 
         private String store_id;
     }
@@ -62,7 +62,7 @@ public class StoreDto {
     @AllArgsConstructor
     @ToString
     @Builder
-    public static class DeleteDto2 {
+    public static class DeleteQueryInfo {
 
         private String store_id;
         private String member_user_id;
