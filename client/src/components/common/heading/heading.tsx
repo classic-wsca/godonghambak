@@ -1,14 +1,10 @@
 import type { PropsWithChildren } from 'react';
-import type * as CSS from 'csstype';
 
 import type { GlobalColors } from '~types/common';
-import type { MarginPadding } from '~types/margin-padding';
-import type { FontSizes, FontWeight } from '~types/font';
+import type { FontSizes, FontWeight, MarginPadding } from '~types/style';
 
 import styled, { css } from 'styled-components';
-
-import { HEADING_FONT_SIZES } from '~constants/font';
-import { marginAndPaddings } from '~styles/margin-padding';
+import { shorthandStyleOfMarginPadding } from '~styles/custom-style';
 
 export type HeadingLevel = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 
@@ -17,7 +13,7 @@ interface HeadingProps extends MarginPadding, PropsWithChildren {
   as?: HeadingLevel;
   size?: FontSizes;
   color?: GlobalColors;
-  fontWeight?: CSS.Property.FontWeight;
+  fontWeight?: FontWeight;
   numberOfLines?: number;
 }
 
@@ -27,6 +23,15 @@ const Heading = ({ as = 'h1', children, ...rest }: HeadingProps) => {
       {children}
     </Base>
   );
+};
+
+const HEADING_FONT_SIZES: { [key: string]: FontSizes } = {
+  h1: '7xl',
+  h2: '6xl',
+  h3: '5xl',
+  h4: '4xl',
+  h5: '3xl',
+  h6: '2xl',
 };
 
 const Base = styled.h1<HeadingProps>`
@@ -66,7 +71,7 @@ const Base = styled.h1<HeadingProps>`
       -webkit-line-clamp: ${numberOfLines};
     `}
 
-  ${marginAndPaddings};
+  ${shorthandStyleOfMarginPadding};
 `;
 
 export default Heading;

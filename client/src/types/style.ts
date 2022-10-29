@@ -1,4 +1,8 @@
-import type { PercentNumber, CommonBasicValues } from './common';
+import type { FontSize } from '~styles/theme';
+
+export type PercentNumber = `${number}%`;
+
+export type CommonBasicValues = 'inherit' | 'initial' | 'unset';
 
 export type MarginValue = number | 'auto' | PercentNumber | CommonBasicValues;
 
@@ -20,3 +24,21 @@ export interface MarginPadding {
   px?: PaddingValue;
   py?: PaddingValue;
 }
+
+export type FontSizes = keyof FontSize;
+
+export type FontWeight =
+  | 100
+  | 200
+  | 300
+  | 400
+  | 500
+  | 600
+  | 700
+  | 800
+  | 900
+  | 'bold'
+  | 'bolder'
+  | 'lighter'
+  | 'normal'
+  | CommonBasicValues;

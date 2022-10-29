@@ -1,8 +1,12 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import type { GlobalColors } from '~types/common';
-import type { FontSizes } from '~types/font';
-import type { MarginValue, PaddingValue } from '~types/margin-padding';
+import type {
+  FontSizes,
+  FontWeight,
+  MarginValue,
+  PaddingValue,
+} from '~types/style';
 
 import Heading, { HeadingLevel } from './heading';
 import { fontSizes } from '~styles/theme';
@@ -80,7 +84,7 @@ export const CustomFontWeight: ComponentStory<typeof Heading> = ({
   fontWeight,
   ...args
 }) => {
-  const fontWeights = [
+  const fontWeights: FontWeight[] = [
     'lighter',
     'normal',
     'bold',

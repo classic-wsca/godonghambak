@@ -2,8 +2,12 @@ import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import type * as CSS from 'csstype';
 
 import type { GlobalColors } from '~types/common';
-import type { FontSizes } from '~types/font';
-import type { MarginValue, PaddingValue } from '~types/margin-padding';
+import type {
+  FontSizes,
+  FontWeight,
+  MarginValue,
+  PaddingValue,
+} from '~types/style';
 
 import React from 'react';
 import Text, { TextElement } from './text';
@@ -134,7 +138,7 @@ export const CustomSizes: ComponentStory<typeof Text> = ({ ...args }) => {
 };
 
 export const CustomFontWeights: ComponentStory<typeof Text> = ({ ...args }) => {
-  const fontWeights: CSS.Property.FontWeight[] = [
+  const fontWeights: FontWeight[] = [
     'lighter',
     'normal',
     'bold',
@@ -321,6 +325,26 @@ export const CustomPaddings: ComponentStory<typeof Text> = ({ ...args }) => {
       <Text m={0} p={paddingValues[10]} {...args}>
         Text with padding <b>{paddingValues[10]}</b>
       </Text>
+    </>
+  );
+};
+
+export const CustomLineHeight: ComponentStory<typeof Text> = ({ ...args }) => {
+  const lineHeights: CSS.Property.LineHeight[] = [
+    'normal',
+    2.5,
+    '3em',
+    '150%',
+    '32px',
+  ];
+
+  return (
+    <>
+      {lineHeights.map((lineHeight) => (
+        <Text key={lineHeight} lineHeight={lineHeight} {...args}>
+          Text lineHeight <b>{lineHeight}</b>
+        </Text>
+      ))}
     </>
   );
 };

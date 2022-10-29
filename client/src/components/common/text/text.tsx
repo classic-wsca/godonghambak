@@ -2,11 +2,10 @@ import type { PropsWithChildren } from 'react';
 import type * as CSS from 'csstype';
 
 import type { GlobalColors } from '~types/common';
-import type { FontSizes } from '~types/font';
-import type { MarginPadding } from '~types/margin-padding';
+import type { FontSizes, FontWeight, MarginPadding } from '~types/style';
 
 import styled, { css } from 'styled-components';
-import { marginAndPaddings } from '~styles/margin-padding';
+import { shorthandStyleOfMarginPadding } from '~styles/custom-style';
 
 export type TextElement =
   | 'p'
@@ -32,8 +31,9 @@ interface TextProps extends MarginPadding, PropsWithChildren {
   casing?: CSS.Property.TextTransform;
   decoration?: CSS.Property.TextDecoration;
   size?: FontSizes;
-  fontWeight?: CSS.Property.FontWeight;
+  fontWeight?: FontWeight;
   color?: GlobalColors;
+  lineHeight?: CSS.Property.LineHeight;
   numberOfLines?: number;
 }
 
@@ -50,39 +50,39 @@ const Base = styled.p<TextProps>`
     align &&
     css`
       text-align: ${align};
-    `}
+    `};
 
   ${({ casing }) =>
     casing &&
     css`
       text-transform: ${casing};
-    `}
+    `};
 
   ${({ theme, color }) =>
     color &&
     css`
       color: ${theme.colors[color]};
-    `}
+    `};
 
   ${({ decoration }) =>
     decoration &&
     css`
       text-decoration: ${decoration};
-    `}
+    `};
 
   ${({ theme, size }) =>
     size &&
     css`
       font-size: ${theme.fontSizes[size]};
-    `}
+    `};
 
   ${({ fontWeight }) =>
     fontWeight &&
     css`
       font-weight: ${fontWeight};
-    `}
+    `};
 
-    ${({ numberOfLines }) =>
+  ${({ numberOfLines }) =>
     numberOfLines &&
     css`
       display: -webkit-box;
@@ -94,7 +94,13 @@ const Base = styled.p<TextProps>`
       -webkit-line-clamp: ${numberOfLines};
     `}
 
-  ${marginAndPaddings};
+  ${({ lineHeight }) =>
+    lineHeight &&
+    css`
+      line-height: ${lineHeight};
+    `}
+
+  ${shorthandStyleOfMarginPadding};
 `;
 
 export default Text;
