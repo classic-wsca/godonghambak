@@ -3,10 +3,12 @@ package server.dev.godonghambak.dao;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 import server.dev.godonghambak.domain.entity.MemberManage;
 import server.dev.godonghambak.domain.entity.MemberUser;
 
 @Mapper
+@Repository
 public interface MemberManagerDao {
 
     @Insert("INSERT INTO member_manage VALUES "

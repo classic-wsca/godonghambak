@@ -4,11 +4,13 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.stereotype.Repository;
 import server.dev.godonghambak.domain.entity.Authentication;
 
 import static server.dev.godonghambak.domain.dto.AuthenticationDto.*;
 
 @Mapper
+@Repository
 public interface AuthenticationDao {
 
     @Select("SELECT * FROM authentication WHERE authentication_email = #{authentication_email}")

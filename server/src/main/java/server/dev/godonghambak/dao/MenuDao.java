@@ -1,6 +1,7 @@
 package server.dev.godonghambak.dao;
 
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 import server.dev.godonghambak.domain.entity.Menu;
 
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.List;
 import static server.dev.godonghambak.domain.dto.MenuDto.*;
 
 @Mapper
+@Repository
 public interface MenuDao {
 
     @Select("SELECT * FROM menu WHERE menu_name_kr = #{menu_name_kr}")

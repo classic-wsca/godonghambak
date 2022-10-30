@@ -1,11 +1,14 @@
 package server.dev.godonghambak.dao;
 
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import server.dev.godonghambak.domain.entity.MemberUser;
 
 import static server.dev.godonghambak.domain.dto.MemberUserDto.*;
 
 @Mapper
+@Repository
 public interface MemberUserDao {
 
     @Insert("INSERT INTO member_user VALUES "

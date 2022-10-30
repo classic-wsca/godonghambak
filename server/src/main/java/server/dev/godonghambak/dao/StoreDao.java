@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.stereotype.Repository;
 import server.dev.godonghambak.domain.entity.Store;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 import static server.dev.godonghambak.domain.dto.StoreDto.*;
 
 @Mapper
+@Repository
 public interface StoreDao {
     @Select("SELECT * FROM store WHERE store_name = #{store_name}")
     public Store findByName(String store_name);
