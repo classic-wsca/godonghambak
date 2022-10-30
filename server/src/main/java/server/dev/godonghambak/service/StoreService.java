@@ -156,7 +156,7 @@ public class StoreService {
         if (sessionMemberManage != null) {
             storeDeleteInfo = DeleteQueryInfo.builder()
                                             .store_id(deleteStoreInput.getStore_id())
-                                            .member_manage_id(sessionMemberManage.getManage_info_id())
+                                            .member_manage_id(sessionMemberManage.getMember_manage_id())
                                             .build();
             deleteResult = storeDao.manageDelete(storeDeleteInfo);
 
