@@ -1,8 +1,3 @@
-#Timeout
-server:
-  tomcat:
-    connection-timeout: -1
-
 #MySQL
 spring:
   #spring boot 2.4 부터 지원하는 PathPattern 을 사용하면 Springfox 가 호환되지 않는 이슈가 있다.
