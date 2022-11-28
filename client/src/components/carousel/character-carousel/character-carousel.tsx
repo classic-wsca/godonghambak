@@ -136,12 +136,20 @@ const CarouselWrapper = styled.div<{ width: number }>`
   position: relative;
   width: ${({ width }) => pixelToRem(width)};
   max-width: ${pixelToRem(1440)};
-  height: 400px;
+  height: ${pixelToRem(200)};
   margin: 0 auto;
   overflow: hidden;
 
   & > ul:last-child {
     left: ${({ width }) => pixelToRem(width)};
+  }
+
+  @media ${({ theme }) => theme.breakPoints.large} {
+    height: ${pixelToRem(180)};
+  }
+
+  @media ${({ theme }) => theme.breakPoints.medium} {
+    height: ${pixelToRem(140)};
   }
 `;
 

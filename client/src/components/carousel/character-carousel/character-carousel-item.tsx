@@ -59,6 +59,10 @@ const Description = styled.p<{ marginTop: number; color: 'light' | 'dark' }>`
   font-weight: 500;
   color: ${({ theme, color }) => theme.colors[color]};
   text-align: center;
+
+  @media ${({ theme }) => theme.breakPoints.medium} {
+    font-size: ${({ theme }) => theme.fontSizes.xl};
+  }
 `;
 
 export default CarouselItem;
