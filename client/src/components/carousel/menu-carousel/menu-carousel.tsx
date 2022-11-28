@@ -20,12 +20,20 @@ const MenuCarousel = () => {
     return 275;
   };
 
+  const setDraggable = (): boolean => {
+    if (!width) {
+      return false;
+    }
+
+    return width <= 568;
+  };
+
   return (
     <MenuCarouselWrapper
       width={setSlideWidth()}
       margin={0}
       duration={400}
-      draggable={false}
+      draggable={setDraggable()}
       autoplayInterval={2000}
       button={false}
       indicator={false}
@@ -58,6 +66,10 @@ const MenuCarouselWrapper = styled(Carousel)`
     & > ul {
       margin-left: 0;
     }
+  }
+
+  @media ${({ theme }) => theme.breakPoints.small} {
+    cursor: pointer;
   }
 `;
 
