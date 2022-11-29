@@ -1,6 +1,5 @@
-import { renderHook } from '@testing-library/react-hooks';
-
 import { useThrottle } from '../../src/hooks';
+import { renderHook, act } from '../test-utils';
 
 const setup = (callback: () => void, delay?: number) => {
   const { result } = renderHook(() => useThrottle(callback, delay));
@@ -58,8 +57,10 @@ describe('useThrottle 훅 테스트', () => {
     const throttleFn = setup(callback, 100);
 
     // when
-    throttleFn();
-    jest.advanceTimersByTime(100);
+    act(() => {
+      throttleFn();
+      jest.advanceTimersByTime(100);
+    });
 
     // then
     expect(count).toEqual(1);
@@ -75,17 +76,19 @@ describe('useThrottle 훅 테스트', () => {
     const throttleFn = setup(callback, 100);
 
     // when
-    throttleFn();
-    throttleFn();
-    throttleFn();
+    act(() => {
+      throttleFn();
+      throttleFn();
+      throttleFn();
 
-    jest.advanceTimersByTime(100);
+      jest.advanceTimersByTime(100);
 
-    throttleFn();
-    throttleFn();
-    throttleFn();
+      throttleFn();
+      throttleFn();
+      throttleFn();
 
-    jest.advanceTimersByTime(100);
+      jest.advanceTimersByTime(100);
+    });
 
     // then
     expect(count).toEqual(2);
