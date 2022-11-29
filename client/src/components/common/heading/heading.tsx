@@ -1,9 +1,9 @@
 import type { PropsWithChildren } from 'react';
-
 import type { GlobalColors } from '~types/common';
 import type { FontSizes, FontWeight, MarginPadding } from '~types/style';
 
 import styled, { css } from 'styled-components';
+
 import { shorthandStyleOfMarginPadding } from '~styles/custom-style';
 
 export type HeadingLevel = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';

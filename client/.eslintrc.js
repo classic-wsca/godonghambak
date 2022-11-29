@@ -13,10 +13,10 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
     'plugin:@next/next/recommended',
-    'plugin:prettier/recommended',
     'plugin:storybook/recommended',
+    'plugin:prettier/recommended',
   ],
-  plugins: ['react', 'react-hooks', '@typescript-eslint', 'prettier'],
+  plugins: ['react', 'react-hooks', '@typescript-eslint', 'prettier', 'import'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
@@ -30,6 +30,9 @@ module.exports = {
   settings: {
     react: {
       version: 'detect',
+    },
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
     },
     'import/resolver': {
       typescript: {},
@@ -57,7 +60,17 @@ module.exports = {
     'import/order': [
       'error',
       {
-        groups: ['type', 'builtin', 'external', 'parent', 'sibling', 'index'],
+        groups: [
+          'type',
+          'builtin',
+          'external',
+          ['internal', 'unknown'],
+          ['parent', 'sibling', 'index'],
+        ],
+        'newlines-between': 'always',
+        alphabetize: {
+          order: 'asc',
+        },
       },
     ],
     'import/no-extraneous-dependencies': [

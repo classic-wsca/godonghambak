@@ -1,12 +1,11 @@
-import type { NavigationSubRoutes } from '~types/navigation';
 import type { UnderlineAnimation } from '~types/animation';
+import type { NavigationSubRoutes } from '~types/navigation';
 
 import Link from 'next/link';
 import styled, { css } from 'styled-components';
 
-import DownArrowSVG from '~public/svgs/down-arrow.svg';
-
 import { useToggle } from '~hooks/index';
+import DownArrowSVG from '~public/svgs/down-arrow.svg';
 import { underlineAnimation } from '~styles/animation';
 import { pixelToRem } from '~utils/style-utils';
 

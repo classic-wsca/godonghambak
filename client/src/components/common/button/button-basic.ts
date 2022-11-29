@@ -2,9 +2,9 @@ import type { GlobalSizes } from '~types/common';
 
 import styled, { css } from 'styled-components';
 
-import ButtonBase from './button-base';
-
 import { pixelToRem } from '~utils/style-utils';
+
+import ButtonBase from './button-base';
 
 export const BUTTON_SIZES: Partial<
   Record<GlobalSizes, ReturnType<typeof css>>

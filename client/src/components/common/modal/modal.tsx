@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import { Button } from '~components/common';
 import { Portal } from '~hocs/index';
 import CloseSVG from '~public/svgs/close.svg';
-
 import { pixelToRem } from '~utils/style-utils';
 
 interface ModalProps extends PropsWithChildren {

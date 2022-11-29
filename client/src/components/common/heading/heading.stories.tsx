@@ -1,5 +1,4 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
-
 import type { GlobalColors } from '~types/common';
 import type {
   FontSizes,
@@ -8,8 +7,9 @@ import type {
   PaddingValue,
 } from '~types/style';
 
-import Heading, { HeadingLevel } from './heading';
 import { fontSizes } from '~styles/theme';
+
+import Heading, { HeadingLevel } from './heading';
 
 export default {
   title: 'components/common/heading',

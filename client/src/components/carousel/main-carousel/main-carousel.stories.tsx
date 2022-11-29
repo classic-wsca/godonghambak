@@ -1,4 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
+
 import MainCarousel from './main-carousel';
 
 export default {

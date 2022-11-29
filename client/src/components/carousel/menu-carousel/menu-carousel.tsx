@@ -2,9 +2,8 @@ import Image from 'next/image';
 import styled, { css } from 'styled-components';
 
 import { Carousel, CarouselItem } from '~components/common';
-
-import { useWindowSize } from '~hooks/index';
 import { MENU_CAROUSEL_ITEMS } from '~constants/carousel';
+import { useWindowSize } from '~hooks/index';
 import { pixelToRem } from '~utils/style-utils';
 
 const MenuCarousel = () => {

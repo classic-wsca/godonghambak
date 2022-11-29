@@ -1,10 +1,10 @@
 import { PropsWithChildren, useEffect, useState } from 'react';
-
 import styled, {
   DefaultTheme,
   ThemeProps,
   FlattenInterpolation,
 } from 'styled-components';
+
 import { pixelToRem } from '~utils/style-utils';
 
 export interface CarouselItemProps extends PropsWithChildren {

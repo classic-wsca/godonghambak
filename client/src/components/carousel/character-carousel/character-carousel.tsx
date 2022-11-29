@@ -1,14 +1,14 @@
 /* eslint-disable react/no-array-index-key */
-import type { ImageObject, Dimension } from '~types/common';
 import type { AnimationOption } from '~types/animation';
+import type { ImageObject, Dimension } from '~types/common';
 
 import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-import CarouselTrack from './charater-carousel-track';
-
 import { useWindowSize } from '~hooks/index';
 import { pixelToRem } from '~utils/style-utils';
+
+import CarouselTrack from './charater-carousel-track';
 
 interface CharacterCarouselProps
   extends Partial<Omit<AnimationOption, 'name'>> {

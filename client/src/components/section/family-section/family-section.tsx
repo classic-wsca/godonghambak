@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import styled from 'styled-components';
 
-import { Text } from '~components/common';
 import { CharacterCarousel } from '~components/carousel';
+import { Text } from '~components/common';
 import { CHARACTER_CAROUSEL_ITEMS } from '~constants/carousel';
 import { pixelToRem } from '~utils/style-utils';
 

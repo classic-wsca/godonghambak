@@ -3,10 +3,10 @@ import type { PropsWithChildren } from 'react';
 
 import styled from 'styled-components';
 
-import Radio from './radio';
-
 import { withField } from '~hocs/index';
 import { pixelToRem } from '~utils/style-utils';
+
+import Radio from './radio';
 
 interface Option {
   label: string;

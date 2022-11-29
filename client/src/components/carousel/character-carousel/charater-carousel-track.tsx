@@ -1,12 +1,13 @@
 /* eslint-disable react/no-array-index-key */
-import type { ImageObject } from '~types/common';
 import type { AnimationOption, SlideInAnimation } from '~types/animation';
+import type { ImageObject } from '~types/common';
 
 import styled from 'styled-components';
-import CarouselItem from './character-carousel-item';
 
-import { pixelToRem } from '~utils/style-utils';
 import { slideInAnimation } from '~styles/animation';
+import { pixelToRem } from '~utils/style-utils';
+
+import CarouselItem from './character-carousel-item';
 
 interface CarouselTrackProps extends Partial<Omit<AnimationOption, 'name'>> {
   items: ImageObject[];

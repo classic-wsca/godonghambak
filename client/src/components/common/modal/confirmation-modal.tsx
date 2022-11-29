@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 import { Button } from '~components/common';
-
 import { pixelToRem } from '~utils/style-utils';
 
 interface ConfirmationModalProps {

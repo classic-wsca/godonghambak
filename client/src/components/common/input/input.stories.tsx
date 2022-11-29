@@ -1,8 +1,8 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import Input, { InputWithLabelAndStatus } from './input';
-
 import useInput from '~hooks/use-input';
+
+import Input, { InputWithLabelAndStatus } from './input';
 
 export default {
   title: 'components/common/input',

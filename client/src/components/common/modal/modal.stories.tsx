@@ -1,11 +1,10 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import Modal from './modal';
-import ConfirmationModal from './confirmation-modal';
-
 import { Button } from '~components/common';
-
 import { useToggle } from '~hooks/index';
+
+import ConfirmationModal from './confirmation-modal';
+import Modal from './modal';
 
 export default {
   title: 'components/common/modal',

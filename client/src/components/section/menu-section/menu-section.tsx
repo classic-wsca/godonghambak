@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-import { Heading, Text } from '~components/common';
 import { MenuCarousel } from '~components/carousel';
+import { Heading, Text } from '~components/common';
 import { pixelToRem } from '~utils/style-utils';
 
 const MenuSection = () => {

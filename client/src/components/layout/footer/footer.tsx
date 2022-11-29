@@ -1,11 +1,11 @@
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
 import styled from 'styled-components';
-
-import PageList from './page-list';
 
 import { FOOTER_NAVIGATION_ROUTES } from '~constants/navigation';
 import { pixelToRem } from '~utils/style-utils';
+
+import PageList from './page-list';
 
 const Footer = () => {
   return (

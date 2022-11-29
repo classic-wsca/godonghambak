@@ -1,13 +1,13 @@
 import type { GlobalColors } from '~types/common';
 
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
 import styled from 'styled-components';
 
 import { Carousel, CarouselItem, Button } from '~components/common';
+import { MAIN_CAROUSEL_ITEMS } from '~constants/carousel';
 import { useWindowSize } from '~hooks/index';
 import { pixelToRem } from '~utils/style-utils';
-import { MAIN_CAROUSEL_ITEMS } from '~constants/carousel';
 
 const MainCarousel = () => {
   const { width } = useWindowSize();

@@ -1,5 +1,5 @@
-import type { GlobalColors } from '~types/common';
 import type { PropsWithChildren } from 'react';
+import type { GlobalColors } from '~types/common';
 
 import styled from 'styled-components';
 

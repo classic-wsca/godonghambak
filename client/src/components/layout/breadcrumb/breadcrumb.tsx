@@ -1,9 +1,10 @@
-import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
+import { useState, useEffect, useCallback } from 'react';
 
-import Breadcrumbs from './breadcrumbs';
-import BreadcrumbItem from './breadcrumb-item';
 import { NAVIGATION_ROUTES } from '~constants/navigation';
+
+import BreadcrumbItem from './breadcrumb-item';
+import Breadcrumbs from './breadcrumbs';
 
 interface BreadcrumbState {
   href: string;

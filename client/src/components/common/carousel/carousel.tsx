@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
-import type { PropsWithChildren, ReactElement } from 'react';
 import type { CarouselItemProps } from './carousel-item';
+import type { PropsWithChildren, ReactElement } from 'react';
 import type { MouseAndTouchEvent } from '~types/event';
 
 import React, {
@@ -12,11 +12,10 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 
+import { Button } from '~components/common';
+import { useInterval } from '~hooks/index';
 import LeftArrowSVG from '~public/svgs/chevron-left.svg';
 import RightArrowSVG from '~public/svgs/chevron-right.svg';
-import { Button } from '~components/common';
-
-import { useInterval } from '~hooks/index';
 import { pixelToRem } from '~utils/style-utils';
 
 export interface CarouselProps extends PropsWithChildren {

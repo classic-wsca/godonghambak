@@ -1,8 +1,8 @@
 import type { InputHTMLAttributes } from 'react';
 
 import styled from 'styled-components';
-import CheckSVG from '~public/svgs/check.svg';
 
+import CheckSVG from '~public/svgs/check.svg';
 import { pixelToRem } from '~utils/style-utils';
 
 interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {

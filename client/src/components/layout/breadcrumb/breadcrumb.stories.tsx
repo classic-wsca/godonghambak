@@ -1,7 +1,8 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import Breadcrumb from './breadcrumb';
 import RightBracketSVG from '~public/svgs/chevron-right-thick.svg';
+
+import Breadcrumb from './breadcrumb';
 
 export default {
   title: 'components/layout/breadcrumb',

@@ -1,10 +1,10 @@
-import type { PropsWithChildren } from 'react';
 import type * as CSS from 'csstype';
-
+import type { PropsWithChildren } from 'react';
 import type { GlobalColors } from '~types/common';
 import type { FontSizes, FontWeight, MarginPadding } from '~types/style';
 
 import styled, { css } from 'styled-components';
+
 import { shorthandStyleOfMarginPadding } from '~styles/custom-style';
 
 export type TextElement =

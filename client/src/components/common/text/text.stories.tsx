@@ -1,6 +1,5 @@
 import type { ComponentMeta, ComponentStory } from '@storybook/react';
 import type * as CSS from 'csstype';
-
 import type { GlobalColors } from '~types/common';
 import type {
   FontSizes,
@@ -10,8 +9,10 @@ import type {
 } from '~types/style';
 
 import React from 'react';
-import Text, { TextElement } from './text';
+
 import { fontSizes } from '~styles/theme';
+
+import Text, { TextElement } from './text';
 
 export default {
   title: 'components/common/text',

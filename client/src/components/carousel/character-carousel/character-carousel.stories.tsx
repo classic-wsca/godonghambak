@@ -1,7 +1,8 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import CharacterCarousel from './character-carousel';
 import { CHARACTER_CAROUSEL_ITEMS } from '~constants/carousel';
+
+import CharacterCarousel from './character-carousel';
 
 export default {
   title: 'components/carousel/character-carousel',
