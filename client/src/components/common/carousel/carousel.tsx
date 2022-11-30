@@ -294,6 +294,7 @@ const Carousel = ({
       onFocus={handleFocus}
       onBlur={handleBlur}
       role="region"
+      aria-label="carousel"
       aria-roledescription="carousel"
       tabIndex={0} // 마크업 순서에 따라 초점을 가질 수 있도록
     >
