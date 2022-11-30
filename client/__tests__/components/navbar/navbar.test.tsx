@@ -3,14 +3,13 @@ import type { NavigationRoutes } from '~types/navigation';
 
 import userEvent from '@testing-library/user-event';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
-import { render, screen, createMockRouter } from '../../test-utils';
 
-import { Navbar } from '~components/layout';
-import NavToggle from '~components/layout/navbar/nav-toggle';
-
+import { Navbar } from '~components/navbar';
+import NavToggle from '~components/navbar/nav-toggle';
 import { NAVIGATION_ROUTES } from '~constants/navigation';
-
 import { getRandomNumber } from '~utils/math-utils';
+
+import { render, screen, createMockRouter } from '../../test-utils';
 
 const getRandomLink = (links: NavigationRoutes[] = []) => {
   const randomIndex: number = getRandomNumber(0, links.length);
