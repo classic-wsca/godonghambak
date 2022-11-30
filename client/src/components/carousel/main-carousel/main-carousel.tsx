@@ -43,6 +43,7 @@ const MainCarousel = () => {
                   alt={`carousel-image-${index}`}
                   layout="fill"
                   objectFit="cover"
+                  priority
                 />
               </ImageBox>
             </Slide>
