@@ -6,6 +6,7 @@ import type { MouseAndTouchEvent } from '~types/event';
 import React, {
   useState,
   useEffect,
+  useLayoutEffect,
   useRef,
   useCallback,
   useMemo,
@@ -45,6 +46,7 @@ const Carousel = ({
   children,
 }: CarouselProps) => {
   const slideCount = useMemo(() => React.Children.count(children), [children]); // prettier-ignore
+  const [slides, setSlides] = useState<ReactElement[]>([]);
   const [currentIndex, setCurrentIndex] = useState(slideCount);
   const [slideWidth, setSlideWidth] = useState(0);
   const [initialPosition, setInitialPosition] = useState(0);
@@ -60,9 +62,9 @@ const Carousel = ({
 
   const makeSlideClone = useCallback(() => {
     const arrayChildren = React.Children.toArray(children);
-    const slides = [...arrayChildren, ...arrayChildren, ...arrayChildren];
+    const cloneSlides = [...arrayChildren, ...arrayChildren, ...arrayChildren];
 
-    return slides;
+    setSlides(cloneSlides as ReactElement[]);
   }, [children]);
 
   const setTrackInitialPosition = useCallback(() => {
@@ -72,26 +74,22 @@ const Carousel = ({
 
     const distance =
       carouselRef.current.offsetWidth / 2 - slideWidth / 2 - margin;
-
     setInitialPosition(distance);
   }, [margin, slideWidth]);
 
   const updateSlideWidth = useCallback(() => {
-    // 사용자 지정 width가 있을 경우 slideWidth의 크기 변경 필요 없음, 중앙 정렬만 해주고 return
-    if (width) {
-      setTrackInitialPosition();
-      return;
-    }
-
     if (!carouselRef.current) {
       return;
     }
 
-    const newSlideWidth = carouselRef.current.offsetWidth - margin * 2;
-    setSlideWidth(newSlideWidth);
+    const newSlideWidth = width || carouselRef.current.offsetWidth - margin * 2;
 
     // 브라우저 크기 변경 중 animation 제거
     trackAnimationRef.current = false;
+
+    setSlideWidth(newSlideWidth);
+    setTrackInitialPosition();
+
     setTimeout(() => {
       trackAnimationRef.current = true;
     }, 100);
@@ -252,17 +250,14 @@ const Carousel = ({
     [movePrev, moveNext],
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!carouselRef.current) {
       return;
     }
 
-    setSlideWidth(width || carouselRef.current.offsetWidth - margin * 2);
-  }, [carouselRef, width, margin]);
-
-  useEffect(() => {
-    setTrackInitialPosition();
-  }, [setTrackInitialPosition]);
+    makeSlideClone();
+    updateSlideWidth();
+  }, [makeSlideClone, updateSlideWidth]);
 
   useEffect(() => {
     window.addEventListener('resize', updateSlideWidth);
@@ -315,7 +310,7 @@ const Carousel = ({
         aria-label="slides"
         aria-live={paused ? 'polite' : 'off'}
       >
-        {React.Children.map(makeSlideClone(), (child, index) =>
+        {React.Children.map(slides, (child, index) =>
           React.cloneElement(
             child as ReactElement<PropsWithChildren<CarouselItemProps>>,
             {
