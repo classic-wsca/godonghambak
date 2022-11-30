@@ -5,7 +5,7 @@ type Timer = ReturnType<typeof setTimeout>;
 
 const useDebounce = <T extends any[]>(
   callback: (...params: T) => void,
-  delay: number,
+  delay = 200,
 ) => {
   const timer = useRef<Timer>();
 
