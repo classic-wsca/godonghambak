@@ -63,7 +63,12 @@ const useRipple = (
   };
 
   const ripplesArray: JSX.Element[] = ripples.map(({ key, ...props }) => (
-    <span key={key} {...props} onAnimationEnd={() => handleAnimationEnd(key)} />
+    <span
+      key={key}
+      {...props}
+      onAnimationEnd={() => handleAnimationEnd(key)}
+      aria-label="ripple"
+    />
   ));
 
   return [addRiple, ripplesArray];
