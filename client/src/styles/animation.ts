@@ -1,6 +1,26 @@
-import type { UnderlineAnimation } from '~types/animation';
+import type { SlideInAnimation, UnderlineAnimation } from '~types/animation';
 
-import { css } from 'styled-components';
+import { css, keyframes } from 'styled-components';
+
+const slideIn = (translateValue: number) => keyframes`
+  0% {
+    transform: translateX(0px);
+  } 100% {
+    transform: translateX(-${translateValue}px);
+  }
+`;
+
+export const slideInAnimation = css<SlideInAnimation>`
+  animation-name: ${({ translateValue }) => slideIn(translateValue)};
+  animation-duration: ${({ duration }) => duration && `${duration || 0}s`};
+  animation-timing-function: ${({ timingFunction }) =>
+    timingFunction || 'ease'};
+  animation-fill-mode: ${({ fillMode }) => fillMode};
+  animation-delay: ${({ delay }) => `${delay || 0}s`};
+  animation-iteration-count: ${({ iterationCount }) => iterationCount || 1};
+  animation-direction: ${({ direction }) => direction || 'normal'};
+  animation-play-state: ${({ playState }) => playState || 'running'};
+`;
 
 export const rippleAnimation = css`
   position: relative;

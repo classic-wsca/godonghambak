@@ -24,7 +24,7 @@ const FieldSet = styled.fieldset`
 
 const Legend = styled.legend`
   margin-bottom: ${pixelToRem(16)};
-  font-size: ${({ theme }) => theme.fontSizes.large};
+  font-size: ${({ theme }) => theme.fontSizes.xl};
   font-weight: bold;
   color: ${({ theme }) => theme.colors.dark};
 `;

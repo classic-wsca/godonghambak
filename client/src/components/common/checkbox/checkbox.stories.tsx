@@ -1,8 +1,8 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import Checkbox from './checkbox';
-
 import { useToggle } from '~hooks/index';
+
+import Checkbox from './checkbox';
 
 export default {
   titlt: 'components/common/checkbox',

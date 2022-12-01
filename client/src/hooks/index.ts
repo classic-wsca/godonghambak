@@ -3,3 +3,7 @@ export { default as useInput } from './use-input';
 export { default as useToggle } from './use-toggle';
 export { default as useWindowResize } from './use-window-resize';
 export { default as useInterval } from './use-interval';
+export { default as useWindowSize } from './use-window-size';
+export { default as useThrottle } from './use-throttle';
+export { default as useDebounce } from './use-debounce';
+export { default as useScroll } from './use-scroll';

@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import { Button } from '~components/common';
 import { Portal } from '~hocs/index';
 import CloseSVG from '~public/svgs/close.svg';
-
 import { pixelToRem } from '~utils/style-utils';
 
 interface ModalProps extends PropsWithChildren {
@@ -99,7 +98,7 @@ const Header = styled.header`
 
 const Title = styled.h4`
   margin: ${pixelToRem(2)} 0 0 ${pixelToRem(6)};
-  font-size: ${({ theme }) => theme.fontSizes.small};
+  font-size: ${({ theme }) => theme.fontSizes.sm};
 `;
 
 const Content = styled.div`

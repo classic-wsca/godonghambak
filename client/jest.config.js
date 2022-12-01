@@ -9,7 +9,6 @@ const customJestConfig = {
   collectCoverage: true,
   collectCoverageFrom: [
     '<rootDir>/src/**/*.{js,jsx,ts,tsx}',
-    '!<rootDir>/src/__tests__/*',
     '!<rootDir>/src/pages/_*.tsx',
     '!**/*.d.ts',
     '!**/*.stories.tsx',
@@ -32,7 +31,7 @@ const customJestConfig = {
     '^~types/(.*)$': '<rootDir>/src/types/$1',
     '^~utils/(.*)$': '<rootDir>/src/utils/$1',
   },
-  testPathIgnorePatterns: ['<rootDir>/src/__tests__/test-utils'],
+  testPathIgnorePatterns: ['<rootDir>/__tests__/test-utils'],
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { presets: ['next/babel'] }],
     '^.+\\.(svg)$': 'jest-transformer-svg',

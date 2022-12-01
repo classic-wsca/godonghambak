@@ -2,8 +2,8 @@ import type { GlobalColors, GlobalSizes } from '~types/common';
 
 import styled from 'styled-components';
 
-import { pixelToRem } from '~utils/style-utils';
 import { rippleAnimation } from '~styles/animation';
+import { pixelToRem } from '~utils/style-utils';
 
 export type ButtonVariants = 'fill' | 'outline' | 'ghost' | 'icon';
 
