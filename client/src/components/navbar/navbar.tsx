@@ -17,7 +17,7 @@ import NavToggle from './nav-toggle';
 const Navbar = () => {
   const router = useRouter();
   const { ref, isOnResize } = useWindowResize();
-  const [isOpen, toggle] = useToggle();
+  const [isOpen, toggleNavbar] = useToggle();
 
   const lastScrollY = useRef(0);
   const { y: scrollY } = useScroll();
@@ -36,7 +36,7 @@ const Navbar = () => {
   };
 
   const handleScrollPosition = useCallback(() => {
-    if (scrollY === 0) {
+    if (scrollY <= 100) {
       setIsHideNavbar(false);
       return;
     }
@@ -50,6 +50,12 @@ const Navbar = () => {
   useEffect(() => {
     handleScrollPosition();
   }, [handleScrollPosition]);
+
+  useEffect(() => {
+    if (isOpen && isOnResize) {
+      toggleNavbar();
+    }
+  }, [isOpen, isOnResize, toggleNavbar]);
 
   return (
     <>
@@ -87,12 +93,12 @@ const Navbar = () => {
             </Link>
           </LoginButtonGroup>
         </Nav>
-        <NavToggle isOpen={isOpen} onClick={toggle} />
+        <NavToggle isOpen={isOpen} onClick={toggleNavbar} />
       </Header>
       <Backdrop
         data-testid="navigation-backdrop"
         isOpen={isOpen}
-        onClick={toggle}
+        onClick={toggleNavbar}
       />
     </>
   );
