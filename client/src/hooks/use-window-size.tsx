@@ -1,30 +1,24 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useLayoutEffect, useCallback } from 'react';
 
 const useWindowSize = () => {
-  const isClient = typeof window === 'object';
+  const getSize = useCallback(() => {}, []);
 
-  const getSize = useCallback(() => {
-    return {
-      width: isClient ? window.innerWidth : undefined,
-      height: isClient ? window.innerHeight : undefined,
-    };
-  }, [isClient]);
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
 
-  const [windowSize, setWindowSize] = useState(getSize);
+  const handleResize = () => {
+    setWindowSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+  };
 
-  useEffect(() => {
-    if (!isClient) {
-      return;
-    }
-
-    const handleResize = () => {
-      setWindowSize(getSize());
-    };
-
+  useLayoutEffect(() => {
     window.addEventListener('resize', handleResize);
-    // eslint-disable-next-line consistent-return
+    handleResize();
+
     return () => window.removeEventListener('resize', handleResize);
-  }, [getSize, isClient]);
+  }, [getSize]);
+
   return windowSize;
 };
 
