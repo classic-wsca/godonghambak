@@ -178,7 +178,7 @@ const Nav = styled.nav<{ isOpen: boolean; isOnResize: boolean }>`
   }
 
   @media ${({ theme }) => theme.breakPoints.small} {
-    width: 100%;
+    width: 90%;
     transform: ${({ isOpen }) => (isOpen ? 'none' : `translateX(100%)`)};
   }
 `;
