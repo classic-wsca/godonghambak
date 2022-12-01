@@ -221,25 +221,14 @@ const CardList = styled.ul`
   }
 
   @media ${({ theme }) => theme.breakPoints.small} {
+    display: flex;
+    flex-direction: column;
+    gap: ${pixelToRem(60)};
     width: 100%;
 
-    & li:first-child {
-      padding-right: ${pixelToRem(45)};
-      padding-bottom: ${pixelToRem(30)};
-    }
-
-    & li:nth-child(2) {
-      padding-top: 0;
-      padding-left: ${pixelToRem(45)};
-      padding-right: 0;
-      padding-bottom: ${pixelToRem(30)};
-    }
-
-    & li:last-child {
-      padding-top: 0;
-      padding-left: 0;
-      padding-right: ${pixelToRem(45)};
-      padding-bottom: ${pixelToRem(30)};
+    & li {
+      width: 100%;
+      padding: 0 !important;
     }
   }
 `;
