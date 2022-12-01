@@ -1,6 +1,6 @@
-import { render, screen } from '../../test-utils';
-
 import { FamilySection } from '~components/section';
+
+import { render, screen } from '../../test-utils';
 
 describe('Family section component test', () => {
   it('should be rendered correctly', () => {

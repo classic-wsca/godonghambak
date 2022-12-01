@@ -1,8 +1,9 @@
 import userEvent from '@testing-library/user-event';
-import { render, screen, act } from '../../test-utils';
-import { getRandomBrowserSize, triggerResize } from '../../test-utils/window';
 
 import { MenuCarousel } from '~components/carousel/menu-carousel';
+
+import { render, screen, act } from '../../test-utils';
+import { getRandomBrowserSize, triggerResize } from '../../test-utils/window';
 
 const setup = () => {
   const user = userEvent.setup();

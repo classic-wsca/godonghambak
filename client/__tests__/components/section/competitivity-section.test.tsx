@@ -1,6 +1,6 @@
-import { render, screen } from '../../test-utils';
-
 import { CompetitivitySection } from '~components/section';
+
+import { render, screen } from '../../test-utils';
 
 describe('Competitivity section', () => {
   it('should be rendered correctly', () => {

@@ -1,9 +1,9 @@
 import userEvent from '@testing-library/user-event';
-import { render, screen } from '../../test-utils';
 
 import { Modal, ConfimationModal } from '~components/common';
-
 import { useToggle } from '~hooks/index';
+
+import { render, screen } from '../../test-utils';
 
 interface TestProps {
   withCancel?: boolean;

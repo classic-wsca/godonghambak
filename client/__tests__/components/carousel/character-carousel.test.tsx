@@ -1,9 +1,9 @@
+import { CharacterCarousel } from '~components/carousel';
+import { CHARACTER_CAROUSEL_ITEMS } from '~constants/carousel';
+import { ImageObject } from '~types/common';
+
 import { render, screen, act } from '../../test-utils';
 import { triggerResize } from '../../test-utils/window';
-import { CHARACTER_CAROUSEL_ITEMS } from '~constants/carousel';
-
-import { CharacterCarousel } from '~components/carousel';
-import { ImageObject } from '~types/common';
 
 const setup = (images: ImageObject[] = CHARACTER_CAROUSEL_ITEMS) => {
   const utils = render(

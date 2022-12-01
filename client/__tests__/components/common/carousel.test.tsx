@@ -1,10 +1,11 @@
 import type { CarouselProps } from '~components/common/carousel/carousel';
 
-import React from 'react';
 import userEvent from '@testing-library/user-event';
-import { render, screen, act, fireEvent, cleanup } from '../../test-utils';
+import React from 'react';
 
 import { Carousel, CarouselItem } from '~components/common';
+
+import { render, screen, act, fireEvent, cleanup } from '../../test-utils';
 
 interface TestProps extends CarouselProps {
   items?: string[];
@@ -45,7 +46,7 @@ const setup = ({
   };
 };
 
-describe('Carousel component', () => {
+describe('Carousel 컴포넌트 테스트', () => {
   beforeEach(() => {
     jest.useFakeTimers();
     jest.spyOn(global, 'setTimeout');
@@ -89,6 +90,7 @@ describe('Carousel component', () => {
   });
 
   it('should remove and redefinition transition of track using setTimeout', () => {
+    const initialCalledTimes = 2;
     setup({});
 
     act(() => {
@@ -96,20 +98,11 @@ describe('Carousel component', () => {
       jest.advanceTimersByTime(100);
     });
 
-    expect(setTimeout).toHaveBeenCalledTimes(1);
-  });
-
-  it('should not update slide width when width is received', () => {
-    setup({ width: 400 });
-
-    act(() => {
-      window.dispatchEvent(new Event('resize'));
-    });
-
-    expect(setTimeout).toHaveBeenCalledTimes(0);
+    expect(setTimeout).toHaveBeenCalledTimes(initialCalledTimes + 1);
   });
 
   it('should move slide without animation using setTimeout', async () => {
+    const initialCalledTimes = 2;
     const { prevButton, nextButton } = setup({});
     const clickButton = (button: HTMLElement) => {
       fireEvent.click(button);
@@ -119,22 +112,22 @@ describe('Carousel component', () => {
     };
 
     clickButton(nextButton);
-    expect(setTimeout).toHaveBeenCalledTimes(0);
+    expect(setTimeout).toHaveBeenCalledTimes(initialCalledTimes + 0);
 
     clickButton(nextButton);
     clickButton(nextButton);
-    expect(setTimeout).toHaveBeenCalledTimes(2);
+    expect(setTimeout).toHaveBeenCalledTimes(initialCalledTimes + 2);
 
     clickButton(prevButton);
-    expect(setTimeout).toHaveBeenCalledTimes(4);
+    expect(setTimeout).toHaveBeenCalledTimes(initialCalledTimes + 4);
 
     clickButton(prevButton);
     clickButton(prevButton);
     clickButton(prevButton);
-    expect(setTimeout).toHaveBeenCalledTimes(6);
+    expect(setTimeout).toHaveBeenCalledTimes(initialCalledTimes + 6);
 
     clickButton(nextButton);
-    expect(setTimeout).toHaveBeenCalledTimes(8);
+    expect(setTimeout).toHaveBeenCalledTimes(initialCalledTimes + 8);
   });
 
   it('should prevent mousedown event when touch the buttons', () => {

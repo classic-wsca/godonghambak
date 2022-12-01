@@ -2,7 +2,6 @@
 import type { HTMLInputTypeAttribute } from 'react';
 
 import userEvent from '@testing-library/user-event';
-import { render, screen } from '../../test-utils';
 
 import {
   Input,
@@ -10,8 +9,9 @@ import {
   InputWithStatus,
   InputWithLabelAndStatus,
 } from '~components/common';
-
 import { useInput } from '~hooks/index';
+
+import { render, screen } from '../../test-utils';
 
 interface TestProps {
   type?: Extract<HTMLInputTypeAttribute, 'text' | 'email' | 'password' | 'tel'>;

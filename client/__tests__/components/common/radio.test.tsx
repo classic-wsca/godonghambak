@@ -1,9 +1,9 @@
 import userEvent from '@testing-library/user-event';
-import { render, screen } from '../../test-utils';
 
 import { Radio, RadioGroup } from '~components/common';
-
 import { useInput } from '~hooks/index';
+
+import { render, screen } from '../../test-utils';
 
 const TestComponent = () => {
   const options = [

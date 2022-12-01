@@ -1,10 +1,11 @@
 import type { ButtonVariants } from '~components/common/button/button-base';
 
 import userEvent from '@testing-library/user-event';
-import { render, screen } from '../../test-utils';
 
 import { Button } from '~components/common';
 import { GlobalColors, GlobalSizes } from '~types/common';
+
+import { render, screen } from '../../test-utils';
 
 describe('Button component', () => {
   it('should render button', () => {

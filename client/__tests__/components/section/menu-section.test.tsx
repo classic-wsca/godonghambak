@@ -1,6 +1,6 @@
-import { render, screen } from '../../test-utils';
-
 import { MenuSection } from '~components/section';
+
+import { render, screen } from '../../test-utils';
 
 describe('Menu section component test', () => {
   it('should be rendered correctly', () => {

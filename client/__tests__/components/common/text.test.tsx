@@ -1,8 +1,9 @@
 import type { TextElement } from '~components/common/text/text';
 
-import { render, screen } from '../../test-utils';
 import { Text } from '~components/common';
 import { getRandomNumber } from '~utils/math-utils';
+
+import { render, screen } from '../../test-utils';
 
 const setup = (as: TextElement = 'p') => {
   const utils = render(<Text as={as}>test</Text>);

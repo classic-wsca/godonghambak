@@ -1,9 +1,8 @@
-import { render, screen } from '../../test-utils';
-
 import { Heading } from '~components/common';
 import { HeadingLevel } from '~components/common/heading/heading';
-
 import { getRandomNumber } from '~utils/math-utils';
+
+import { render, screen } from '../../test-utils';
 
 const setup = (as: HeadingLevel = 'h1') => {
   const utils = render(<Heading as={as}>Heading Test</Heading>);

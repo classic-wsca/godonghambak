@@ -1,10 +1,11 @@
 import userEvent from '@testing-library/user-event';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
-import { render, screen, act, createMockRouter } from '../../test-utils';
-import { getRandomBrowserSize, triggerResize } from '../../test-utils/window';
 
 import { MainCarousel } from '~components/carousel';
 import { MAIN_CAROUSEL_ITEMS } from '~constants/carousel';
+
+import { render, screen, act, createMockRouter } from '../../test-utils';
+import { getRandomBrowserSize, triggerResize } from '../../test-utils/window';
 
 const setup = () => {
   const user = userEvent.setup();
