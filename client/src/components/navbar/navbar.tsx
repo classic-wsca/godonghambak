@@ -3,11 +3,12 @@ import type { NavigationSubRoutes } from '~types/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import { Button } from '~components/common';
 import { NAVIGATION_ROUTES } from '~constants/navigation';
-import { useToggle, useWindowResize } from '~hooks/index';
+import { useScroll, useToggle, useWindowResize } from '~hooks/index';
 import { pixelToRem } from '~utils/style-utils';
 
 import NavItem from './nav-item';
@@ -15,8 +16,12 @@ import NavToggle from './nav-toggle';
 
 const Navbar = () => {
   const router = useRouter();
-  const [isOpen, toggle] = useToggle();
   const { ref, isOnResize } = useWindowResize();
+  const [isOpen, toggle] = useToggle();
+
+  const lastScrollY = useRef(0);
+  const { y: scrollY } = useScroll();
+  const [isHideNavbar, setIsHideNavbar] = useState(false);
 
   const isCurrentRoute = (href: string, subRoutes: NavigationSubRoutes[]) => {
     if (href === router.asPath) {
@@ -30,9 +35,25 @@ const Navbar = () => {
     return !!filteredSubRoutes.length;
   };
 
+  const handleScrollPosition = useCallback(() => {
+    if (scrollY === 0) {
+      setIsHideNavbar(false);
+      return;
+    }
+
+    const isScrollDown = lastScrollY.current < scrollY;
+
+    setIsHideNavbar(isScrollDown);
+    lastScrollY.current = scrollY;
+  }, [scrollY]);
+
+  useEffect(() => {
+    handleScrollPosition();
+  }, [handleScrollPosition]);
+
   return (
     <>
-      <Header>
+      <Header hide={isHideNavbar}>
         <Link href="/" passHref>
           <Logo href="replace" aria-label="logo">
             <Image src="/images/logo.png" alt="logo" layout="fill" priority />
@@ -77,7 +98,7 @@ const Navbar = () => {
   );
 };
 
-const Header = styled.header`
+const Header = styled.header<{ hide: boolean }>`
   position: sticky;
   top: 0;
   left: 0;
@@ -85,11 +106,14 @@ const Header = styled.header`
   justify-content: space-between;
   align-items: center;
   width: 85%;
+  max-width: ${pixelToRem(1440)};
   margin: 0 auto;
   padding: 0 ${pixelToRem(50)};
   border-radius: 0 0 ${pixelToRem(20)} ${pixelToRem(20)};
   background-color: ${({ theme }) => theme.colors.light};
   box-shadow: 0 1px 2px rgba(0, 0, 0, 12%), 0 4px 8px rgba(0, 0, 0, 6%);
+  transform: ${({ hide }) => (hide ? `translateY(-90px)` : `translateY(0px)`)};
+  transition: transform 400ms cubic-bezier(0.785, 0.135, 0.15, 0.86);
   z-index: 999;
 
   @media screen and (max-width: 1300px) {
@@ -104,6 +128,7 @@ const Header = styled.header`
     height: ${pixelToRem(60)};
     padding: ${pixelToRem(20)};
     border-radius: 0;
+    transform: none;
   }
 `;
 
