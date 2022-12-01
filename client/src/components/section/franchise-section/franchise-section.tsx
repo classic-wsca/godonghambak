@@ -41,7 +41,6 @@ const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: ${pixelToRem(1440)};
   height: 100%;
   margin: 0 auto;
   padding: ${pixelToRem(200)} 0;

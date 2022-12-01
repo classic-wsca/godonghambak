@@ -23,7 +23,6 @@ const MenuSection = () => {
 
 const Wrapper = styled.section`
   position: relative;
-  max-width: ${pixelToRem(1440)};
   margin: 0 auto;
   padding: ${pixelToRem(100)} 0;
 

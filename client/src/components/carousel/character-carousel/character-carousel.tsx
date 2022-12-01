@@ -135,7 +135,6 @@ const CharacterCarousel = ({
 const CarouselWrapper = styled.div<{ width: number }>`
   position: relative;
   width: ${({ width }) => pixelToRem(width)};
-  max-width: ${pixelToRem(1440)};
   height: ${pixelToRem(200)};
   margin: 0 auto;
   overflow: hidden;

@@ -30,7 +30,6 @@ const FamilySection = () => {
 
 const Wrapper = styled.section`
   position: relative;
-  max-width: ${pixelToRem(1440)};
   margin: 0 auto;
   padding: 10vh 0;
   background-color: ${({ theme }) => theme.colors.red};
