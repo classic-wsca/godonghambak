@@ -1,6 +1,6 @@
 import userEvent from '@testing-library/user-event';
 
-import { Modal, ConfimationModal } from '~components/common';
+import { Modal, ConfirmationModal } from '~components/modal';
 import { useToggle } from '~hooks/index';
 
 import { render, screen } from '../../test-utils';
@@ -15,7 +15,7 @@ const TestComponent = ({ withCancel }: TestProps) => {
   return (
     <>
       <Modal title="modal test" isOpen={isOpen} onClose={toggle}>
-        <ConfimationModal
+        <ConfirmationModal
           message="This is modal test"
           onCancel={withCancel ? toggle : undefined}
           onConfirm={toggle}
