@@ -22,6 +22,7 @@ const withLabel = <T,>(WrappedComponent: ComponentType<T>) => {
 const Label = styled.label`
   display: block;
   padding-left: ${pixelToRem(2)};
+  font-size: ${pixelToRem(14)};
   font-weight: 600;
   color: ${({ theme }) => theme.colors.dark};
 `;
