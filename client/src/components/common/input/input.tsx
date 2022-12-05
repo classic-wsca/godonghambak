@@ -13,12 +13,13 @@ interface InputProps extends ComponentPropsWithoutRef<'input'> {
   value: string;
   status?: WithStatusType;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
+  onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   (
-    { id, type = 'text', value, status, onChange, onBlur, ...rest },
+    { id, type = 'text', value, status, onChange, onFocus, onBlur, ...rest },
     forwardedRef,
   ) => {
     return (
@@ -31,6 +32,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         status={status}
         disabled={status === 'success'}
         onChange={onChange}
+        onFocus={onFocus}
         onBlur={onBlur}
         aria-label={id}
         {...rest}
