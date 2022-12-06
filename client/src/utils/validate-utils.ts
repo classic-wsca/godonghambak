@@ -1,4 +1,24 @@
+import type { LoginInformation } from '~pages/login';
+
 import { HTMLInputTypeAttribute } from 'react';
+
+import { LOGIN_ERROR_MESSAGES } from '~constants/login';
+
+export const validateLogin = ({ email, password }: LoginInformation) => {
+  const errors: Partial<LoginInformation> = {};
+
+  if (!validateInput(email, 'email')) {
+    const { noEmail, invalidEmailFormat } = LOGIN_ERROR_MESSAGES;
+    errors.email = email === '' ? noEmail : invalidEmailFormat;
+  }
+
+  if (!validateInput(password, 'password')) {
+    const { noPassword, invalidPasswordFormat } = LOGIN_ERROR_MESSAGES;
+    errors.password = password === '' ? noPassword : invalidPasswordFormat;
+  }
+
+  return errors;
+};
 
 export const validateInput = (
   value: string,
