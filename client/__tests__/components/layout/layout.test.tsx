@@ -1,14 +1,16 @@
+import type { ReactNode } from 'react';
+
 import { RouterContext } from 'next/dist/shared/lib/router-context';
-import { NextRouter } from 'next/router';
 
 import { Layout } from '~components/layout';
 
 import { render, createMockRouter } from '../../test-utils';
 
-const setup = (router: NextRouter) => {
+const setup = (children?: ReactNode) => {
+  const router = createMockRouter({});
   const utils = render(
     <RouterContext.Provider value={router}>
-      <Layout />
+      <Layout>{children}</Layout>
     </RouterContext.Provider>,
   );
 
@@ -16,9 +18,9 @@ const setup = (router: NextRouter) => {
 };
 
 describe('기본 레이아웃 컴포넌트 테스트', () => {
-  it('should render navbar', () => {
+  it('내비게이션 바를 화면에 렌더링해야 한다.', () => {
     // given
-    const { getByRole } = setup(createMockRouter({}));
+    const { getByRole } = setup();
     const navbar = getByRole('navigation');
 
     // when
@@ -26,9 +28,9 @@ describe('기본 레이아웃 컴포넌트 테스트', () => {
     expect(navbar).toBeInTheDocument();
   });
 
-  it('should render footer', () => {
+  it('푸터를 화면에 렌더링해야 한다.', () => {
     // given
-    const { getByRole } = setup(createMockRouter({}));
+    const { getByRole } = setup();
     const footer = getByRole('contentinfo');
 
     // when
@@ -36,31 +38,13 @@ describe('기본 레이아웃 컴포넌트 테스트', () => {
     expect(footer).toBeInTheDocument();
   });
 
-  it('should not render breadcrumb if current page is homepage', () => {
+  it('전달 받은 자식 요소를 화면에 렌더링해야 한다.', () => {
     // given
-    const { queryByLabelText } = setup(createMockRouter({}));
-    const breadcrumb = queryByLabelText('breadcrumbs');
+    const { getByText } = setup(<p>Hello World!</p>);
+    const childElement = getByText('Hello World!');
 
     // when
     // then
-    expect(breadcrumb).not.toBeInTheDocument();
+    expect(childElement).toBeInTheDocument();
   });
-
-  it.each(['/brand', '/store', '/menu'])(
-    'should render breadcrumb except for the homepage',
-    (path) => {
-      // given
-      const mockRouter = createMockRouter({
-        pathname: path,
-        asPath: path,
-        query: {},
-      });
-      const { queryByLabelText } = setup(mockRouter);
-      const breadcrumb = queryByLabelText('breadcrumbs');
-
-      // when
-      // then
-      expect(breadcrumb).toBeInTheDocument();
-    },
-  );
 });
