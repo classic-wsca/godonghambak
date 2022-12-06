@@ -3,6 +3,7 @@ import {
   validateEmail,
   validatePassword,
   validatePhoneNumber,
+  validateLogin,
 } from '~utils/validate-utils';
 
 describe('Validate util function test', () => {
@@ -95,6 +96,100 @@ describe('Validate util function test', () => {
       expect(validateInput('01012345678', 'tel')).toBe(true);
       expect(validateInput('010-1234-5678', 'tel')).toBe(true);
       expect(validateInput('011-123-4567', 'tel')).toBe(true);
+    });
+  });
+
+  describe('validateLogin', () => {
+    it('이메일 값이 없다면, 반환할 객체에 이메일이 없다는 메시지를 담아 반환해야 한다.', () => {
+      // given
+      const email = '';
+      const password = 'example1234!';
+
+      // when
+      const errors = validateLogin({ email, password });
+
+      // then
+      expect(errors).toEqual({ email: '이메일을 입력해 주세요.' });
+    });
+
+    it('이메일 값이 올바르지 않다면, 반환할 객체에 이메일 형식이 올바르지 않다는 메시지를 담아 반환해야 한다.', () => {
+      // given
+      const email = 'example';
+      const password = 'example1234!';
+
+      // when
+      const errors = validateLogin({ email, password });
+
+      // then
+      expect(errors).toEqual({ email: '유효하지 않은 이메일 형식입니다.' });
+    });
+
+    it('비밀번호 값이 없다면, 반환할 객체에 비밃번호가 없다는 메시지를 담아 반환해야 한다.', () => {
+      // given
+      const email = 'example@gmail.com';
+      const password = '';
+
+      // when
+      const errors = validateLogin({ email, password });
+
+      // then
+      expect(errors).toEqual({ password: '비밀번호를 입력해 주세요.' });
+    });
+
+    it('비밀번호 형식이 올바르지 않다면, 반환할 객체에 비밃번호 형식이 올바르지 않다는 메시지를 담아 반환해야 한다.', () => {
+      // given
+      const email = 'example@gmail.com';
+      const password = 'example';
+
+      // when
+      const errors = validateLogin({ email, password });
+
+      // then
+      expect(errors).toEqual({
+        password: '비밀번호 7-15자리 영문과 숫자, 특수문자를 포함해야 합니다.',
+      });
+    });
+
+    it('이메일과 비밀번호 모두 값이 없을 경우, 이메일과 비밀번호가 없다는 메시지를 담은 객체를 반환해야 한다.', () => {
+      // given
+      const email = '';
+      const password = '';
+
+      // when
+      const errors = validateLogin({ email, password });
+
+      // then
+      expect(errors).toEqual({
+        email: '이메일을 입력해 주세요.',
+        password: '비밀번호를 입력해 주세요.',
+      });
+    });
+
+    it('이메일과 비밀번호 모두 올바른 형식이 아닐 경우, 두 가지 모두 올바르지 않은 형식이라는 메시지를 담은 객체를 반환해야 한다.', () => {
+      // given
+      const email = 'exmaple';
+      const password = 'example';
+
+      // when
+      const errors = validateLogin({ email, password });
+
+      // then
+      expect(errors).toEqual({
+        email: '유효하지 않은 이메일 형식입니다.',
+        password: '비밀번호 7-15자리 영문과 숫자, 특수문자를 포함해야 합니다.',
+      });
+    });
+
+    it('올바른 이메일과 비밀번호의 경우 빈 객체를 반환해야 한다.', () => {
+      // given
+      const email = 'example@gmail.com';
+      const password = 'example1234!';
+
+      // when
+      const errors = validateLogin({ email, password });
+
+      // then
+      expect(errors).toEqual({});
     });
   });
 });
