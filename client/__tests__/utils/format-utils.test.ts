@@ -1,4 +1,8 @@
-import { formatPhoneNumber, convertNumberToTime } from '~utils/format-utils';
+import {
+  convertNumberToTime,
+  formatDigits,
+  formatPhoneNumber,
+} from '~utils/format-utils';
 
 describe('입력받은 십진수를 시간 단위 별로 환산해주는 함수 convertNumberToTime 테스트', () => {
   const getTimeUnits = ({ days = 0, hours = 0, minutes = 0, seconds = 0 }) => {
@@ -98,6 +102,115 @@ describe('입력받은 십진수를 시간 단위 별로 환산해주는 함수 
 
     // then
     expect(time).toEqual(getTimeUnits({ seconds: 12 }));
+  });
+});
+
+describe('숫자를 원하는 자릿수의 문자열로 변경해주는 formatDigits 함수 테스트', () => {
+  it('지정한 자릿수에 채울 문자열을 지정하지 않으면 0으로 채워야 한다.', () => {
+    // given
+    const number = 4;
+    const maxLength = 2;
+
+    // when
+    const formatted = formatDigits(number, maxLength);
+
+    // then
+    expect(formatted).toBe('04');
+  });
+
+  it.each([
+    [2, '04'],
+    [3, '004'],
+    [4, '0004'],
+  ])(
+    '지정한 자릿수로 문자열을 채워 변경할 수 있어야 한다.',
+    (maxLength, expected) => {
+      // given
+      const number = 4;
+
+      // when
+      const formatted = formatDigits(number, maxLength);
+
+      // then
+      expect(formatted).toBe(expected);
+    },
+  );
+
+  it('0이 아닌 다른 문자열로도 자릿수를 채울 수 있어야 한다.', () => {
+    // given
+    const number = 4;
+    const maxLength = 2;
+    const fillString = '2';
+
+    // when
+    const formatted = formatDigits(number, maxLength, fillString);
+
+    // then
+    expect(formatted).toBe('24');
+  });
+
+  it('지정한 자릿수 이내라면 한 글자 이상의 문자열로도 자릿수를 채울 수 있어야 한다.', () => {
+    // given
+    const number = 4;
+    const maxLength = 4;
+    const fillString = '123';
+
+    // when
+    const formatted = formatDigits(number, maxLength, fillString);
+
+    // then
+    expect(formatted).toBe('1234');
+  });
+
+  it('변환할 값에 음수를 입력하면 에러가 발생해야 한다.', () => {
+    // given
+    const number = -1;
+    const maxLength = 2;
+
+    // when
+    // then
+    expect(() => formatDigits(number, maxLength)).toThrow();
+  });
+
+  it('변환할 값이 Number.MAX_SAFE_INTEGER 보다 크다면 에러가 발생해야 한다.', () => {
+    // given
+    const number = Number.MAX_SAFE_INTEGER + 1;
+    const maxLength = 2;
+
+    // when
+    // then
+    expect(() => formatDigits(number, maxLength)).toThrow();
+  });
+
+  it('변환할 자릿수에 음수를 입력하면 에러가 발생해야 한다.', () => {
+    // given
+    const number = 4;
+    const maxLength = -1;
+
+    // when
+    // then
+    expect(() => formatDigits(number, maxLength)).toThrow();
+  });
+
+  it('변환할 자릿수가 Number.MAX_SAFE_INTEGER 보다 크다면 에러가 발생해야 한다.', () => {
+    // given
+    const number = 4;
+    const maxLength = Number.MAX_SAFE_INTEGER + 1;
+
+    // when
+    // then
+    expect(() => formatDigits(number, maxLength)).toThrow();
+  });
+
+  it('채울 문자열이 한 글자 이상이라면 에러가 발생해야 한다.', () => {
+    // given
+    const number = 4;
+    const maxLength = 2;
+    const fillString = '29';
+
+    // when
+    // then
+    expect(() => formatDigits(number, maxLength, fillString)).toThrow();
   });
 });
 
