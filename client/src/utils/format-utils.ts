@@ -32,6 +32,30 @@ export const convertNumberToTime = (time: number) => {
   };
 };
 
+export const formatDigits = (
+  number: number,
+  maxLength: number,
+  fillString = '0',
+) => {
+  if (number > Number.MAX_SAFE_INTEGER || number < 0) {
+    throw new RangeError(
+      `변환할 수 있는 수의 범위를 벗어났습니다. (min: 0, max: ${Number.MAX_SAFE_INTEGER})`,
+    );
+  }
+
+  if (maxLength > Number.MAX_SAFE_INTEGER || maxLength < 0) {
+    throw new RangeError(
+      `변환할 수 자릿수의 범위를 벗어났습니다. (min: 0, max: ${Number.MAX_SAFE_INTEGER})`,
+    );
+  }
+
+  if (fillString.length > maxLength - 1) {
+    throw new RangeError('채우려는 문자열의 길이가 지정한 길이를 초과합니다.');
+  }
+
+  return String(number).padStart(maxLength, fillString);
+};
+
 export const formatPhoneNumber = (value: string): string => {
   if (!value) return '';
   const phoneNumber = value.replace(/[^\d]/g, '');
