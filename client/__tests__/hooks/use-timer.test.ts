@@ -1,4 +1,4 @@
-import type { TimerConfig } from '~hooks/use-timer';
+import type { TimerConfig } from '~types/timer';
 
 import { renderHook, act } from '@testing-library/react';
 
