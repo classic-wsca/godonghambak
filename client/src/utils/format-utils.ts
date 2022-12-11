@@ -71,3 +71,16 @@ export const formatPhoneNumber = (value: string): string => {
 
   return `${phoneNumber.slice(0, 3)}-${phoneNumber.slice(3, 7)}-${phoneNumber.slice(7, 11)}`; // prettier-ignore
 };
+
+export const formatNumberToTime = (time: number) => {
+  const { days, hours, minutes, seconds } = convertNumberToTime(time);
+
+  const dd = days ? `${days}일` : '';
+  const hh = hours ? `${formatDigits(hours, 2)}시간` : '';
+  const mm = `${formatDigits(minutes, 2)}분`;
+  const ss = `${formatDigits(seconds, 2)}초`;
+
+  const formatted = `${dd} ${hh} ${mm} ${ss}`;
+
+  return formatted.trim();
+};
