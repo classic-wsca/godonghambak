@@ -9,7 +9,7 @@ import NavToggle from '~components/navbar/nav-toggle';
 import { NAVIGATION_ROUTES } from '~constants/navigation';
 import { getRandomNumber } from '~utils/math-utils';
 
-import { render, screen, createMockRouter } from '../../test-utils';
+import { render, screen, createMockRouter } from '../test-utils';
 
 const getRandomLink = (links: NavigationRoutes[] = []) => {
   const randomIndex: number = getRandomNumber(0, links.length);

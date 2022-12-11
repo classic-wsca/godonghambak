@@ -5,7 +5,7 @@ import { RouterContext } from 'next/dist/shared/lib/router-context';
 
 import { Footer } from '~components/footer';
 
-import { render, screen, createMockRouter } from '../../test-utils';
+import { render, screen, createMockRouter } from '../test-utils';
 
 const setup = (router: NextRouter = createMockRouter({})) => {
   const user = userEvent.setup();

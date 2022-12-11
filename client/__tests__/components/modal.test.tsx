@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { Modal, ConfirmationModal } from '~components/modal';
 import { useToggle } from '~hooks/index';
 
-import { render, screen } from '../../test-utils';
+import { render, screen } from '../test-utils';
 
 interface TestProps {
   withCancel?: boolean;
