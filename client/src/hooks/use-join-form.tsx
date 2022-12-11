@@ -1,11 +1,10 @@
-import type { WithStatusType } from '~hocs/with-status';
-import type { JoinInformation } from '~types/auth';
+import type { FormFieldsStatus, JoinInformation } from '~types/form';
 
 import React, { useState } from 'react';
 
-import { JOIN_FIELD_KEYS, JOIN_FIELD_STATUS } from '~constants/join';
+import { FORM_FIELD_STATUS, JOIN_FIELD_KEYS } from '~constants/form';
 import { formatPhoneNumber } from '~utils/format-utils';
-import { validateJoinInput } from '~utils/validate-utils';
+import { validateInput } from '~utils/validate-utils';
 
 import useToggle from './use-toggle';
 
@@ -21,9 +20,7 @@ const useJoinForm = <T extends Record<keyof JoinInformation, string>>({
   validate,
 }: UseJoinFormProps<T>) => {
   const [values, setValues] = useState<T>(initialValues);
-  const [statuses, setStatuses] = useState<{ [key: string]: WithStatusType }>(
-    {},
-  );
+  const [statuses, setStatuses] = useState<FormFieldsStatus<T>>({});
   const [errors, setErrors] = useState<Partial<T>>({});
   const [verificationCode, setVerificationCode] = useState('');
   const [isCheckboxChecked, toggleCheckboxChecked] = useToggle();
@@ -43,7 +40,7 @@ const useJoinForm = <T extends Record<keyof JoinInformation, string>>({
 
     setStatuses((prevStatuses) => ({
       ...prevStatuses,
-      [name]: JOIN_FIELD_STATUS.default,
+      [name]: FORM_FIELD_STATUS.default,
     }));
 
     if (name === JOIN_FIELD_KEYS.email || name === JOIN_FIELD_KEYS.password) {
@@ -55,10 +52,10 @@ const useJoinForm = <T extends Record<keyof JoinInformation, string>>({
     const { name, value } = e.target as HTMLInputElement;
     const compareValue = getComapreValueByName(name);
 
-    if (value === '' && statuses[name] !== JOIN_FIELD_STATUS.error) {
+    if (value === '' && statuses[name] !== FORM_FIELD_STATUS.error) {
       setStatuses((prevStatuses) => ({
         ...prevStatuses,
-        [name]: JOIN_FIELD_STATUS.default,
+        [name]: FORM_FIELD_STATUS.default,
       }));
       return;
     }
@@ -99,13 +96,13 @@ const useJoinForm = <T extends Record<keyof JoinInformation, string>>({
   const updateStatus = (key: string, value: string, compareValue?: string) => {
     setStatuses((prevStatuses) => ({
       ...prevStatuses,
-      [key]: JOIN_FIELD_STATUS.default,
+      [key]: FORM_FIELD_STATUS.default,
     }));
 
-    if (!validateJoinInput(value, key, compareValue)) {
+    if (!validateInput(value, key, compareValue)) {
       setStatuses((prevStatuses) => ({
         ...prevStatuses,
-        [key]: JOIN_FIELD_STATUS.error,
+        [key]: FORM_FIELD_STATUS.error,
       }));
       return;
     }
@@ -113,7 +110,7 @@ const useJoinForm = <T extends Record<keyof JoinInformation, string>>({
     if (isConfirmationKey(key) && value !== '') {
       setStatuses((prevStatuses) => ({
         ...prevStatuses,
-        [key]: JOIN_FIELD_STATUS.success,
+        [key]: FORM_FIELD_STATUS.success,
       }));
     }
   };
@@ -135,7 +132,7 @@ const useJoinForm = <T extends Record<keyof JoinInformation, string>>({
     setValues((prevValues) => ({ ...prevValues, [key]: '' }));
     setStatuses((prevStatuses) => ({
       ...prevStatuses,
-      [key]: JOIN_FIELD_STATUS.default,
+      [key]: FORM_FIELD_STATUS.default,
     }));
     setErrors((prevErrors) => {
       const { [key]: removedProperty, ...rest } = prevErrors || {};

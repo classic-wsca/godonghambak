@@ -1,4 +1,4 @@
-import type { UserInformation } from '~types/auth';
+import type { JoinInformation } from '~types/form';
 
 import { useRouter } from 'next/router';
 import { useCallback } from 'react';
@@ -12,7 +12,7 @@ const Join = () => {
   const router = useRouter();
 
   const handleSubmitForm = useCallback(
-    (values: UserInformation) => {
+    (values: JoinInformation) => {
       // TODO 회원가입 기능 구현
 
       // TODO 로그인 상태 만들기

@@ -2,7 +2,7 @@ import userEvent from '@testing-library/user-event';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 
 import { JoinForm } from '~components/form';
-import { UserInformation } from '~types/auth';
+import { JoinInformation } from '~types/form';
 
 import { render, screen, createMockRouter, act } from '../../test-utils';
 
@@ -18,7 +18,7 @@ const removePortalSetup = () => {
 };
 
 const setup = (
-  handleSubmit: jest.Mock<void, [values: UserInformation]> = jest.fn(),
+  handleSubmit: jest.Mock<void, [values: JoinInformation]> = jest.fn(),
 ) => {
   const user = userEvent.setup({
     advanceTimers: () => jest.runOnlyPendingTimers(),

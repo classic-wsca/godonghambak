@@ -1,8 +1,6 @@
-import { JOIN_FIELD_KEYS } from '~constants/join';
+import { JOIN_FIELD_KEYS } from '~constants/form';
 import {
-  validateJoinForm,
-  validateJoinInput,
-  validateLogin,
+  validateForm,
   validateInput,
   validateEmail,
   validatePassword,
@@ -12,7 +10,7 @@ import {
   isEqual,
 } from '~utils/validate-utils';
 
-describe('validateJoinForm 함수 테스트', () => {
+describe('validateForm 함수 테스트', () => {
   it('필드에 값이 없다면 값이 없다는 메시지를 담은 객체를 반환해야 한다.', () => {
     // given
     const fields = {
@@ -26,7 +24,7 @@ describe('validateJoinForm 함수 테스트', () => {
     };
 
     // when
-    const errors = validateJoinForm(fields);
+    const errors = validateForm(fields);
 
     // then
     expect(errors).toEqual({
@@ -52,7 +50,7 @@ describe('validateJoinForm 함수 테스트', () => {
     };
 
     // when
-    const errors = validateJoinForm(fields);
+    const errors = validateForm(fields);
 
     // then
     expect(errors).toEqual({
@@ -80,24 +78,22 @@ describe('validateJoinForm 함수 테스트', () => {
     const verificationCode = '123456';
 
     // when
-    const errors = validateJoinForm(fields, verificationCode);
+    const errors = validateForm(fields, verificationCode);
 
     // then
     expect(errors).toEqual({});
   });
 });
 
-describe('validateJoinInput 함수 테스트', () => {
+describe('validateInput 함수 테스트', () => {
   it('입력값이 빈 문자열이라면 false를 반환해야 한다.', () => {
-    // given
     const VALIDATE_KEYS = Object.keys(JOIN_FIELD_KEYS);
     const value = '';
 
     VALIDATE_KEYS.forEach((key) => {
       // when
-      const result = validateJoinInput(value, key);
+      const result = validateInput(value, key);
 
-      // then
       expect(result).toBe(false);
     });
   });
@@ -111,7 +107,7 @@ describe('validateJoinInput 함수 테스트', () => {
       // when
       // then
       expect(() => {
-        validateJoinInput(value, name);
+        validateInput(value, name);
       }).toThrow();
     },
   );
@@ -121,9 +117,8 @@ describe('validateJoinInput 함수 테스트', () => {
     (value) => {
       // given
       // when
-      const result = validateJoinInput(value, 'email');
+      const result = validateInput(value, 'email');
 
-      // then
       expect(result).toBe(false);
     },
   );
@@ -135,9 +130,8 @@ describe('validateJoinInput 함수 테스트', () => {
   ])('올바른 이메일이라면 true를 반환해야 한다.', (value) => {
     // given
     // when
-    const result = validateJoinInput(value, 'email');
+    const result = validateInput(value, 'email');
 
-    // then
     expect(result).toBe(true);
   });
 
@@ -146,9 +140,8 @@ describe('validateJoinInput 함수 테스트', () => {
     (value) => {
       // given
       // when
-      const result = validateJoinInput(value, 'password');
+      const result = validateInput(value, 'password');
 
-      // then
       expect(result).toBe(false);
     },
   );
@@ -158,9 +151,8 @@ describe('validateJoinInput 함수 테스트', () => {
     (value) => {
       // given
       // when
-      const result = validateJoinInput(value, 'password');
+      const result = validateInput(value, 'password');
 
-      // then
       expect(result).toBe(true);
     },
   );
@@ -170,9 +162,8 @@ describe('validateJoinInput 함수 테스트', () => {
     (value) => {
       // given
       // when
-      const result = validateJoinInput(value, 'phoneNumber');
+      const result = validateInput(value, 'phoneNumber');
 
-      // then
       expect(result).toBe(false);
     },
   );
@@ -187,9 +178,8 @@ describe('validateJoinInput 함수 테스트', () => {
   ])('올바른 휴대폰 번호 형식의 번호라면 true를 반환해야 한다.', (value) => {
     // given
     // when
-    const result = validateJoinInput(value, 'phoneNumber');
+    const result = validateInput(value, 'phoneNumber');
 
-    // then
     expect(result).toBe(true);
   });
 
@@ -204,9 +194,8 @@ describe('validateJoinInput 함수 테스트', () => {
     (value) => {
       // given
       // when
-      const result = validateJoinInput(value, 'name');
+      const result = validateInput(value, 'name');
 
-      // then
       expect(result).toBe(false);
     },
   );
@@ -216,9 +205,8 @@ describe('validateJoinInput 함수 테스트', () => {
     (value) => {
       // given
       // when
-      const result = validateJoinInput(value, 'name');
+      const result = validateInput(value, 'name');
 
-      // then
       expect(result).toBe(true);
     },
   );
@@ -237,9 +225,8 @@ describe('validateJoinInput 함수 테스트', () => {
     (value) => {
       // given
       // when
-      const result = validateJoinInput(value, 'birth');
+      const result = validateInput(value, 'birth');
 
-      // then
       expect(result).toBe(false);
     },
   );
@@ -249,9 +236,8 @@ describe('validateJoinInput 함수 테스트', () => {
     (value) => {
       // given
       // when
-      const result = validateJoinInput(value, 'birth');
+      const result = validateInput(value, 'birth');
 
-      // then
       expect(result).toBe(true);
     },
   );
@@ -264,9 +250,8 @@ describe('validateJoinInput 함수 테스트', () => {
     (value, name) => {
       // given
       // when
-      const result = validateJoinInput(value, name);
+      const result = validateInput(value, name);
 
-      // then
       expect(result).toBe(false);
     },
   );
@@ -279,9 +264,8 @@ describe('validateJoinInput 함수 테스트', () => {
     (value, name, compareValue) => {
       // given
       // when
-      const result = validateJoinInput(value, name, compareValue);
+      const result = validateInput(value, name, compareValue);
 
-      // then
       expect(result).toBe(false);
     },
   );
@@ -294,148 +278,11 @@ describe('validateJoinInput 함수 테스트', () => {
     (value, name, compareValue) => {
       // given
       // when
-      const result = validateJoinInput(value, name, compareValue);
+      const result = validateInput(value, name, compareValue);
 
-      // then
       expect(result).toBe(true);
     },
   );
-});
-
-describe('validateLogin', () => {
-  it('이메일 값이 없다면, 반환할 객체에 이메일이 없다는 메시지를 담아 반환해야 한다.', () => {
-    // given
-    const email = '';
-    const password = 'example1234!';
-
-    // when
-    const errors = validateLogin({ email, password });
-
-    // then
-    expect(errors).toEqual({ email: '이메일을 입력해 주세요.' });
-  });
-
-  it('이메일 값이 올바르지 않다면, 반환할 객체에 이메일 형식이 올바르지 않다는 메시지를 담아 반환해야 한다.', () => {
-    // given
-    const email = 'example';
-    const password = 'example1234!';
-
-    // when
-    const errors = validateLogin({ email, password });
-
-    // then
-    expect(errors).toEqual({ email: '유효하지 않은 이메일 형식입니다.' });
-  });
-
-  it('비밀번호 값이 없다면, 반환할 객체에 비밃번호가 없다는 메시지를 담아 반환해야 한다.', () => {
-    // given
-    const email = 'example@gmail.com';
-    const password = '';
-
-    // when
-    const errors = validateLogin({ email, password });
-
-    // then
-    expect(errors).toEqual({ password: '비밀번호를 입력해 주세요.' });
-  });
-
-  it('비밀번호 형식이 올바르지 않다면, 반환할 객체에 비밃번호 형식이 올바르지 않다는 메시지를 담아 반환해야 한다.', () => {
-    // given
-    const email = 'example@gmail.com';
-    const password = 'example';
-
-    // when
-    const errors = validateLogin({ email, password });
-
-    // then
-    expect(errors).toEqual({
-      password: '비밀번호 7-15자리 영문과 숫자, 특수문자를 포함해야 합니다.',
-    });
-  });
-
-  it('이메일과 비밀번호 모두 값이 없을 경우, 이메일과 비밀번호가 없다는 메시지를 담은 객체를 반환해야 한다.', () => {
-    // given
-    const email = '';
-    const password = '';
-
-    // when
-    const errors = validateLogin({ email, password });
-
-    // then
-    expect(errors).toEqual({
-      email: '이메일을 입력해 주세요.',
-      password: '비밀번호를 입력해 주세요.',
-    });
-  });
-
-  it('이메일과 비밀번호 모두 올바른 형식이 아닐 경우, 두 가지 모두 올바르지 않은 형식이라는 메시지를 담은 객체를 반환해야 한다.', () => {
-    // given
-    const email = 'exmaple';
-    const password = 'example';
-
-    // when
-    const errors = validateLogin({ email, password });
-
-    // then
-    expect(errors).toEqual({
-      email: '유효하지 않은 이메일 형식입니다.',
-      password: '비밀번호 7-15자리 영문과 숫자, 특수문자를 포함해야 합니다.',
-    });
-  });
-
-  it('올바른 이메일과 비밀번호의 경우 빈 객체를 반환해야 한다.', () => {
-    // given
-    const email = 'example@gmail.com';
-    const password = 'example1234!';
-
-    // when
-    const errors = validateLogin({ email, password });
-
-    // then
-    expect(errors).toEqual({});
-  });
-});
-
-describe('Validate input', () => {
-  it('should return null if value is empty', () => {
-    expect(validateInput('')).toBe(null);
-  });
-
-  it('should return null when type is not email, password and tel', () => {
-    expect(validateInput('hi', 'text')).toBe(null);
-    expect(validateInput('', 'radio')).toBe(null);
-    expect(validateInput('', 'checkbox')).toBe(null);
-    expect(validateInput('', 'button')).toBe(null);
-  });
-
-  it('should validate email value', () => {
-    expect(validateInput('example', 'email')).toBe(false);
-    expect(validateInput('example@gmail.com', 'email')).toBe(true);
-  });
-
-  it('should validate password value', () => {
-    expect(validateInput('password', 'password')).toBe(false);
-    expect(validateInput('password123!', 'password')).toBe(true);
-  });
-
-  it('should validate phone number value', () => {
-    expect(validateInput('0101', 'tel')).toBe(false);
-    expect(validateInput('01012345678', 'tel')).toBe(true);
-    expect(validateInput('010-1234-5678', 'tel')).toBe(true);
-    expect(validateInput('011-123-4567', 'tel')).toBe(true);
-  });
-
-  it('입력받은 이름이 올바른 이름 형식인지 검증할 수 있어야 한다.', () => {
-    expect(validateInput('홍', 'name')).toBe(false);
-    expect(validateInput('홍길', 'name')).toBe(true);
-    expect(validateInput('홍길동', 'name')).toBe(true);
-    expect(validateInput('내이름은홍길동', 'name')).toBe(true);
-    expect(validateInput('내이름은홍길동인데열다섯자가넘어', 'name')).toBe(
-      false,
-    );
-    expect(validateInput('홍 길동', 'name')).toBe(false);
-    expect(validateInput('honggildong', 'name')).toBe(false);
-  });
 });
 
 describe('Validate email', () => {

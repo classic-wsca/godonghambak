@@ -1,34 +1,23 @@
 import type {
+  FormField,
+  FormErrorMessage,
+  LoginInformation,
   JoinInformation,
-  JoinErrorMessage,
-  JoinFormField,
-} from '~types/auth';
+} from '~types/form';
 
-export const INITIAL_JOIN_VALUE: JoinInformation = {
-  email: '',
-  emailVerificationCode: '',
-  password: '',
-  passwordConfirm: '',
-  name: '',
-  phoneNumber: '',
-  birth: '',
-};
-
-export const JOIN_FIELD_KEYS = Object.keys(INITIAL_JOIN_VALUE).reduce(
-  (acc, cur) => {
-    acc[cur] = cur;
+export const getKeysOfObject = <T extends {}>(intialvalues: T) =>
+  Object.keys(intialvalues).reduce((acc, cur) => {
+    acc[cur as keyof T] = cur;
     return acc;
-  },
-  {} as Record<keyof JoinInformation, string>,
-);
+  }, {} as Record<keyof T, string>);
 
-export const JOIN_FIELD_STATUS = Object.freeze({
+export const FORM_FIELD_STATUS = Object.freeze({
   success: 'success',
   error: 'error',
   default: 'default',
 });
 
-export const JOIN_ERROR_MESSAGES: JoinErrorMessage = Object.freeze({
+export const FORM_ERROR_MESSAGES: FormErrorMessage = Object.freeze({
   notExist: Object.freeze({
     email: '이메일을 입력해 주세요.',
     emailVerificationCode: '인증번호를 입력해 주세요.',
@@ -50,7 +39,12 @@ export const JOIN_ERROR_MESSAGES: JoinErrorMessage = Object.freeze({
   failVerification: '인증 코드가 만료되었습니다. 다시 인증 해주세요.',
 });
 
-export const JOIN_FORM_FIELDS: JoinFormField[] = [
+export const INITIAL_LOGIN_VALUE: LoginInformation = {
+  email: '',
+  password: '',
+};
+
+export const LOGIN_FORM_FIELDS: FormField[] = [
   {
     id: 'email',
     type: 'email',
@@ -63,6 +57,37 @@ export const JOIN_FORM_FIELDS: JoinFormField[] = [
     placeholder: '비밀번호를 입력해 주세요.',
     text: '비밀번호',
   },
+];
+
+export const LOGIN_RELATED_PAGES = [
+  {
+    link: 'find-email',
+    text: '이메일 찾기',
+  },
+  {
+    link: 'find-password',
+    text: '비밀번호 찾기',
+  },
+  {
+    link: 'join',
+    text: '회원가입',
+  },
+];
+
+export const INITIAL_JOIN_VALUE: JoinInformation = {
+  email: '',
+  emailVerificationCode: '',
+  password: '',
+  passwordConfirm: '',
+  name: '',
+  phoneNumber: '',
+  birth: '',
+};
+
+export const JOIN_FIELD_KEYS = getKeysOfObject(INITIAL_JOIN_VALUE);
+
+export const JOIN_FORM_FIELDS: FormField[] = [
+  ...LOGIN_FORM_FIELDS,
   {
     id: 'name',
     type: 'text',

@@ -18,3 +18,5 @@ export interface Position {
   x: number;
   y: number;
 }
+
+export type Status = 'default' | 'error' | 'success';

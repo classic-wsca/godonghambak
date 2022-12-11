@@ -136,13 +136,13 @@ describe('UseForm 훅 테스트', () => {
 
   it('input의 타입이 tel이라면 포커스가 벗어날 때, 입력값을 핸드폰 번호 형식으로 변경할 수 있어야 한다.', () => {
     const initialValues = {
-      tel: '',
+      phoneNumber: '',
     };
     const onSubmit = jest.fn();
     const validate = jest.fn();
     const result = getHook(initialValues, onSubmit, validate);
-    const { changeEvent } = getEvent('tel', '01012345678');
-    const { focusEvent: blurEvent } = getEvent('tel', '01012345678', 'tel');
+    const { changeEvent } = getEvent('phoneNumber', '01012345678');
+    const { focusEvent: blurEvent } = getEvent('phoneNumber', '01012345678');
 
     // when
     act(() => {
@@ -151,7 +151,7 @@ describe('UseForm 훅 테스트', () => {
     });
 
     // then
-    expect(result.current.values).toEqual({ tel: '010-1234-5678' });
+    expect(result.current.values).toEqual({ phoneNumber: '010-1234-5678' });
   });
 
   it('submit 이벤트 발생 시에 기본 동작을 중지 시킬 수 있어야 한다.', () => {

@@ -1,23 +1,18 @@
-import type { LoginInformation } from '~pages/login';
-import type { UserInformation } from '~types/auth';
+import type { JoinInformation } from '~types/form';
 
-import { HTMLInputTypeAttribute } from 'react';
+import { FORM_ERROR_MESSAGES } from '~constants/form';
 
-import { JOIN_ERROR_MESSAGES } from '~constants/join';
-import { LOGIN_ERROR_MESSAGES } from '~constants/login';
-
-export const validateJoinForm = (
-  fields: UserInformation,
-  verificationCode?: string,
+export const validateForm = (
+  fields: Partial<JoinInformation>,
+  compareValue?: string,
 ) => {
-  const errors: Partial<UserInformation> = {};
+  const errors: Partial<JoinInformation> = {};
 
   Object.entries(fields).forEach(([key, value]) => {
-    const { notExist, invalidFormat } = JOIN_ERROR_MESSAGES;
-    const compareValue =
-      key === 'passwordConfirm' ? fields.password : verificationCode;
+    const { notExist, invalidFormat } = FORM_ERROR_MESSAGES;
+    const compare = key === 'passwordConfirm' ? fields.password : compareValue;
 
-    if (!validateJoinInput(value, key, compareValue)) {
+    if (!validateInput(value as string, key, compare)) {
       errors[key] = value === '' ? notExist[key] : invalidFormat[key];
     }
   });
@@ -25,13 +20,13 @@ export const validateJoinForm = (
   return errors;
 };
 
-export const validateJoinInput = (
+export const validateInput = (
   value: string,
-  name: keyof UserInformation,
+  key: keyof JoinInformation,
   compareValue?: string,
 ) => {
   const validate: {
-    [key: keyof UserInformation]: (
+    [key: keyof JoinInformation]: (
       value: string,
       compareValue?: string,
     ) => boolean;
@@ -40,53 +35,13 @@ export const validateJoinInput = (
     emailVerificationCode: isEqual,
     password: validatePassword,
     passwordConfirm: isEqual,
+    tel: validatePhoneNumber,
     phoneNumber: validatePhoneNumber,
     name: validateName,
     birth: validateBirth,
   };
 
-  return validate[name](value, compareValue);
-};
-
-export const validateLogin = ({ email, password }: LoginInformation) => {
-  const errors: Partial<LoginInformation> = {};
-
-  if (!validateInput(email, 'email')) {
-    const { noEmail, invalidEmailFormat } = LOGIN_ERROR_MESSAGES;
-    errors.email = email === '' ? noEmail : invalidEmailFormat;
-  }
-
-  if (!validateInput(password, 'password')) {
-    const { noPassword, invalidPasswordFormat } = LOGIN_ERROR_MESSAGES;
-    errors.password = password === '' ? noPassword : invalidPasswordFormat;
-  }
-
-  return errors;
-};
-
-export const validateInput = (
-  value: string,
-  type: HTMLInputTypeAttribute = 'text',
-) => {
-  if (!value) return null;
-
-  if (type === 'email') {
-    return validateEmail(value);
-  }
-
-  if (type === 'password') {
-    return validatePassword(value);
-  }
-
-  if (type === 'tel') {
-    return validatePhoneNumber(value);
-  }
-
-  if (type === 'name') {
-    return validateName(value);
-  }
-
-  return null;
+  return validate[key](value, compareValue);
 };
 
 export const validateEmail = (value: string) => {

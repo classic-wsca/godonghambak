@@ -11,10 +11,10 @@ import {
   INITIAL_LOGIN_VALUE,
   LOGIN_FORM_FIELDS,
   LOGIN_RELATED_PAGES,
-} from '~constants/login';
+} from '~constants/form';
 import { useForm } from '~hooks/index';
 import { pixelToRem } from '~utils/style-utils';
-import { validateLogin } from '~utils/validate-utils';
+import { validateForm } from '~utils/validate-utils';
 
 interface LoginFormProps {
   onSubmit: (values: LoginInformation) => void;
@@ -31,7 +31,7 @@ const LoginForm = ({ onSubmit }: LoginFormProps) => {
     handleSubmit,
   } = useForm<LoginInformation>({
     initialValues: INITIAL_LOGIN_VALUE,
-    validate: validateLogin,
+    validate: validateForm,
     onSubmit,
   });
 

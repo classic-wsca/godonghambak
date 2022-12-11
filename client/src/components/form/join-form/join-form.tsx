@@ -1,4 +1,4 @@
-import type { UserInformation } from '~types/auth';
+import type { JoinInformation } from '~types/form';
 
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
@@ -11,19 +11,19 @@ import {
 } from '~components/common';
 import { Modal, ConfirmationModal } from '~components/modal';
 import {
+  FORM_ERROR_MESSAGES,
+  FORM_FIELD_STATUS,
   INITIAL_JOIN_VALUE,
   JOIN_FORM_FIELDS,
   JOIN_FIELD_KEYS,
-  JOIN_FIELD_STATUS,
-  JOIN_ERROR_MESSAGES,
-} from '~constants/join';
+} from '~constants/form';
 import { useToggle, useJoinForm, useTimer } from '~hooks/index';
 import { formatNumberToTime } from '~utils/format-utils';
 import { pixelToRem } from '~utils/style-utils';
-import { validateJoinInput, validateJoinForm } from '~utils/validate-utils';
+import { validateInput, validateForm } from '~utils/validate-utils';
 
 interface JoinFormProps {
-  onSubmit: (values: UserInformation) => void;
+  onSubmit: (values: JoinInformation) => void;
 }
 
 const JoinForm = ({ onSubmit }: JoinFormProps) => {
@@ -45,7 +45,7 @@ const JoinForm = ({ onSubmit }: JoinFormProps) => {
   } = useJoinForm({
     initialValues: INITIAL_JOIN_VALUE,
     onSubmit,
-    validate: validateJoinForm,
+    validate: validateForm,
   });
   const [isVerificationModalOpen, toggleVerificationModal] = useToggle();
   const [isSubmitModalOpen, toggleSubmitModal] = useToggle();
@@ -55,10 +55,10 @@ const JoinForm = ({ onSubmit }: JoinFormProps) => {
     updateVerificationCode('error');
     updateStatus(
       JOIN_FIELD_KEYS.emailVerificationCode,
-      JOIN_FIELD_STATUS.error,
+      FORM_FIELD_STATUS.error,
     );
     updateErrors({
-      emailVerificationCode: JOIN_ERROR_MESSAGES.failVerification,
+      emailVerificationCode: FORM_ERROR_MESSAGES.failVerification,
     });
   };
 
@@ -75,8 +75,8 @@ const JoinForm = ({ onSubmit }: JoinFormProps) => {
 
   const isDisabled = (name: string, confirmFieldName: string) => {
     const isBeforeInput = values[name] === '';
-    const isNotValid = !validateJoinInput(values[name], name);
-    const isVerified = statuses[confirmFieldName] === JOIN_FIELD_STATUS.success;
+    const isNotValid = !validateInput(values[name], name);
+    const isVerified = statuses[confirmFieldName] === FORM_FIELD_STATUS.success;
 
     return isBeforeInput || isNotValid || isVerified;
   };
@@ -118,7 +118,7 @@ const JoinForm = ({ onSubmit }: JoinFormProps) => {
   };
 
   useEffect(() => {
-    if (statuses.emailVerificationCode === JOIN_FIELD_STATUS.success) {
+    if (statuses.emailVerificationCode === FORM_FIELD_STATUS.success) {
       resetTimer();
     }
   }, [statuses, resetTimer]);
@@ -154,7 +154,7 @@ const JoinForm = ({ onSubmit }: JoinFormProps) => {
                   size="x-small"
                   onClick={handleVerifyEmail}
                   disabled={
-                    statuses.emailVerificationCode === JOIN_FIELD_STATUS.success
+                    statuses.emailVerificationCode === FORM_FIELD_STATUS.success
                   }
                 >
                   이메일 인증

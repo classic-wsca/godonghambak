@@ -1,8 +1,8 @@
-import type { JoinInformation } from '~types/auth';
+import type { JoinInformation } from '~types/form';
 
 import { renderHook, act } from '@testing-library/react';
 
-import { INITIAL_JOIN_VALUE, JOIN_ERROR_MESSAGES } from '~constants/join';
+import { INITIAL_JOIN_VALUE, FORM_ERROR_MESSAGES } from '~constants/form';
 import { useJoinForm } from '~hooks/index';
 
 const getHook = <T extends Record<keyof JoinInformation, string>>(
@@ -243,7 +243,7 @@ describe('UseJoinForm 훅 테스트', () => {
     // given
     const initialValues = INITIAL_JOIN_VALUE;
     const onSubmit = jest.fn();
-    const validate = jest.fn(() => JOIN_ERROR_MESSAGES.notExist);
+    const validate = jest.fn(() => FORM_ERROR_MESSAGES.notExist);
     const result = getHook(initialValues, onSubmit, validate);
     const { submitEvent } = getEvent();
 
@@ -264,7 +264,7 @@ describe('UseJoinForm 훅 테스트', () => {
       phoneNumber: 'error',
       birth: 'error',
     });
-    expect(result.current.errors).toEqual(JOIN_ERROR_MESSAGES.notExist);
+    expect(result.current.errors).toEqual(FORM_ERROR_MESSAGES.notExist);
   });
 
   it('입력에 에러가 없어도, 체크박스에 체크가 안되었다면 폼에 저장된 값을 submit 할 수 없어야 한다.', () => {

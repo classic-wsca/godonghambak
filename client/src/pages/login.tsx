@@ -3,7 +3,6 @@ import styled from 'styled-components';
 
 import { Heading, Text } from '~components/common';
 import { LoginForm } from '~components/form';
-import { LOGIN_PHRASES } from '~constants/login';
 import { pixelToRem } from '~utils/style-utils';
 
 export interface LoginInformation {
@@ -21,8 +20,8 @@ const Login = () => {
 
   return (
     <Section>
-      <Title as="h2">{LOGIN_PHRASES.title}</Title>
-      <Phrase>{LOGIN_PHRASES.phrase}</Phrase>
+      <Title as="h2">로그인</Title>
+      <Phrase>즐거움과 재미가 가득한 고동함박에 오신 것을 환영합니다!</Phrase>
       <LoginForm onSubmit={handleSubmitForm} />
     </Section>
   );

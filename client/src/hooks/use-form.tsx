@@ -1,6 +1,8 @@
+import type { FormFieldsStatus } from '~types/form';
+
 import React, { useState } from 'react';
 
-import { WithStatusType } from '~hocs/with-status';
+import { FORM_FIELD_STATUS } from '~constants/form';
 import { formatPhoneNumber } from '~utils/format-utils';
 import { validateInput } from '~utils/validate-utils';
 
@@ -16,18 +18,8 @@ const useForm = <T extends object>({
   validate,
 }: UseFormProps<T>) => {
   const [values, setValues] = useState<T>(initialValues);
-  const [statuses, setStatuses] = useState<{ [key: string]: WithStatusType }>(
-    {},
-  );
+  const [statuses, setStatuses] = useState<FormFieldsStatus<T>>({});
   const [errors, setErrors] = useState<Partial<T>>({});
-
-  const updateStatus = (key: string, value: string) => {
-    setStatuses((prevStatuses) => ({ ...prevStatuses, [key]: 'default' }));
-
-    if (!validateInput(value, key)) {
-      setStatuses((prevStatuses) => ({ ...prevStatuses, [key]: 'error' }));
-    }
-  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -38,25 +30,31 @@ const useForm = <T extends object>({
   const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name } = e.target as HTMLInputElement;
 
-    setStatuses((prevStatuses) => ({ ...prevStatuses, [name]: 'default' }));
+    setStatuses((prevStatuses) => ({
+      ...prevStatuses,
+      [name]: FORM_FIELD_STATUS.default,
+    }));
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    const { name, type, value } = e.target as HTMLInputElement;
+    const { name, value } = e.target as HTMLInputElement;
 
-    if (value === '' && statuses[name] !== 'error') {
-      setStatuses((prevStatuses) => ({ ...prevStatuses, [name]: 'default' }));
+    if (value === '' && statuses[name as keyof T] !== FORM_FIELD_STATUS.error) {
+      setStatuses((prevStatuses) => ({
+        ...prevStatuses,
+        [name]: FORM_FIELD_STATUS.default,
+      }));
       return;
     }
 
-    if (type === 'tel') {
+    if (name === 'phoneNumber') {
       setValues((prevValues) => ({
         ...prevValues,
         [name]: formatPhoneNumber(value),
       }));
     }
 
-    updateStatus(type, value);
+    updateStatus(name, value);
     setErrors(validate(values));
   };
 
@@ -69,6 +67,20 @@ const useForm = <T extends object>({
 
     if (Object.keys(updatedErrors).length === 0) {
       onSubmit(values);
+    }
+  };
+
+  const updateStatus = (key: string, value: string) => {
+    setStatuses((prevStatuses) => ({
+      ...prevStatuses,
+      [key]: FORM_FIELD_STATUS.default,
+    }));
+
+    if (!validateInput(value, key)) {
+      setStatuses((prevStatuses) => ({
+        ...prevStatuses,
+        [key]: FORM_FIELD_STATUS.error,
+      }));
     }
   };
 
