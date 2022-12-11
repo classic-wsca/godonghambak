@@ -2,6 +2,7 @@ import {
   convertNumberToTime,
   formatDigits,
   formatPhoneNumber,
+  formatNumberToTime,
 } from '~utils/format-utils';
 
 describe('입력받은 십진수를 시간 단위 별로 환산해주는 함수 convertNumberToTime 테스트', () => {
@@ -248,5 +249,56 @@ describe('Format phone number', () => {
     expect(formatPhoneNumber('123asd')).toBe('123');
     expect(formatPhoneNumber('asd123asd')).toBe('123');
     expect(formatPhoneNumber('123asd456')).toBe('123-456');
+  });
+});
+
+describe('입력한 숫자를 시간으로 변경해주는 formatNumberToTime 함수 테스트', () => {
+  it.each([
+    [123, '02분 03초'],
+    [12345, '03시간 25분 45초'],
+    [12345678, '142일 21시간 21분 18초'],
+  ])(
+    '입력한 숫자를 시간을 표현하는 문자열로 변경할 수 있어야 한다.',
+    (number, formatted) => {
+      // given
+      // when
+      const time = formatNumberToTime(number);
+
+      // then
+      expect(time).toBe(formatted);
+    },
+  );
+
+  it('입력받은 숫자가 0이어도 분과 초를 표현해야 한다.', () => {
+    // given
+    const number = 0;
+
+    // when
+    const time = formatNumberToTime(number);
+
+    // then
+    expect(time).toBe('00분 00초');
+  });
+
+  it('입력받은 숫자가 음수라면 에러가 발생해야 한다.', () => {
+    // given
+    const number = -1;
+
+    // when
+    // then
+    expect(() => {
+      formatNumberToTime(number);
+    }).toThrow();
+  });
+
+  it('입력받은 숫자가 Number.MAX_SAFE_INTEGER 보다 크다면 에러가 발생해야 한다.', () => {
+    // given
+    const number = Number.MAX_SAFE_INTEGER + 1;
+
+    // when
+    // then
+    expect(() => {
+      formatNumberToTime(number);
+    }).toThrow();
   });
 });
