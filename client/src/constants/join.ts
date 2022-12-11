@@ -47,6 +47,7 @@ export const JOIN_ERROR_MESSAGES: JoinErrorMessage = Object.freeze({
     phoneNumber: '올바른 휴대폰 번호 형식이 아닙니다.',
     birth: '올바른 생년월일 6자리를 입력해 주세요.',
   }),
+  failVerification: '인증 코드가 만료되었습니다. 다시 인증 해주세요.',
 });
 
 export const JOIN_FORM_FIELDS: JoinFormField[] = [
