@@ -17,6 +17,7 @@ export interface JoinInformation extends UserInformation {
 export interface JoinErrorMessage {
   notExist: Readonly<UserInformation>;
   invalidFormat: Readonly<UserInformation>;
+  failVerification: Readonly<string>;
 }
 
 export interface JoinFormField {
