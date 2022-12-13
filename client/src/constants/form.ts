@@ -1,6 +1,7 @@
 import type {
   FormField,
   FormErrorMessage,
+  UserInformation,
   LoginInformation,
   JoinInformation,
 } from '~types/form';
@@ -23,7 +24,7 @@ export const FORM_ERROR_MESSAGES: FormErrorMessage = Object.freeze({
     emailVerificationCode: '인증번호를 입력해 주세요.',
     password: '비밀번호를 입력해 주세요.',
     passwordConfirm: '비밀번호 확인이 필요합니다.',
-    name: '이름을 입력해 주세요',
+    name: '이름을 입력해 주세요.',
     phoneNumber: '휴대폰 번호를 입력해 주세요.',
     birth: '생년월일을 입력해 주세요.',
   }),
@@ -105,5 +106,32 @@ export const JOIN_FORM_FIELDS: FormField[] = [
     type: 'text',
     placeholder: '생년월일 6자리를 입력해 주세요.',
     text: '생년월일 6자리',
+  },
+];
+
+export const INITIAL_FIND_EMAIL_FORM_VALUE: UserInformation = {
+  name: '',
+  birth: '',
+  phoneNumber: '',
+};
+
+export const FIND_EMAIL_FORM_FIELDS: FormField[] = [
+  {
+    id: 'name',
+    type: 'text',
+    placeholder: '이름을 입력해 주세요.',
+    text: '이름',
+  },
+  {
+    id: 'birth',
+    type: 'text',
+    placeholder: '생년월일 6자리를 입력해 주세요.',
+    text: '생년월일',
+  },
+  {
+    id: 'phoneNumber',
+    type: 'tel',
+    placeholder: '휴대폰 번호를 입력해 주세요. (-없이 숫자만 입력)',
+    text: '휴대폰 번호',
   },
 ];
