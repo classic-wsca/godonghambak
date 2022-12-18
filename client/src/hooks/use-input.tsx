@@ -1,7 +1,8 @@
-import type { WithStatusType } from '~hocs/with-status';
+import type { Status } from '~types/common';
 
 import React, { HTMLInputTypeAttribute, useState } from 'react';
 
+import { FORM_FIELD_STATUS } from '~constants/form';
 import { formatPhoneNumber } from '~utils/format-utils';
 import { validateInput } from '~utils/validate-utils';
 
@@ -10,7 +11,7 @@ const useInput = (
   type: HTMLInputTypeAttribute = 'text',
 ) => {
   const [value, setValue] = useState(initialValue);
-  const [status, setStatus] = useState<WithStatusType>('default');
+  const [status, setStatus] = useState<Status>(FORM_FIELD_STATUS.default);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
@@ -18,7 +19,7 @@ const useInput = (
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    setStatus('default');
+    setStatus(FORM_FIELD_STATUS.default);
 
     if (type === 'tel') {
       setValue(formatPhoneNumber(e.target.value));
@@ -31,11 +32,11 @@ const useInput = (
     const valid = validateInput(e.target.value, type);
 
     if (type === 'email' && valid) {
-      setStatus('success');
+      setStatus(FORM_FIELD_STATUS.success);
     }
 
     if (valid !== null && !valid) {
-      setStatus('error');
+      setStatus(FORM_FIELD_STATUS.error);
     }
   };
 

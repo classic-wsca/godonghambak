@@ -1,13 +1,12 @@
 import type { ComponentType } from 'react';
+import type { Status } from '~types/common';
 
 import styled from 'styled-components';
 
 import { pixelToRem } from '~utils/style-utils';
 
-export type WithStatusType = 'default' | 'error' | 'success';
-
 interface WithStatusProps {
-  status?: WithStatusType;
+  status?: Status;
   message?: string;
 }
 
@@ -34,7 +33,7 @@ const withStatus = <T,>(WrappedComponent: ComponentType<T>) => {
   return WrapperComponent;
 };
 
-const StatusMessage = styled.p<{ status: WithStatusType }>`
+const StatusMessage = styled.p<{ status: Status }>`
   margin: 0;
   line-height: 0.75;
   font-size: ${pixelToRem(14)};

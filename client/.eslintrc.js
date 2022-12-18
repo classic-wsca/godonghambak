@@ -45,6 +45,7 @@ module.exports = {
   rules: {
     'no-console': 'warn',
     '@typescript-eslint/no-use-before-define': 'off',
+    '@typescript-eslint/ban-types': 'off',
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/jsx-props-no-spreading': 'off',

@@ -1,5 +1,5 @@
 import type { ComponentPropsWithoutRef, HTMLInputTypeAttribute } from 'react';
-import type { WithStatusType } from '~hocs/with-status';
+import type { Status } from '~types/common';
 
 import React, { forwardRef } from 'react';
 import styled, { css } from 'styled-components';
@@ -11,14 +11,15 @@ interface InputProps extends ComponentPropsWithoutRef<'input'> {
   id?: string;
   type?: Extract<HTMLInputTypeAttribute, 'text' | 'email' | 'password' | 'tel'>;
   value: string;
-  status?: WithStatusType;
+  status?: Status;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
+  onFocus?: React.FocusEventHandler<HTMLInputElement>;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   (
-    { id, type = 'text', value, status, onChange, onBlur, ...rest },
+    { id, type = 'text', value, status, onChange, onFocus, onBlur, ...rest },
     forwardedRef,
   ) => {
     return (
@@ -31,6 +32,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         status={status}
         disabled={status === 'success'}
         onChange={onChange}
+        onFocus={onFocus}
         onBlur={onBlur}
         aria-label={id}
         {...rest}
