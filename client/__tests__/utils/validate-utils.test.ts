@@ -31,7 +31,7 @@ describe('validateForm 함수 테스트', () => {
       email: '이메일을 입력해 주세요.',
       emailVerificationCode: '인증번호를 입력해 주세요.',
       password: '비밀번호를 입력해 주세요.',
-      name: '이름을 입력해 주세요',
+      name: '이름을 입력해 주세요.',
       phoneNumber: '휴대폰 번호를 입력해 주세요.',
       birth: '생년월일을 입력해 주세요.',
     });
