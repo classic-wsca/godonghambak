@@ -1,6 +1,6 @@
 import type { JoinInformation } from '~types/form';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import {
@@ -17,7 +17,7 @@ import {
   JOIN_FORM_FIELDS,
   JOIN_FIELD_KEYS,
 } from '~constants/form';
-import { useToggle, useJoinForm, useTimer } from '~hooks/index';
+import { useFormWithVerification, useToggle, useTimer } from '~hooks/index';
 import { formatNumberToTime } from '~utils/format-utils';
 import { pixelToRem } from '~utils/style-utils';
 import { validateInput, validateForm } from '~utils/validate-utils';
@@ -27,32 +27,31 @@ interface JoinFormProps {
 }
 
 const JoinForm = ({ onSubmit }: JoinFormProps) => {
+  const [verificationCode, setVerificationCode] = useState('');
+  const [isCheckboxChecked, toggleCheckboxChecked] = useToggle();
+  const [isVerificationModalOpen, toggleVerificationModal] = useToggle();
+  const [isSubmitModalOpen, toggleSubmitModal] = useToggle();
   const {
     values,
     statuses,
     errors,
-    verificationCode,
     updateStatus,
     updateErrors,
-    updateVerificationCode,
     resetField,
     handleChange,
     handleFocus,
     handleBlur,
     handleSubmit,
-    isCheckboxChecked,
-    toggleCheckboxChecked,
-  } = useJoinForm({
+  } = useFormWithVerification({
     initialValues: INITIAL_JOIN_VALUE,
     onSubmit,
     validate: validateForm,
+    verificationCode,
   });
-  const [isVerificationModalOpen, toggleVerificationModal] = useToggle();
-  const [isSubmitModalOpen, toggleSubmitModal] = useToggle();
 
   const handleVerificationTimeOver = () => {
     // TODO 인증 코드 비교 로직 구현
-    updateVerificationCode('error');
+    setVerificationCode('expired');
     updateStatus(
       JOIN_FIELD_KEYS.emailVerificationCode,
       FORM_FIELD_STATUS.error,
@@ -97,7 +96,7 @@ const JoinForm = ({ onSubmit }: JoinFormProps) => {
     // TODO
     // 이메일 인증 요청 보내기
     // 생성되는 6자리의 난수를 상태에 저장
-    updateVerificationCode('123456');
+    setVerificationCode('123456');
 
     resetField(JOIN_FIELD_KEYS.emailVerificationCode);
 

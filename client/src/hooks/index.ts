@@ -8,6 +8,5 @@ export { default as useThrottle } from './use-throttle';
 export { default as useDebounce } from './use-debounce';
 export { default as useScroll } from './use-scroll';
 export { default as useForm } from './use-form';
-export { default as useJoinForm } from './use-join-form';
 export { default as useTimer } from './use-timer';
 export { default as useFormWithVerification } from './use-form-with-verification';

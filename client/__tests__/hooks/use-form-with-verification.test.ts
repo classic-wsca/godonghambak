@@ -3,15 +3,21 @@ import type { JoinInformation } from '~types/form';
 import { renderHook, act } from '@testing-library/react';
 
 import { INITIAL_JOIN_VALUE, FORM_ERROR_MESSAGES } from '~constants/form';
-import { useJoinForm } from '~hooks/index';
+import { useFormWithVerification } from '~hooks/index';
 
 const getHook = <T extends Record<keyof JoinInformation, string>>(
   initialValues: T,
   onSubmit: (values: T) => void,
   validate: (props: T) => Partial<T>,
+  verificationCode = '',
 ) => {
   const { result } = renderHook(() =>
-    useJoinForm({ initialValues, onSubmit, validate }),
+    useFormWithVerification({
+      initialValues,
+      onSubmit,
+      validate,
+      verificationCode,
+    }),
   );
 
   return result;
@@ -61,39 +67,6 @@ describe('UseJoinForm 훅 테스트', () => {
 
     // then
     expect(result.current.values[key]).toEqual(value);
-  });
-
-  it('이메일 인증 코드를 업데이트 할 수 있어야 한다.', () => {
-    // given
-    const initialValues = INITIAL_JOIN_VALUE;
-    const onSubmit = jest.fn();
-    const validate = jest.fn();
-    const result = getHook(initialValues, onSubmit, validate);
-    const verificationCode = '123456';
-
-    // when
-    act(() => {
-      result.current.updateVerificationCode(verificationCode);
-    });
-
-    // then
-    expect(result.current.verificationCode).toBe(verificationCode);
-  });
-
-  it('체크박스의 checked값을 업데이트 할 수 있어야 한다.', () => {
-    // given
-    const initialValues = INITIAL_JOIN_VALUE;
-    const onSubmit = jest.fn();
-    const validate = jest.fn();
-    const result = getHook(initialValues, onSubmit, validate);
-
-    // when
-    act(() => {
-      result.current.toggleCheckboxChecked();
-    });
-
-    // then
-    expect(result.current.isCheckboxChecked).toBe(true);
   });
 
   it.each([
@@ -267,7 +240,7 @@ describe('UseJoinForm 훅 테스트', () => {
     expect(result.current.errors).toEqual(FORM_ERROR_MESSAGES.notExist);
   });
 
-  it('입력에 에러가 없어도, 체크박스에 체크가 안되었다면 폼에 저장된 값을 submit 할 수 없어야 한다.', () => {
+  it('입력에 에러가 없다면 폼에 저장된 값을 submit 할 수 있어야 한다.', () => {
     // given
     const initialValues = {
       email: 'example@gamil.com',
@@ -284,36 +257,6 @@ describe('UseJoinForm 훅 테스트', () => {
     const { submitEvent } = getEvent();
 
     // when
-    act(() => {
-      result.current.handleSubmit(
-        submitEvent as React.FormEvent<HTMLFormElement>,
-      );
-    });
-
-    // then
-    expect(onSubmit).toHaveBeenCalledTimes(0);
-  });
-
-  it('입력에 에러가 없고, 체크박스에 체크되었다면 폼에 저장된 값을 submit 할 수 있어야 한다.', () => {
-    // given
-    const initialValues = {
-      email: 'example@gamil.com',
-      emailVerificationCode: '123456',
-      password: 'example1234!',
-      passwordConfirm: 'example1234!',
-      name: '홍길동',
-      phoneNumber: '010-1234-5678',
-      birth: '091031',
-    };
-    const onSubmit = jest.fn();
-    const validate = jest.fn().mockReturnValueOnce(() => {});
-    const result = getHook(initialValues, onSubmit, validate);
-    const { submitEvent } = getEvent();
-
-    // when
-    act(() => {
-      result.current.toggleCheckboxChecked();
-    });
     act(() => {
       result.current.handleSubmit(
         submitEvent as React.FormEvent<HTMLFormElement>,
