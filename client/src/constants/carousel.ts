@@ -104,3 +104,22 @@ export const CHARACTER_CAROUSEL_ITEMS = [
     alt: '혜자씨',
   },
 ];
+
+export const INTERIOR_SLIDER_ITEMS = [
+  {
+    src: '/images/interior-02.png',
+    alt: '매장사진 01',
+  },
+  {
+    src: '/images/interior-03.png',
+    alt: '매장사진 02',
+  },
+  {
+    src: '/images/interior-04.png',
+    alt: '매장사진 03',
+  },
+  {
+    src: '/images/interior-05.png',
+    alt: '매장사진 04',
+  },
+];
