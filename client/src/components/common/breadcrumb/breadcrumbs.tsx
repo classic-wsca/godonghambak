@@ -55,11 +55,29 @@ const BreadcrumbList = styled.ol`
     justify-content: end;
     padding-right: ${pixelToRem(32)};
   }
+
+  @media ${({ theme }) => theme.breakPoints.medium} {
+    gap: ${pixelToRem(12)};
+  }
+
+  @media ${({ theme }) => theme.breakPoints.small} {
+    gap: ${pixelToRem(8)};
+    padding-right: ${pixelToRem(16)};
+  }
 `;
 
 const Seperator = styled.span`
   display: flex;
   align-items: center;
+
+  @media ${({ theme }) => theme.breakPoints.large} {
+    margin-top: ${pixelToRem(2)};
+    transform: scale(0.8);
+  }
+
+  @media ${({ theme }) => theme.breakPoints.medium} {
+    margin-top: ${pixelToRem(3)};
+  }
 `;
 
 export default Breadcrumbs;

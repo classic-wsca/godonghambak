@@ -33,6 +33,14 @@ const LinkItem = styled.a<{ isCurrent?: boolean }>`
   font-size: ${({ theme }) => theme.fontSizes.lg};
   color: ${({ theme, isCurrent }) =>
     isCurrent ? theme.colors.green : theme.colors.gray_700};
+
+  @media ${({ theme }) => theme.breakPoints.large} {
+    font-size: ${({ theme }) => theme.fontSizes.md};
+  }
+
+  @media ${({ theme }) => theme.breakPoints.medium} {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
+  }
 `;
 
 export default BreadcrumbItem;
