@@ -14,6 +14,8 @@ export interface Dimension {
   height: number;
 }
 
+export type Direction = 'top' | 'right' | 'bottom' | 'left';
+
 export interface Position {
   x: number;
   y: number;
