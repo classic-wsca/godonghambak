@@ -37,9 +37,22 @@ const Breadcrumb = ({ seperator }: BreadcrumbProps) => {
       return [...acc, ...cur];
     });
 
-    let label = subRoutes.find(({ href }) => href === currentHref)?.text;
+    let label = subRoutes.find(
+      ({ href }) => href === decodeURIComponent(currentHref),
+    )?.text;
+
     if (!label) {
-      label = NAVIGATION_ROUTES.find(({ href }) => href === currentHref)?.text;
+      const currentRoutes = subRoutes.filter(
+        ({ href }) => href === `/${currentHref.split('/')[1]}`,
+      );
+
+      label = currentRoutes.length
+        ? currentRoutes[0].subRoutes?.find(
+            ({ href }) => href === decodeURIComponent(currentHref),
+          )?.text
+        : (label = NAVIGATION_ROUTES.find(
+            ({ href }) => href === decodeURIComponent(currentHref),
+          )?.text);
     }
 
     return label || '고동함박';
@@ -59,11 +72,10 @@ const Breadcrumb = ({ seperator }: BreadcrumbProps) => {
 
   useEffect(() => {
     const pathWithoutQuery = router.asPath.split('?')[0];
-
-    let pathArray = pathWithoutQuery.split('/');
-    pathArray.shift();
-
-    pathArray = pathArray.filter((path) => path !== '');
+    const pathArray = pathWithoutQuery
+      .split('/')
+      .filter((path) => path !== '')
+      .map((path) => decodeURIComponent(path));
 
     const getMainBreadcrumbs = () => {
       const href = `/${pathArray[0]}`;

@@ -6,7 +6,16 @@ export const NAVIGATION_ROUTES: NavigationRoutes[] = [
     href: '/brand',
     subRoutes: [
       { text: '브랜드 소개', href: '/brand' },
-      { text: '매장 찾기', href: '/store' },
+      {
+        text: '매장 찾기',
+        href: '/store',
+        subRoutes: [
+          { text: '신도림점', href: '/store/신도림점' },
+          { text: '송리단길점', href: '/store/송리단길점' },
+          { text: '송도 타임스퀘어점', href: '/store/송도 타임스퀘어점' },
+          { text: '인천 스퀘어점', href: '/store/인천 스퀘어점' },
+        ],
+      },
     ],
   },
   {
