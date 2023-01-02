@@ -35,7 +35,12 @@ const StoreDetail = () => {
         <StoreHeading as="h2">{name}</StoreHeading>
         <StoreContent>
           <StoreImage>
-            <Image src={store.image} layout="fill" />
+            <Image
+              src={store.image ? store.image : '/images/store.png'}
+              alt={store.name}
+              layout="fill"
+              priority
+            />
           </StoreImage>
           <StoreInfo>
             <li>
