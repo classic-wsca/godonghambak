@@ -6,5 +6,6 @@ export interface NavigationRoutes {
 
 export interface NavigationSubRoutes
   extends Omit<NavigationRoutes, 'subRoutes'> {
+  subRoutes?: NavigationSubRoutes[];
   highlight?: boolean;
 }

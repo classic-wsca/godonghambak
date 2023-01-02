@@ -62,7 +62,7 @@ const Brand = () => {
         <BrandHeading as="h2">Interior</BrandHeading>
         <InteriorSlider>
           {INTERIOR_SLIDER_ITEMS.map(({ src, alt }) => (
-            <InteriorSlide key="alt">
+            <InteriorSlide key={alt}>
               <Image src={src} alt={alt} layout="fill" />
             </InteriorSlide>
           ))}
