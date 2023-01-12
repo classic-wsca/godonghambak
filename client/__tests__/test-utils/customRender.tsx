@@ -1,5 +1,5 @@
-import React, { FC, ReactElement } from 'react';
 import { render, RenderOptions } from '@testing-library/react';
+import React, { FC, ReactElement } from 'react';
 import { ThemeProvider } from 'styled-components';
 
 import GlobalStyle from '~styles/global-style';
