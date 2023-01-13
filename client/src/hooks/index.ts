@@ -10,3 +10,4 @@ export { default as useScroll } from './use-scroll';
 export { default as useForm } from './use-form';
 export { default as useTimer } from './use-timer';
 export { default as useFormWithVerification } from './use-form-with-verification';
+export { default as useDragScroll } from './use-drag-scroll';
