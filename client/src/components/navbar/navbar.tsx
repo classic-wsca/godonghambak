@@ -62,7 +62,7 @@ const Navbar = () => {
       <Header hide={isHideNavbar}>
         <Link href="/" passHref>
           <Logo href="replace" aria-label="logo">
-            <Image src="/images/logo.png" alt="logo" layout="fill" priority />
+            <Image src="/images/logo.png" alt="logo" layout="fill" />
           </Logo>
         </Link>
         <Nav ref={ref} isOpen={isOpen} isOnResize={isOnResize}>
