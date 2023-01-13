@@ -40,16 +40,6 @@ const ICON_BUTTON_STYLES: Partial<Record<GlobalSizes, ReturnType<typeof css>>> =
       background-color: ${({ theme }) => theme.colors.gray_100};
       transition: transform 0.2s ease-out;
       color: ${({ theme }) => theme.colors.gray_500};
-
-      &:hover {
-        border: 2px solid ${({ theme }) => theme.colors.blue};
-        box-shadow: 0px 2px 4px ${({ theme }) => `${theme.colors.blue}88`};
-        transform: translateY(${pixelToRem(-16)});
-      }
-
-      &:active {
-        border: 2px solid ${({ theme }) => theme.colors.blue};
-      }
     `,
   };
 
