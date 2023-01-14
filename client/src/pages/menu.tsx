@@ -1,11 +1,13 @@
 import type { ReactElement } from 'react';
 
 import Image from 'next/image';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import { Button } from '~components/common';
+import { MenuCard } from '~components/card';
+import { Button, Text } from '~components/common';
 import { BreadcrumbLayout } from '~components/layout';
-import { MENU_CATEGORIES } from '~constants/menu';
+import { MENU_CATEGORIES, MENU_ITEMS } from '~constants/menu';
 import { useDragScroll } from '~hooks/index';
 import { pixelToRem } from '~utils/style-utils';
 
@@ -16,6 +18,20 @@ const Menu = () => {
     handleDragEnd,
     handleDragMove,
   } = useDragScroll();
+  const [menuItems, setMenuItems] = useState({
+    category: 'all',
+    items: MENU_ITEMS,
+  });
+
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+    const clickedCategory = e.currentTarget.id;
+    const newMenuItems =
+      clickedCategory === 'all'
+        ? MENU_ITEMS
+        : MENU_ITEMS.filter(({ category }) => category === e.currentTarget.id);
+
+    setMenuItems({ category: clickedCategory, items: newMenuItems });
+  };
 
   return (
     <Container>
@@ -27,21 +43,46 @@ const Menu = () => {
         onMouseLeave={handleDragEnd}
       >
         <MenuCategories>
-          {MENU_CATEGORIES.map(({ image, name }) => (
-            <MenuCategoryItem key={name}>
+          {MENU_CATEGORIES.map(({ name, image, category }) => (
+            <MenuCategoryItem
+              key={name}
+              id={category}
+              clicked={category === menuItems.category}
+              onClick={handleClick}
+            >
               <Button type="button" variant="icon" size="large">
-                <Image
-                  src={`/images/${image}.png`}
-                  width={40}
-                  height={40}
-                  priority
-                />
+                <Image src={image} width={40} height={40} priority />
               </Button>
               {name}
             </MenuCategoryItem>
           ))}
         </MenuCategories>
       </MenuNav>
+      <MenuContent>
+        <Text>
+          총{' '}
+          <Text as="b" color="orange">
+            {menuItems.items.length}개의
+          </Text>{' '}
+          메뉴가 있습니다.
+        </Text>
+        {menuItems.items.length ? (
+          <MenuList>
+            {menuItems.items.map(({ id, name, description, price, image }) => (
+              <li key={id}>
+                <MenuCard
+                  name={name}
+                  description={description}
+                  price={price}
+                  image={image}
+                />
+              </li>
+            ))}
+          </MenuList>
+        ) : (
+          <Blank>준비 중입니다.</Blank>
+        )}
+      </MenuContent>
     </Container>
   );
 };
@@ -51,8 +92,9 @@ Menu.getLayout = function getLayout(page: ReactElement) {
 };
 
 const Container = styled.div`
+  max-width: ${pixelToRem(1440)};
+  margin: 0 auto;
   margin-top: ${pixelToRem(-20)};
-  overflow: visible;
 
   @media ${({ theme }) => theme.breakPoints.small} {
     padding: 0 16px;
@@ -84,7 +126,7 @@ const MenuCategories = styled.ul`
   }
 `;
 
-const MenuCategoryItem = styled.li`
+const MenuCategoryItem = styled.li<{ clicked: boolean }>`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -93,6 +135,11 @@ const MenuCategoryItem = styled.li`
   font-size: ${({ theme }) => theme.fontSizes.sm};
   transition: transform 0.2s ease;
   cursor: pointer;
+
+  button {
+    border: ${({ theme, clicked }) =>
+      clicked && `2px solid ${theme.colors.blue}`};
+  }
 
   &:hover {
     transform: translateY(${pixelToRem(-16)});
@@ -105,6 +152,38 @@ const MenuCategoryItem = styled.li`
   @media ${({ theme }) => theme.breakPoints.small} {
     font-size: ${({ theme }) => theme.fontSizes.xs};
   }
+`;
+
+const MenuContent = styled.div`
+  padding: ${pixelToRem(40)} ${pixelToRem(200)};
+  text-align: center;
+
+  @media ${({ theme }) => theme.breakPoints.extraLarge} {
+    padding: ${pixelToRem(40)} 5%;
+  }
+`;
+
+const MenuList = styled.ul`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(auto, 240px));
+  justify-content: center;
+  gap: ${pixelToRem(40)};
+  width: 100%;
+  margin: 0;
+  margin-top: ${pixelToRem(40)};
+`;
+
+const Blank = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: ${pixelToRem(200)};
+  margin-top: ${pixelToRem(40)};
+  border: 2px solid ${({ theme }) => theme.colors.gray};
+  border-radius: ${pixelToRem(10)};
+  color: ${({ theme }) => theme.colors.gray};
+  font-size: ${({ theme }) => theme.fontSizes['4xl']};
 `;
 
 export default Menu;
