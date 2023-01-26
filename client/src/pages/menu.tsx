@@ -1,7 +1,8 @@
 import type { ReactElement } from 'react';
 
 import Image from 'next/image';
-import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import { MenuCard } from '~components/card';
@@ -12,16 +13,17 @@ import { useDragScroll } from '~hooks/index';
 import { pixelToRem } from '~utils/style-utils';
 
 const Menu = () => {
+  const { query } = useRouter();
+  const [menuItems, setMenuItems] = useState({
+    category: 'all',
+    items: MENU_ITEMS,
+  });
   const {
     ref: navRef,
     handleDragStart,
     handleDragEnd,
     handleDragMove,
   } = useDragScroll();
-  const [menuItems, setMenuItems] = useState({
-    category: 'all',
-    items: MENU_ITEMS,
-  });
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
     const clickedCategory = e.currentTarget.id;
@@ -32,6 +34,18 @@ const Menu = () => {
 
     setMenuItems({ category: clickedCategory, items: newMenuItems });
   };
+
+  useEffect(() => {
+    const { category: categoryQuery } = query;
+    const newMenuItems = categoryQuery
+      ? MENU_ITEMS.filter(({ category }) => category === categoryQuery)
+      : MENU_ITEMS;
+
+    setMenuItems({
+      category: (categoryQuery as string) || 'all',
+      items: newMenuItems,
+    });
+  }, [query]);
 
   return (
     <Container>
