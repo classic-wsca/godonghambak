@@ -39,3 +39,55 @@ export const FEATURE_CARDS = [
     image: '/images/brand-feature3.png',
   },
 ];
+
+export const FRANCHISE_CARDS = [
+  {
+    id: '01',
+    title: '가맹점 창업 문의',
+    content: '본사 홈페이지, 전화\n (1533-0788) 신청 및 접수',
+    image: '/svgs/phone.svg',
+  },
+  {
+    id: '02',
+    title: '담당자 연결 및 상담',
+    content: '회사 소개 및 사업 설명',
+    image: '/svgs/message.svg',
+  },
+  {
+    id: '03',
+    title: '점포개발 및 상권분석',
+    content: '사업 타당성 분석',
+    image: '/svgs/building.svg',
+  },
+  {
+    id: '04',
+    title: '점포 및 가맹계약 체결',
+    content: '입점 점포 확정\n 임대차 계약, 본사 가맹계약',
+    image: '/svgs/document.svg',
+  },
+  {
+    id: '05',
+    title: '오픈 준비',
+    content: '인테리어 시공, 인/허가 영업 준비\n 영업 실무 교육',
+    image: '/svgs/tool.svg',
+  },
+  {
+    id: '06',
+    title: '매장 오픈',
+    content: '고동함박 영업 시작',
+    image: '/svgs/store.svg',
+  },
+];
+
+export const CONTACT_CARDS = [
+  {
+    title: '대표 전화',
+    content: '1533-0788',
+    image: '/svgs/phone.svg',
+  },
+  {
+    title: '이메일',
+    content: 'godonghambak\n@naver.com',
+    image: '/svgs/email.svg',
+  },
+];
