@@ -31,7 +31,7 @@ const NoticeDetail = () => {
         <Text color="green" fontWeight={500} m={0}>
           공지사항
         </Text>
-        <Heading as="h2">{notice.title}</Heading>
+        <NoticeTitle as="h2">{notice.title}</NoticeTitle>
         <div>
           <Text as="span">{notice.date}</Text>
           <NoticeHits>
@@ -44,7 +44,7 @@ const NoticeDetail = () => {
       <NoticeBody>{notice.content}</NoticeBody>
       <Divider />
       <NoticeFooter>
-        <Button as="a" type="button" onClick={handleClick}>
+        <Button type="button" size="medium" onClick={handleClick}>
           목록으로
         </Button>
       </NoticeFooter>
@@ -58,14 +58,27 @@ const Notice = styled.div`
   width: 100%;
   max-width: ${pixelToRem(1040)};
   margin: ${pixelToRem(200)} auto;
+
+  @media ${({ theme }) => theme.breakPoints.extraLarge} {
+    padding: 0 5%;
+  }
+`;
+
+const NoticeTitle = styled(Heading)`
+  margin-top: ${pixelToRem(16)};
+  margin-bottom: ${pixelToRem(40)};
+  font-size: ${({ theme }) => theme.fontSizes['6xl']};
+
+  @media ${({ theme }) => theme.breakPoints.large} {
+    font-size: ${({ theme }) => theme.fontSizes['5xl']};
+  }
+
+  @media ${({ theme }) => theme.breakPoints.small} {
+    font-size: ${({ theme }) => theme.fontSizes['3xl']};
+  }
 `;
 
 const NoticeHeader = styled.div`
-  h2 {
-    margin-top: ${pixelToRem(16)};
-    margin-bottom: ${pixelToRem(40)};
-  }
-
   & > div {
     display: flex;
     justify-content: space-between;
